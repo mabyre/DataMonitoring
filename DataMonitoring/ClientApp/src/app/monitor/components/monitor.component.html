@@ -1,0 +1,29 @@
+<div id="content">
+  <header id="header">
+    <div id="logo-group">
+      <span id="logo" class="{{titleColorclass}} font-xl ui-widget" >
+          <span id = 'titleHeader'><img src="/img/logo.png" alt="SoDevLog">&nbsp;&nbsp;<strong>{{title}}</strong></span>
+      </span>
+    </div>
+  </header>
+  <div class="row">
+    <article class="col-sm-12 col-md-12 col-lg-6">
+      <app-monitorWidget *ngIf="widget1List" [refreshAuto]=true [testMode]="isTestMode" codeLangue={{codeLangue}} 
+      widgetIdList={{widget1List}} timeZone={{timeZone}} [key]="key" position="11"></app-monitorWidget>    
+    </article>
+    <article class="col-sm-12 col-md-12 col-lg-6">
+        <app-monitorWidget *ngIf="widget2List" [refreshAuto]=true [testMode]="isTestMode" codeLangue={{codeLangue}} 
+        widgetIdList={{widget2List}} timeZone={{timeZone}} [key]="key" position="12"></app-monitorWidget>    
+      </article>
+  </div>
+  <div class="row">
+      <article class="col-sm-12 col-md-12 col-lg-6">
+        <app-monitorWidget *ngIf="widget3List" [refreshAuto]=true  [testMode]="isTestMode" codeLangue={{codeLangue}}
+         widgetIdList={{widget3List}} timeZone={{timeZone}} [key]="key" position="21"></app-monitorWidget>    
+      </article>
+      <article class="col-sm-12 col-md-12 col-lg-6">
+          <app-monitorWidget *ngIf="widget4List" [refreshAuto]=true [testMode]="isTestMode" codeLangue={{codeLangue}} 
+          widgetIdList={{widget4List}} timeZone={{timeZone}} [key]="key" position="22"></app-monitorWidget>    
+        </article>
+    </div>
+</div>

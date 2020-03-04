@@ -1,0 +1,261 @@
+<!--
+  --
+  --  Alert_Messages
+  --  Check_titleDisplayed
+  --  Add_Widgets_ToDashboard
+  --  DragAndDrop_List
+  --  Button_Back_And_Save
+  --
+  -->
+<div id="content">
+  <div class="row">
+    <app-big-breadcrumbs [items]="['Dashboard' | i18n, titleView | i18n]" icon="tachometer" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></app-big-breadcrumbs>
+  </div>
+
+  <!-- Alert_Messages -->
+  <div class="row">
+    <div class="col-sm-7 col-sm-offset-1">
+      <alert type="danger" dismissible="true" *ngIf="errorMessage">
+        <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+      </alert>
+      <alert type="success" dismissible="true" *ngIf="successMessage">
+        <i class="fa-fw fa fa-check"></i> <strong>{{'Success' | i18n}}</strong> {{ successMessage }}
+      </alert>
+    </div>
+  </div>
+
+  <form *ngIf="dashboardForm" [formGroup]="dashboardForm" (ngSubmit)="onSubmitForm()">
+
+    <div class="row">
+      <div class="col-sm-9 col-sm-offset-1">
+        <div class="form-group">
+          <h3>{{'Title of Dashboard' | i18n}}</h3>
+          <input type="text" class="form-control" formControlName="title">
+          <small *ngIf="!dashboardForm.controls.title.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+
+          <!-- Possibilité d'ajouter des traductions au titre -->
+          <!--<div formArrayName="dashboardLocalizations">
+            <app-title-localization-list [titleLocalizations]="getDashboardLocalizationsArray()"
+                                         [count]="dashboardLocalizationCount">
+            </app-title-localization-list>
+          </div>-->
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2 col-sm-offset-1 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="titleDisplayed">
+            {{'Title Displayed' | i18n}}
+          </label>
+        </div>
+      </div>
+
+      <!-- Check_titleDisplayed -->
+      <div *ngIf="dashboardForm.get('titleDisplayed').value == true">
+        <div class="col-sm-3  form-group">
+          <label for="titleColorName">{{'Title Color' | i18n}}</label>
+          <select *ngIf="colorList" formControlName="titleColorName" class="form-control">
+            <option *ngFor="let c of colorList" [value]="c.name">
+              {{c.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 col-sm-offset-1 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="currentTimeManagementDisplayed">
+            {{'TimeManagementDisplayed' | i18n}}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Add_Widgets_ToDashboard -->
+    <div class="row" style="padding-bottom:5px;">
+      <div class="col-sm-7 col-sm-offset-1">
+        <a (click)="onAddDashboardWidget()" class="btn btn-primary btn-sm">
+          <i class="fa fa-plus"></i> {{ 'Add' | i18n }} {{ 'Widget' | i18n }}
+        </a>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-7 col-sm-offset-1">
+        <div formArrayName="widgets">
+          <div class="form-group" *ngFor="let control of getDashboardWidgetsArray().controls; let i = index">
+            <div [formGroupName]="i">
+
+              <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                <accordion-group [isOpen]="false" #group1>
+                  <h2 class="row panel-title" accordion-heading>
+                    <a>
+                      <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group1?.isOpen,'fa-plus-circle txt-color-green': !group1?.isOpen}"></i>
+                      <span>{{ getTitleToDisplay(i) }}</span>
+                      &nbsp;
+                      <!-- <span class="badge txt-color-white">{{ getCoordinateToDisplay(i) }}</span> -->
+                      <button (click)="onRemoveDashboardWidget(i)" class="pull-right btn btn-danger btn-labeled">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </a>
+                  </h2>
+
+                  <div class="row">
+                    <div class="col-sm-10 form-group">
+                      <label for="widgetId">{{'Widget' | i18n}}</label>
+                      <select *ngIf="widgetList" formControlName="widgetId" class="form-control">
+                        <option *ngFor="let w of widgetList" [value]="w.id">
+                          {{w.title}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+
+                    <!-- <div class="col-sm-2 form-group">
+                      <label for="position">{{'Row' | i18n}}</label>
+                      <select *ngIf="positionList" formControlName="position" class="form-control">
+                        <option *ngFor="let p of positionList" [value]="p">
+                          {{p}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-sm-2 form-group">
+                      <label for="column">{{'Column' | i18n}}</label>
+                      <select *ngIf="positionList" formControlName="column" class="form-control">
+                        <option *ngFor="let p of positionList" [value]="p">
+                          {{p}}
+                        </option>
+                      </select>
+                    </div> -->
+
+                </accordion-group>
+              </accordion>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- DragAndDrop_List -->
+
+    <div class="row" *ngIf="dashboard.id != 0">
+      <div class="col-sm-9 col-sm-offset-1">
+
+        <h3>{{'PositionWidgetOnDashboard' | i18n}}</h3>
+
+        <!--<div class="row">
+          <div class="col-sm-4 col-xs-offset-3">
+            <img src="/img/positions-monitor.png" />
+          </div>
+        </div>-->
+
+        <div class="builder-container">
+
+          <div class="builder-source">
+
+            <h4>Wigets</h4>
+
+            <ngx-dnd-container class="root-container"
+                               [model]="dashboard.widgets"
+                               [dropZones]="['builder-target']"
+                               [copy]="true"
+                               [droppableItemClass]="droppableItemClass"
+                               (drag)="builderSourceDrag($event)"
+                               direction="mixed">
+
+              <!-- BRY_DEBUG <ng-template let-item="model" let-i="model.widgetId">
+                Id:{{item.widgetId}} wId {{i}} title {{ getTitleToDisplayInTemplate(i) }}
+              </ng-template>-->
+
+              <ng-template let-item="model" let-i="model.widgetId">
+                {{ getTitleToDisplayInTemplate(i) }}
+              </ng-template>
+
+            </ngx-dnd-container>
+
+          </div>
+
+          <div class="builder-target">
+
+            <h4 col-sm-offset-1>Tableau de Bord</h4>
+
+            <ngx-dnd-container class="root-container"
+                               [model]="targetBuilderItemList"
+                               dropZone="builder-target"
+                               [removeOnSpill]="true"
+                               [droppableItemClass]="droppableItemClass"
+                               (drag)="eLog('target->',$event)"
+                               (drop)="builderTargetDrop($event)"
+                               (over)="eLog('target->',$event)"
+                               (out)="eLog('target->',$event)"
+                               (remove)="eLog('target->',$event)"
+                               direction="mixed">
+
+              <ng-template let-model="model" let-template="template" let-i="model.widgetId">
+                <div [ngSwitch]="model.inputType">
+                  <div *ngSwitchCase="'section'">
+                    <div class="shadow">
+                      {{ getTitleToDisplayInTemplate(i) }}
+                      <ngx-dnd-container dropZone="builder-target"
+                                         [model]="model.children"
+                                         [removeOnSpill]="true"
+                                         [template]="template"
+                                         [droppableItemClass]="droppableItemClass"
+                                         (drag)="eLog('item->',$event)"
+                                         (drop)="eLog('item->',$event)"
+                                         (over)="eLog('item->',$event)"
+                                         (out)="eLog('item->',$event)"
+                                         (remove)="eLog('item->',$event)"
+                                         (cancel)="eLog('item->',$event)"
+                                         direction="mixed">
+                      </ngx-dnd-container>
+                    </div>
+                  </div>
+                  <div *ngSwitchDefault>
+                    {{ getTitleToDisplayInTemplate(i) }} <!--<span class="badge txt-color-white">{{ getCoordinateToDisplayInTemplate(i) }}</span>-->
+                    <!--<input [attr.type]="model.inputType" [ngModel]="model.data">-->
+                  </div>
+                </div>
+              </ng-template>
+            </ngx-dnd-container>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FIN DragAndDrop_List -->
+
+    <div class="row" style="padding-top:20px;">
+      <!-- Button_Back_And_Save -->
+      <div class="col-sm-2 col-xs-offset-1">
+        <button type="button" class="btn btn-primary" [routerLink]="['/dashboard/dashboards']">
+          <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+        </button>
+      </div>
+
+      <div class="col-sm-2 col-xs-offset-3">
+        <button class="btn btn-success" type="submit" [disabled]="dashboardForm.invalid">
+          <i class="fa fa-save"></i> {{'Save' | i18n}}
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- <div class="row" *ngIf="dashboardForm">
+      {{ dashboardForm.value | json }}
+  </div> -->
+
+</div>
+
+

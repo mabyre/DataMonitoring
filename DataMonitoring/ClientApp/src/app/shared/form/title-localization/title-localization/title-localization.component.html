@@ -1,0 +1,22 @@
+<div [formGroup]="titleLocalization">
+    <div class="col-sm-1">
+      <label class="pull-right">
+        <img  src="/img/blank.gif"
+              class="flag flag-{{selectedLanguage.key}}"
+              alt="{{selectedLanguage.alt}}">&nbsp;
+      </label>
+    </div>
+    <div class="col-sm-2">
+      <select formControlName="localizationCode" #t (change)="setSelectedLanguage(t.value)" class="form-control">
+        <option *ngFor="let l of languages" [value]="l.culture">
+          {{l.title}}
+        </option>
+      </select>
+    </div>
+    <div class="col-sm-4">
+      <input type="text" id="title" class="form-control" formControlName="title">
+    </div>
+</div>
+  
+  
+  

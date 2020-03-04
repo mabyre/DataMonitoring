@@ -1,0 +1,8 @@
+[
+  {
+    "outputFileName": "wwwroot/js/gauge.min.js",
+    "inputFiles": [
+      "wwwroot/js/gauge.js"
+    ]
+  }
+]

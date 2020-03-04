@@ -1,0 +1,50 @@
+<div id="content">
+
+  <div class="row">
+    <app-big-breadcrumbs [items]="['Setting' | i18n, 'Connectors' | i18n ]" icon="database" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></app-big-breadcrumbs>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-9 col-sm-offset-1">
+      <h3 class="text-primary">{{'Connector List' | i18n}}</h3>
+      <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+        <strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+        <br />
+      </div>
+      <a [routerLink]="['/connector/connector-edit']" class="padding-10 padding-top-0 padding-bottom-0">
+        <i class="fa fa-plus"></i> {{ 'Add' | i18n }}
+      </a>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>{{ 'Name' | i18n }}</th>
+              <th>{{ 'Type' | i18n }}</th>
+              <th>{{ 'Connection' | i18n }}</th>
+              <th colspan="2">{{ 'Actions' | i18n }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let connector of connectors">
+              <td> {{connector.name}}</td>
+              <td>
+                <span class="badge bg-color-darken">{{ connector.connectorType }}</span>
+              </td>
+              <td> {{ connector.connection }} </td>
+              <td>
+                <a [routerLink]="['/connector/connector-edit/', connector.id]" class="padding-10 padding-top-0 padding-bottom-0">
+                  <i class="fa fa-edit"></i> {{ 'Edit' | i18n }}
+                </a>
+              </td>
+              <td>
+                <a (click)="onDelete(connector.id)" class="padding-10 padding-top-0 padding-bottom-0">
+                  <i class="fa fa-trash"></i> {{ 'Delete' | i18n }}
+                </a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

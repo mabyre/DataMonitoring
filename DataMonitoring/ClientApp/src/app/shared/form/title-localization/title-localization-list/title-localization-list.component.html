@@ -1,0 +1,34 @@
+<accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+    <accordion-group [isOpen]="false" #group1>
+      <h2 class="panel-title" accordion-heading>
+          <a>
+              <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group1?.isOpen,'fa-plus-circle txt-color-green': !group1?.isOpen}"></i>
+              <span *ngIf="count==0">{{'no traduction available' | i18n}}</span>
+              <span *ngIf="count!=0">{{count}}&nbsp;{{'traduction available' | i18n}}</span>
+          </a>
+      </h2>
+      
+      <a (click)="onAddTitleLocalization()" class="btn btn-primary btn-xs">
+        <i class="fa fa-plus"></i> {{ 'Add' | i18n }} {{ 'Translation' | i18n }}
+      </a>
+      <div [formGroup]="titleLocalizations">
+        <div class="form-group" *ngFor="let control of titleLocalizations.controls; let i = index">
+          <div [formGroupName]="i"  class="row">
+            <app-title-localization 
+                [titleLocalization]="control">
+            </app-title-localization>
+            <div class="col-sm-1">
+              <button (click)="onRemoveTitleLocalization(i)" class="pull-right btn btn-danger btn-labeled">
+                <i class="fa fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </accordion-group>
+</accordion>
+
+
+
+

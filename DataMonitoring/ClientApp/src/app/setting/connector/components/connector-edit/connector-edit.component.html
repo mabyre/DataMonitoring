@@ -1,0 +1,289 @@
+<div id="content">
+
+  <div class="row">
+    <app-big-breadcrumbs [items]="['Setting' | i18n, 'Connectors' | i18n, titleView | i18n  ]" icon="database" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></app-big-breadcrumbs>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-1">
+
+      <h3 class="text-primary">{{titleView}}</h3>
+
+      <alert type="danger" dismissible="true" *ngIf="errorMessage">
+        <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+      </alert>
+
+      <!-- Selection du Type de Connecteur, si on est en mode Ajout -->
+      <div class="form-group" *ngIf="isAddMode">
+        <label>{{'Choisir un Type de Connecteur' | i18n}}</label>
+        <select *ngIf="connectorTypes" [(ngModel)]="selectedConnectorType" (change)="onChange()" class="form-control">
+          <option *ngFor="let type of connectorTypes" [value]="type.value">
+            {{type.name}}
+          </option>
+        </select>
+      </div>
+
+      <!-- SQ LITE FORM  -->
+      <form *ngIf="connectorSqLiteForm" [formGroup]="connectorSqLiteForm" (ngSubmit)="onSubmitSqLiteForm()">
+        <div class="form-group">
+          <label for="name">{{'Name' | i18n}}</label>
+          <input type="text" id="name" class="form-control" formControlName="name">
+          <small *ngIf="!connectorSqLiteForm.controls.name.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="timeZone">{{'TimeZone' | i18n}}</label>
+          <select *ngIf="timeZones" formControlName="timeZone" class="form-control">
+            <option *ngFor="let tz of timeZones" [value]="tz.id">
+              {{tz.displayName}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="hostName">{{'Server name' | i18n}}</label>
+          <input type="text" id="hostName" class="form-control" formControlName="hostName">
+          <small *ngIf="!connectorSqLiteForm.controls.hostName.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="databaseName">{{'Database name' | i18n}}</label>
+          <input type="text" id="databaseName" class="form-control" formControlName="databaseName">
+          <small *ngIf="!connectorSqLiteForm.controls.databaseName.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label class="checkbox">
+              <input type="checkbox" id="integratedSecurity" formControlName="integratedSecurity">
+              {{'Integrated security' | i18n}}
+            </label>
+          </div>
+        </div>
+        <!-- Si Integrated Security n'est pas coché -->
+        <div *ngIf="connectorSqLiteForm.get('integratedSecurity').value == false">
+          <div class="form-group">
+            <label for="userName">{{'User name' | i18n}}</label>
+            <input type="text" id="userName" class="form-control" formControlName="userName">
+          </div>
+          <div class="form-group">
+            <label for="password">{{'Password' | i18n}}</label>
+            <input type="password" id="password" class="form-control" formControlName="password">
+          </div>
+        </div>
+
+        <div>
+          <ngx-spinner bdColor="rgba(51, 51, 51, 0)"
+                       size="large"
+                       color="#707070"
+                       type="ball-spin-clockwise">
+          </ngx-spinner>
+        </div>
+
+        <alert type="warning" dismissible="true" *ngIf="testConnexionOk == false">
+          <i class="fa-fw fa fa-times"></i><strong>{{'Failure' | i18n}}!</strong>
+        </alert>
+        <alert type="success" dismissible="true" *ngIf="testConnexionOk == true">
+          <i class="fa-fw fa fa-check"></i><strong>{{'Success' | i18n}}!</strong>
+        </alert>
+
+        <div class="row">
+          <div class="col-sm-2 col-xs-offset-1">
+            <button type="button" class="btn btn-primary" [routerLink]="['/connector/connectors']">
+              <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+            </button>
+          </div>
+
+          <div class="col-sm-3 col-xs-offset-1">
+            <button type="button" (click)="onTestConnexion()" class="btn btn-success btn-warning" [disabled]="connectorSqLiteForm.invalid">
+              <i class="fa fa-chain"></i> {{'Test connection' | i18n}}
+            </button>
+          </div>
+
+          <div class="col-sm-2 col-xs-offset-2">
+            <button class="btn btn-success" type="submit" [disabled]="connectorSqLiteForm.invalid">
+              <i class="fa fa-save"></i> {{'Save' | i18n}}
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- SQL FORM  -->
+      <form *ngIf="connectorSqlForm" [formGroup]="connectorSqlForm" (ngSubmit)="onSubmitSqlForm()">
+        <div class="form-group">
+          <label for="name">{{'Name' | i18n}}</label>
+          <input type="text" id="name" class="form-control" formControlName="name">
+          <small *ngIf="!connectorSqlForm.controls.name.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="timeZone">{{'TimeZone' | i18n}}</label>
+          <select *ngIf="timeZones" formControlName="timeZone" class="form-control">
+            <option *ngFor="let tz of timeZones" [value]="tz.id">
+              {{tz.displayName}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="hostName">{{'Server name' | i18n}}</label>
+          <input type="text" id="hostName" class="form-control" formControlName="hostName">
+          <small *ngIf="!connectorSqlForm.controls.hostName.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="databaseName">{{'Database name' | i18n}}</label>
+          <input type="text" id="databaseName" class="form-control" formControlName="databaseName">
+          <small *ngIf="!connectorSqlForm.controls.databaseName.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+        </div>
+        <div class="form-group">
+          <div class="checkbox">
+            <label class="checkbox">
+              <input type="checkbox" id="integratedSecurity" formControlName="integratedSecurity">
+              {{'Integrated security' | i18n}}
+            </label>
+          </div>
+        </div>
+        <!-- Si Integrated Security n'est pas coché -->
+        <div *ngIf="connectorSqlForm.get('integratedSecurity').value == false">
+          <div class="form-group">
+            <label for="userName">{{'User name' | i18n}}</label>
+            <input type="text" id="userName" class="form-control" formControlName="userName">
+          </div>
+          <div class="form-group">
+            <label for="password">{{'Password' | i18n}}</label>
+            <input type="password" id="password" class="form-control" formControlName="password">
+          </div>
+        </div>
+
+        <div>
+          <ngx-spinner bdColor="rgba(51, 51, 51, 0)"
+                       size="large"
+                       color="#707070"
+                       type="ball-spin-clockwise">
+          </ngx-spinner>
+        </div>
+
+        <alert type="warning" dismissible="true" *ngIf="testConnexionOk == false">
+          <i class="fa-fw fa fa-times"></i><strong>{{'Failure' | i18n}}!</strong>
+        </alert>
+        <alert type="success" dismissible="true" *ngIf="testConnexionOk == true">
+          <i class="fa-fw fa fa-check"></i><strong>{{'Success' | i18n}}!</strong>
+        </alert>
+
+        <div class="row">
+          <div class="col-sm-2 col-xs-offset-1">
+            <button type="button" class="btn btn-primary" [routerLink]="['/connector/connectors']">
+              <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+            </button>
+          </div>
+
+          <div class="col-sm-3 col-xs-offset-1">
+            <button type="button" (click)="onTestConnexion()" class="btn btn-success btn-warning" [disabled]="connectorSqlForm.invalid">
+              <i class="fa fa-chain"></i> {{'Test connection' | i18n}}
+            </button>
+          </div>
+
+          <div class="col-sm-2 col-xs-offset-2">
+            <button class="btn btn-success" type="submit" [disabled]="connectorSqlForm.invalid">
+              <i class="fa fa-save"></i> {{'Save' | i18n}}
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- API FORM -->
+      <form *ngIf="connectorApiForm" [formGroup]="connectorApiForm" (ngSubmit)="onSubmitApiForm()">
+        <div class="form-group">
+          <label for="name">{{'Name' | i18n}}</label>
+          <input type="text" id="name" class="form-control" formControlName="name">
+          <small *ngIf="!connectorApiForm.controls.name.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="timeZone">{{'TimeZone' | i18n}}</label>
+          <select *ngIf="timeZones" formControlName="timeZone" class="form-control">
+            <option *ngFor="let tz of timeZones" [value]="tz.id">
+              {{tz.displayName}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="baseUrl">{{'Base url' | i18n}}</label>
+          <input type="text" id="baseUrl" class="form-control" formControlName="baseUrl">
+          <small *ngIf="!connectorApiForm.controls.baseUrl.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="acceptHeader">{{'Accept header' | i18n}}</label>
+          <input type="text" id="acceptHeader" class="form-control" formControlName="acceptHeader">
+          <small *ngIf="!connectorApiForm.controls.acceptHeader.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+        </div>
+        <div class="form-group">
+          <label for="httpMethod">{{'Http method' | i18n}}</label>
+          <select formControlName="httpMethod" id="httpMethod" class="form-control">
+            <option *ngFor="let method of httpMethods" [value]="method.value">
+              {{method.value}}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="autorisationType">{{'Autorisation type' | i18n}}</label>
+          <select *ngIf="autorisationTypes" formControlName="autorisationType" class="form-control">
+            <option *ngFor="let type of autorisationTypes" [value]="type.value">
+              {{type.name}}
+            </option>
+          </select>
+        </div>
+        <!-- Si on est en OAuth 2.0 -->
+        <div *ngIf="connectorApiForm.get('autorisationType').value == 1">
+          <div class="form-group">
+            <label for="accessTokenUrl">{{'Access token url' | i18n}}</label>
+            <input type="text" id="accessTokenUrl" class="form-control" formControlName="accessTokenUrl">
+          </div>
+          <div class="form-group">
+            <label for="clientId">{{'Client id' | i18n}}</label>
+            <input type="text" id="clientId" class="form-control" formControlName="clientId">
+          </div>
+          <div class="form-group">
+            <label for="clientSecret">{{'Client secret' | i18n}} </label>
+            <input type="text" id="clientSecret" class="form-control" formControlName="clientSecret">
+          </div>
+          <div class="form-group">
+            <label for="grantType">{{'Grant type' | i18n}}</label>
+            <select *ngIf="grantTypes" formControlName="grantType" class="form-control">
+              <option *ngFor="let type of grantTypes" [value]="type.value">
+                {{type.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-2 col-xs-offset-1">
+            <button type="button" class="btn btn-primary" [routerLink]="['/connector/connectors']">
+              <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+            </button>
+          </div>
+
+          <div class="col-sm-2 col-xs-offset-3">
+            <button class="btn btn-success" type="submit" [disabled]="connectorApiForm.invalid">
+              <i class="fa fa-save"></i> {{'Save' | i18n}}
+            </button>
+          </div>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+

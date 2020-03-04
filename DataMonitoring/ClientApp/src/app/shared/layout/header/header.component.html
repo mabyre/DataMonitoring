@@ -1,0 +1,25 @@
+<header id="header">
+  <div id="logo-group">
+    <span id="logo"> <img src="/img/logo.png" alt="SoDevLog"> </span>
+  </div>
+
+  <!-- pulled right: nav area -->
+  <div class="pull-right">
+    <app-collapse-menu></app-collapse-menu>
+
+    <!-- #MOBILE -->
+    <!-- Top menu profile link : this shows only when top menu is active -->
+    <ul id="mobile-profile-img" class="header-dropdown-list hidden-xs padding-5">
+      <li class="">
+        <app-login-info [displayUser]=false dropdownClass = "dropdown-menu pull-right"></app-login-info>
+      </li>
+    </ul>
+    <app-logout></app-logout>
+
+    <app-full-screen></app-full-screen>
+
+    <app-language-selector></app-language-selector>
+  </div>
+  <!-- end pulled right: nav area -->
+
+</header>

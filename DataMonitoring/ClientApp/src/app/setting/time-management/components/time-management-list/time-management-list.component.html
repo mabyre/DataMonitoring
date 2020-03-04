@@ -1,0 +1,47 @@
+<div id="content">
+  <div class="row">
+    <div class="col-sm-6 col-sm-offset-1">
+      <h3 class="text-primary">{{'List' | i18n}}</h3>
+      <br />
+      
+      <alert type="danger" dismissible="true" *ngIf="errorMessage">
+        <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+      </alert>  
+
+      <a [routerLink]="['/time/time-edit']" class="padding-10 padding-top-0 padding-bottom-0">
+        <i class="fa fa-plus"></i> {{ 'Add' | i18n }}
+      </a>
+
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+            <tr>
+              <th>{{'Name' | i18n}}</th>
+              <th>{{ 'Type' | i18n }}</th>
+              <th colspan="2">{{ 'Actions' | i18n }}</th>
+            </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let time of timeManagements">
+            <td> {{time.name}}</td>
+            <td> 
+              <span class="badge bg-color-darken">{{ time.typeToDisplay }}</span>
+            </td>
+            <td>
+              <a [routerLink]="['/time/time-edit/', time.id]" class="padding-10 padding-top-0 padding-bottom-0">
+                <i class="fa fa-edit"></i> {{ 'Edit' | i18n }}
+              </a>
+            </td>
+            <td>
+              <a (click)="onDelete(time.id)" class="padding-10 padding-top-0 padding-bottom-0">
+                <i class="fa fa-trash"></i> {{ 'Delete' | i18n }}
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+</div>

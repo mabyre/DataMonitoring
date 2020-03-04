@@ -1,0 +1,105 @@
+<div id="content">
+  <div class="row">
+    <div class="col-sm-4 col-sm-offset-1">
+      <h3 class="text-primary">{{titleView}}</h3>
+
+        <alert type="danger" dismissible="true" *ngIf="errorMessage">
+          <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+        </alert>  
+
+        <!-- Selection du type de temps si on est en mode ajout -->
+        <div class="form-group" *ngIf="isAddMode">
+          <label>{{'Type' | i18n}}</label>
+          <select *ngIf="timeManagementTypes" [(ngModel)]="selectedTimeManagementType" (change)="onChangeTypeSelection()" class="form-control">
+              <option *ngFor="let type of timeManagementTypes" [value]="type.value">
+                {{type.name}}
+              </option>
+          </select>
+        </div>
+
+        <form *ngIf="timeManagementFormGroup" [formGroup]="timeManagementFormGroup" (ngSubmit)="onSubmitForm()">
+
+          <button *ngIf="isAddMode" type="button" class="btn btn-danger btn-xs" (click)="onResetForm()">
+            <i class="fa fa-refresh"></i> {{'Reset' | i18n}}
+          </button>
+
+          <div class="form-group" >
+              <label for="name">{{'Name' | i18n}}</label>
+              <input type="text" id="name" class="form-control" formControlName="name">
+              <small *ngIf="!timeManagementFormGroup.controls.name.valid" class="text-danger">
+                  {{'Required' | i18n}}.
+              </small>
+          </div>
+
+          <!-- Si on est en Temps glissant -->
+          <div *ngIf="selectedTimeManagementType == 0">
+
+              <div class="form-group" >
+                <label for="unitOfTime">{{'UnitOfTime' | i18n}}</label>
+                <select *ngIf="unitOfTimes" formControlName="unitOfTime" class="form-control">
+                    <option *ngFor="let type of unitOfTimes" [value]="type.value">
+                        {{type.name}}
+                    </option>
+                </select>
+              </div>
+              <div class="form-group" >
+                <label for="timeBack">{{'TimeBack' | i18n}}</label>
+                <input type="number" id="timeBack" min="1" class="form-control" formControlName="timeBack">
+              </div>
+
+          </div>
+
+          <!-- Si on est en Intervalle de temps -->
+          <div *ngIf="selectedTimeManagementType == 1">
+
+                <a (click)="onAddTimeRange()" class="btn btn-primary btn-sm">
+                  <i class="fa fa-plus"></i> {{ 'Add' | i18n }} {{ 'Time Range' | i18n }}
+                </a>
+                <div formArrayName="timeRanges">
+                  <div class="form-group" *ngFor="let control of getTimeRangesArray().controls; let i = index">
+                    <div [formGroupName]="i">
+
+                      <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                        <accordion-group [isOpen]="false" #group1>
+                          <h2 class="row panel-title" accordion-heading>
+                            <a>
+                              <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group1?.isOpen,'fa-plus-circle txt-color-green': !group1?.isOpen}"></i>
+                              <span>{{'Time Range' | i18n}} {{i + 1}}</span>
+                              <button (click)="onRemoveTimeRange(i)" class="pull-right btn btn-danger btn-labeled">
+                                <i class="fa fa-trash"></i>
+                              </button>
+                            </a>
+                          </h2>
+
+                            <app-time-range 
+                                [timeRangeControl]="control"
+                                [index]="i + 1">
+                            </app-time-range>
+
+                        </accordion-group>
+                      </accordion>
+                    </div>
+                  </div>
+                </div>
+
+          </div>
+            
+          <br/>
+          <div class="row">
+            <div class="col-sm-2 col-xs-offset-1">
+              <button type="button" class="btn btn-primary" [routerLink]="['/time/times']">
+                <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+              </button>
+            </div>
+
+            <div class="col-sm-2 col-xs-offset-4">
+              <button class="btn btn-success" type="submit" [disabled]="timeManagementFormGroup.invalid">
+                <i class="fa fa-save"></i> {{'Save' | i18n}}
+              </button>
+            </div>
+          </div>
+        </form>
+
+      </div>
+    </div>
+</div>

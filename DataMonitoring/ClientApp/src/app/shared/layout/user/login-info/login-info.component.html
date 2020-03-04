@@ -1,0 +1,32 @@
+    <a href="#" *ngIf="givenName" class="dropdown-toggle no-margin userdropdown" data-toggle="dropdown">
+      <ngx-avatar [gravatarId]="gravatarId" [googleId]="googleId" [src]="avatarSource" ></ngx-avatar>
+      <span *ngIf="displayUser" class="login-info-text">{{givenName}} <i class="fa fa-angle-down"></i></span>
+
+    <!--<img src="img/avatars/male.png" alt="me" class="img-circle"/><span>{{givenName}}</span> <i class="fa fa-angle-down"></i>-->
+    </a>
+
+    <ul [ngClass]="dropdownClass">
+        <li>
+          <a (click)="(null)" class="padding-10 padding-top-0 padding-bottom-0">
+            <i class="fa fa-cog"></i> {{'Setting' | i18n}}
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a routerLink="/app-views/profile" class="padding-10 padding-top-0 padding-bottom-0">
+            <i class="fa fa-user"></i> {{'Profile' | i18n}}
+          </a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a (click)="onFullScreenToggle()" class="padding-10 padding-top-0 padding-bottom-0"
+             data-action="launchFullscreen"><i class="fa fa-arrows-alt"></i> {{'Full Screen' | i18n}}</a>
+        </li>
+        <li class="divider"></li>
+        <li>
+          <a (click)="showPopupLogout()" class="padding-10 padding-top-5 padding-bottom-5" data-action="userLogout">
+            <i class="fa fa-sign-out fa-lg"></i> <strong>{{'Logout' | i18n}}</strong>
+          </a>
+        </li>
+    </ul>
+

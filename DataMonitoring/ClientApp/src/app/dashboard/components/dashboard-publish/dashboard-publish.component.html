@@ -1,0 +1,119 @@
+<div id="content">
+  <div class="row">
+    <app-big-breadcrumbs [items]="['Dashboard' | i18n, 'Publish' | i18n]" icon="tachometer" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></app-big-breadcrumbs>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-8 col-sm-offset-1">
+      <alert type="danger" dismissible="true" *ngIf="errorMessage">
+        <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+      </alert>
+    </div>
+  </div>
+
+  <form *ngIf="dashboardForm" [formGroup]="dashboardForm" (ngSubmit)="onSubmitForm()">
+
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-1">
+        <h1 class="text-primary">{{ getTitle() }}</h1>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-8 col-sm-offset-1">
+        <a (click)="onAddSharedDashboard()" class="btn btn-primary btn-sm">
+          <i class="fa fa-plus"></i> {{ 'Add' | i18n }} {{ 'Publication' | i18n }}
+        </a>
+        <div formArrayName="sharedDashboards">
+          <div class="form-group" *ngFor="let control of getSharedDashboardsArray().controls; let i = index">
+            <div [formGroupName]="i">
+              <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                <accordion-group [isOpen]="false" #group1>
+                  <h2 class="row panel-title" accordion-heading>
+                    <a>
+                      <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group1?.isOpen,'fa-plus-circle txt-color-green': !group1?.isOpen}"></i>
+                      <span>{{'Publish' | i18n}} {{control.get('key').value}}</span>
+
+                      <button (click)="onRemoveSharedDashboard(i)" class="pull-right btn btn-danger btn-labeled">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                      <button type="button" style="margin-right:5px;" (click)="$event.stopPropagation();onOpenDashboard(i)"
+                              class="pull-right btn btn-link btn-labeled">
+                        <i class="fa fa-external-link"></i>
+                      </button>
+                    </a>
+                  </h2>
+                  <div class="row">
+                    <div class="col-sm-4 form-group">
+                      <label for="key">{{'Key' | i18n}}</label>
+                      <input type="text" class="form-control" formControlName="key" disabled="true">
+                    </div>
+                    <div class="col-sm-3 form-group">
+                      <label for="codeLangue">{{'Language' | i18n}}</label>
+                      <select *ngIf="languages" formControlName="codeLangue" class="form-control">
+                        <option *ngFor="let l of languages" [value]="l.culture">
+                          {{l.title}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-sm-5 form-group">
+                      <label for="timeZone">{{'TimeZone' | i18n}}</label>
+                      <select *ngIf="timeZones" formControlName="timeZone" class="form-control">
+                        <option *ngFor="let tz of timeZones" [value]="tz.id">
+                          {{tz.displayName}}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-4 form-group">
+                      <label for="skin">{{'Theme' | i18n}}</label>
+                      <select *ngIf="skinList" formControlName="skin" class="form-control">
+                        <option *ngFor="let s of skinList" [value]="s.name">
+                          {{s.label}}
+                        </option>
+                      </select>
+                    </div>
+                    <div class="col-sm-3 form-group">
+                      <label for="message">{{'Message' | i18n}}</label>
+                      <input type="text" class="form-control" formControlName="message">
+                    </div>
+                    <div class="col-sm-3 form-group">
+                      <div class="checkbox">
+                        <label class="checkbox">
+                          <input type="checkbox" formControlName="isTestMode">
+                          {{'isTestMode' | i18n}}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                </accordion-group>
+              </accordion>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-2 col-xs-offset-1">
+        <button type="button" class="btn btn-primary" [routerLink]="['/dashboard/dashboards']">
+          <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+        </button>
+      </div>
+
+      <div class="col-sm-2 col-xs-offset-3">
+        <button class="btn btn-success" type="submit" [disabled]="dashboardForm.invalid">
+          <i class="fa fa-save"></i> {{'Save' | i18n}}
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+  <!-- <div class="row" *ngIf="dashboardForm">
+      {{ dashboardForm.value | json }}
+  </div> -->
+
+</div>
+

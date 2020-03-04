@@ -1,0 +1,14 @@
+    We analyzed your package.json, there are some packages to update:
+    
+      Name                                      Version                  Command to update
+     ---------------------------------------------------------------------------------------
+      @angular/cdk                              7.2.1 -> 9.1.0           ng update @angular/cdk
+      @angular/cli                              7.0.4 -> 9.0.3           ng update @angular/cli
+      @angular/core                             7.0.2 -> 7.2.16          ng update @angular/core
+      @nguniversal/aspnetcore-engine            7.0.2 -> 8.2.6           ng update @nguniversal/aspnetcore-engine
+      rxjs                                      6.3.3 -> 6.5.4           ng update rxjs
+    
+    
+    There might be additional packages that are outdated.
+    Run "ng update --all" to try to update all at the same time.
+    

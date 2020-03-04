@@ -1,0 +1,71 @@
+<div [formGroup]="queryConnector">
+
+  <div class="form-group">
+    <label for="connectorId">{{'Connector' | i18n}}</label>
+    <select formControlName="connectorId" class="form-control">
+      <option *ngFor="let c of connectorList" [value]="c.id">
+        {{c.name}}
+      </option>
+    </select>
+    <small *ngIf="!queryConnector.controls.connectorId.valid" class="text-danger">
+        {{'Required' | i18n}}.
+    </small>
+  </div>
+  <div class="form-group">
+    <label for="query">{{'Query' | i18n}}</label>
+    <br/>
+    <label for="query"> 
+      <alert type="warning">
+        <i class="fa-fw fa fa-warning"></i> 
+        {{'MustContainDate' | i18n}}
+        <br/>
+        {{'localDate' | i18n}}
+        <br/>
+        {{'utcDate' | i18n}}
+        <br/>
+        {{'MustContainDateExemple' | i18n}}  
+      </alert>
+      <alert *ngIf="indicatorType == 1" type="warning">
+        <i class="fa-fw fa fa-warning"></i> 
+          {{'QueryMustReturnGroupName' | i18n}} 
+      </alert>
+    </label>
+    <textarea autosize class="form-control" formControlName="query"></textarea>
+    <small *ngIf="!queryConnector.controls.query.valid" class="text-danger">
+        {{'Required' | i18n}}.
+    </small>
+  </div>
+
+  <div *ngIf="errorMessage">
+    <br/>
+    <div class="alert alert-danger" role="alert" >
+      <strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+    </div>
+  </div>
+
+  <a (click)="onPreview()" class="btn btn-warning btn-xs">
+    <i class="fa fa-table"></i> {{ 'Preview' | i18n }} (TOP 20)
+  </a>
+
+  <div *ngIf="!loadingIndicator">
+    <ngx-datatable 
+      class="dark"
+      [rows]="rows"
+      [loadingIndicator]="loadingIndicator"
+      [columnMode]="'force'"
+      [headerHeight]="40"
+      [footerHeight]="40"
+      [rowHeight]="'auto'"
+      [limit]="5">
+
+      <ngx-datatable-column 
+        *ngFor="let col of columns" 
+        [prop]="col.prop">
+      </ngx-datatable-column>
+
+    </ngx-datatable>
+  </div>
+
+</div>
+
+

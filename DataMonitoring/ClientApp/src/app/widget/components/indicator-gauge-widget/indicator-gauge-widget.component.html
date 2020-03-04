@@ -1,0 +1,179 @@
+<div [formGroup]="indicatorGaugeWidget">
+  
+    <alert type="danger" dismissible="true" *ngIf="errorMessage">
+      <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+    </alert>
+  
+    <div class="row">
+      <div class="col-sm-3 form-group" >
+        <label for="indicatorId">{{'Indicator' | i18n}}</label>
+        <select formControlName="indicatorId" class="form-control">
+          <option *ngFor="let c of indicatorList" [value]="c.id">
+            {{c.title}}
+          </option>
+        </select>
+      </div>
+     
+    </div>
+  
+    <div class="row">
+        <div class="col-sm-3 form-group">
+          <div class="checkbox">
+              <label class="checkbox">
+                  <input type="checkbox" formControlName="titleIndicatorDisplayed">
+                  {{'Indicator Title Displayed' | i18n}}
+              </label>
+          </div>
+        </div>
+      
+        <!-- Si titleIndicatorDisplayed est coché -->
+        <div *ngIf="indicatorGaugeWidget.get('titleIndicatorDisplayed').value == true">
+          <div class="col-sm-3 form-group" >
+            <label for="titleIndicatorColor">{{'Indicator Title Color' | i18n}}</label>
+            <select formControlName="titleIndicatorColor" class="form-control">
+              <option *ngFor="let c of colorList" [value]="c.name">
+                {{c.name}}
+              </option>
+            </select>
+          </div>
+        </div>
+    </div>
+  
+  
+    <fieldset>
+      <legend>{{'Target' | i18n}}</legend>
+      <div class="row">
+        <div class="col-sm-3 form-group">
+          <div class="checkbox">
+            <label class="checkbox">
+                <input type="checkbox" formControlName="targetDisplayed">
+                {{'TragetDisplayed' | i18n}}
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-3 form-group" *ngIf="indicatorGaugeWidget.get('targetDisplayed').value == true">
+          <label for="targetValue">{{'targetValue' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="targetValue">
+        </div>
+        <div class="col-sm-3 form-group" *ngIf="indicatorGaugeWidget.get('targetDisplayed').value == true">
+          <label for="gaugeTargetColor">{{'targetBarColor' | i18n}}</label>
+          <select formControlName="gaugeTargetColor" class="form-control">
+            <option *ngFor="let c of colorList" [value]="c.name">
+              {{c.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+  
+    </fieldset>
+
+    <fieldset>
+      <legend>{{'Ranges' | i18n}}</legend>
+
+      <div class="row">
+        <div class="col-sm-3 form-group">
+          <label for="gaugeRange1Color">{{'RangeColor' | i18n}} 1</label>
+          <select formControlName="gaugeRange1Color" class="form-control">
+            <option *ngFor="let c of colorList" [value]="c.name">
+              {{c.name}}
+            </option>
+          </select>
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="gaugeRange1MinValue">{{'MinValue' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="gaugeRange1MinValue">
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="gaugeRange1MaxValue">{{'MaxValue' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="gaugeRange1MaxValue">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3 form-group">
+          <div class="checkbox">
+            <label class="checkbox">
+                <input type="checkbox" formControlName="gaugeRange2Displayed">
+                {{'RangeDisplayed' | i18n}} 2
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-3 form-group" *ngIf="indicatorGaugeWidget.get('gaugeRange2Displayed').value == true">
+          <label for="gaugeRange2Color">{{'RangeColor' | i18n}} 2</label>
+          <select formControlName="gaugeRange2Color" class="form-control">
+            <option *ngFor="let c of colorList" [value]="c.name">
+              {{c.name}}
+            </option>
+          </select>
+        </div>
+        <div class="col-sm-3 form-group" *ngIf="indicatorGaugeWidget.get('gaugeRange2Displayed').value == true">
+          <label for="gaugeRange2MinValue">{{'MinValue' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="gaugeRange2MinValue">
+        </div>
+        <div class="col-sm-3 form-group" *ngIf="indicatorGaugeWidget.get('gaugeRange2Displayed').value == true">
+          <label for="gaugeRange2MaxValue">{{'MaxValue' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="gaugeRange2MaxValue">
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3 form-group">
+          <div class="checkbox">
+            <label class="checkbox">
+                <input type="checkbox" formControlName="gaugeRange3Displayed">
+                {{'RangeDisplayed' | i18n}} 3
+            </label>
+          </div>
+        </div>
+        <div class="col-sm-3 form-group" *ngIf="indicatorGaugeWidget.get('gaugeRange3Displayed').value == true">
+          <label for="gaugeRange3Color">{{'RangeColor' | i18n}} 3</label>
+          <select formControlName="gaugeRange3Color" class="form-control">
+            <option *ngFor="let c of colorList" [value]="c.name">
+              {{c.name}}
+            </option>
+          </select>
+        </div>
+        <div class="col-sm-3 form-group" *ngIf="indicatorGaugeWidget.get('gaugeRange3Displayed').value == true">
+          <label for="gaugeRange3MinValue">{{'MinValue' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="gaugeRange3MinValue">
+        </div>
+        <div class="col-sm-3 form-group" *ngIf="indicatorGaugeWidget.get('gaugeRange3Displayed').value == true">
+          <label for="gaugeRange3MaxValue">{{'MaxValue' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="gaugeRange3MaxValue">
+        </div>
+      </div>
+  
+    </fieldset>
+  
+    <fieldset>
+      <legend>{{'Groups' | i18n}}</legend>
+      <div class="row">
+        <div class="col-sm-3 form-group">
+          <label for="group1">{{'group1' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="group1" >
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="group2">{{'group2' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="group2" >
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="group3">{{'group3' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="group3" >
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3 form-group">
+          <label for="group4">{{'group4' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="group4" >
+        </div>
+        <div class="col-sm-3 form-group">
+          <label for="group5">{{'group5' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="group5" >
+        </div>
+      </div>
+    </fieldset>
+  
+  
+  
+  </div>
+  

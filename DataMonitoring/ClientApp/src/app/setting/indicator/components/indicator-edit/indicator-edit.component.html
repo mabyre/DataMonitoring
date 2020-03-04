@@ -1,0 +1,198 @@
+<!--
+  -- Button_Reset_Form
+  --
+  -- TAB_General
+  --    Pour_le_FlowIndicator_uniquement
+  --    Si_c_est_pas_un_indicateur_Ratio
+  --    Si_c_est_un_indicateur_Ratio
+  -- TAB_Connector
+  -- Button_Back_Save
+  -->
+<div id="content">
+
+  <div class="row">
+    <app-big-breadcrumbs [items]="['Setting' | i18n, 'Indicators' | i18n, titleView | i18n ]" icon="balance-scale" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></app-big-breadcrumbs>
+  </div>
+
+  <!-- Alert_Messages -->
+  <div class="row" *ngIf="widgetForm">
+    <div class="col-sm-8 col-sm-offset-1">
+      <alert type="danger" dismissible="true" *ngIf="errorMessage">
+        <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+      </alert>
+    </div>
+  </div>
+
+  <form *ngIf="indicatorForm" [formGroup]="indicatorForm" (ngSubmit)="onSubmitForm()">
+
+    <div class="row">
+      <div class="col-md-8 col-xs-offset-1">
+        <h3 class="text-primary">{{titleView}}</h3>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-8 col-xs-offset-1">
+
+        <!-- Tabulation_Navigation -->
+        <ul id="myTab1" class="nav nav-tabs bordered">
+          <li [class.active]="tabnumber == 0">
+            <a (click)="tabnumber = 0">{{'General' | i18n}}</a>
+          </li>
+          <li *ngIf="indicatorForm.get('type').value == 0 || indicatorForm.get('type').value == 1" [class.active]="tabnumber == 1">
+            <a (click)="tabnumber = 1">
+              <i class="fa fa-lg fa-fw fa-database"></i>
+              {{'Connectors' | i18n}}
+              <span class="badge bg-color-blue txt-color-white">{{queryConnectorsCount}}</span>
+            </a>
+          </li>
+        </ul>
+
+        <tabset class="padding-10">
+
+          <!-- TAB_General -->
+          <tab [active]="tabnumber == 0">
+
+            <div class="form-group">
+              <label for="title">{{'Title' | i18n}}</label>
+              <input type="text" id="title" class="form-control" formControlName="title">
+              <small *ngIf="!indicatorForm.controls.title.valid" class="text-danger">
+                {{'Required' | i18n}}.
+              </small>
+
+              <!-- Pour ajouter des traductions au titre entré par l'utilisateur -->
+              <!--<div formArrayName="titleLocalizations">
+                <app-title-localization-list [titleLocalizations]="getTitleLocalizationsArray()"
+                                             [count]="traductionAvailableCount">
+                </app-title-localization-list>
+              </div>-->
+            </div>
+
+            <div class="row ">
+              <div class="col-md-6 col-xs-6 form-group">
+                <!-- Type Indicator : Snapshot = 0, Flow = 1 Ratio = 2 -->
+                <label for="type">{{'Type' | i18n}}</label>
+                <select formControlName="type" id="type" class="form-control">
+                  <option *ngFor="let type of indicatorTypes" [value]="type.value">
+                    {{type.name}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-md-6 col-xs-6 form-group">
+                <label for="refreshTime">{{'Refresh time' | i18n}}</label>
+                <input type="number" id="refreshTime" min="1" class="form-control" formControlName="refreshTime">
+                <small *ngIf="!indicatorForm.controls.refreshTime.valid" class="text-danger">
+                  {{'Required' | i18n}}.
+                </small>
+              </div>
+            </div>
+
+            <!-- Pour_le_FlowIndicator_uniquement -->
+            <div class="row ">
+              <div class="col-md-6 col-xs-6 form-group">
+                <div *ngIf="indicatorForm.get('type').value == 1" class="form-group">
+                  <label for="delayForDelete">{{'DelayForDelete' | i18n}}</label>
+                  <input type="number" id="delayForDelete" min="1" class="form-control" formControlName="delayForDelete">
+                  <small *ngIf="!indicatorForm.controls.delayForDelete.valid" class="text-danger">
+                    {{'Required' | i18n}}.
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Si_c_est_pas_un_indicateur_Ratio : Gestion du temps -->
+            <div class="row ">
+              <div class="col-md-6 col-xs-6 form-group">
+                <div *ngIf="indicatorForm.get('type').value != 2">
+                  <label for="timeManagementId">{{'Time Management' | i18n}}</label>
+                  <select formControlName="timeManagementId" class="form-control">
+                    <option *ngFor="let tm of timeManagements" [value]="tm.id">
+                      {{tm.name}}
+                    </option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <!-- Si_c_est_un_indicateur_Ratio -->
+            <div class="row ">
+                <div *ngIf="indicatorForm.get('type').value == 2">
+                  <div formArrayName="indicatorCalculated" class="col-md-12 col-xs-12 form-group">
+                      <app-indicator-calculated [indicatorCalculated]="getIndicatorCalculatedArray().controls[0]"
+                                                [errorMessage]="errorMessage">
+                      </app-indicator-calculated>
+                  </div>
+                </div>
+            </div>
+
+          </tab>
+
+          <!-- TAB_Connector -->
+          <tab [active]="tabnumber == 1">
+            <!-- Possibilité de choisir des connecteurs seulement pour les types Table et Value -->
+            <div *ngIf="indicatorForm.get('type').value == 0 || indicatorForm.get('type').value == 1">
+              <a (click)="onAddQueryConnector()" class="btn btn-primary btn-sm">
+                <i class="fa fa-plus"></i> {{ 'Add' | i18n }} {{ 'Connector' | i18n }}
+              </a>
+              <div formArrayName="queryConnectors">
+                <div class="form-group" *ngFor="let connectorControl of getQueryConnectorsArray().controls; let i = index">
+                  <div [formGroupName]="i">
+
+                    <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                      <accordion-group [isOpen]="false" #group2>
+                        <h2 class="panel-title" accordion-heading>
+                          <a>
+                            <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group2?.isOpen,'fa-plus-circle txt-color-green': !group2?.isOpen}"></i>
+                            <span>{{ 'Connector' | i18n }} {{i + 1}}</span>
+                            <button (click)="onRemoveQueryConnector(i)" class="pull-right btn btn-danger btn-labeled">
+                              <i class="fa fa-trash"></i>
+                            </button>
+                          </a>
+                        </h2>
+
+                        <app-query-connector [queryConnector]="connectorControl"
+                                             [connectorList]="connectorList"
+                                             [index]="i + 1"
+                                             [indicatorType]="indicatorForm.get('type').value">
+                        </app-query-connector>
+
+                      </accordion-group>
+                    </accordion>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </tab>
+        </tabset>
+
+      </div>
+    </div>
+
+    <!-- Button_Back_Save -->
+    <div class="row">
+      <div class="col-sm-3 col-xs-offset-1">
+        <button type="button" class="btn btn-primary" [routerLink]="['/indicator/indicators']">
+          <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+        </button>
+      </div>
+      <div class="col-sm-3 col-xs-offset-3">
+        <button class="btn btn-success" type="submit" [disabled]="indicatorForm.invalid">
+          <i class="fa fa-save"></i> {{'Save' | i18n}}
+        </button>
+      </div>
+    </div>
+
+    <!-- Button_Reset_Form -->
+    <div class="row">
+      <div class="col-sm-3 col-xs-offset-1" style="padding:13px;">
+        <button *ngIf="isAddMode" type="button" class="btn btn-danger btn-xs" (click)="onResetForm()">
+          <i class="fa fa-refresh"></i> {{'Reset' | i18n}}
+        </button>
+      </div>
+    </div>
+
+  </form>
+
+</div>
+

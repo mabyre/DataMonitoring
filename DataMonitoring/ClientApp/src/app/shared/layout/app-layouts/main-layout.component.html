@@ -1,0 +1,13 @@
+<app-header></app-header>
+
+<app-navigation></app-navigation>
+
+<div id="main" role="main" [@routerTransition]="getState(o)">
+
+  <app-layout-switcher></app-layout-switcher>
+  <app-ribbon></app-ribbon>
+
+  <router-outlet #o="outlet"></router-outlet>
+</div>
+
+<app-footer></app-footer>

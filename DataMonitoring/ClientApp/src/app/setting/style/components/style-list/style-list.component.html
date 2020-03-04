@@ -1,0 +1,42 @@
+<div id="content">
+  <div class="row">
+    <div class="col-sm-9 col-sm-offset-1">
+      <h3 class="text-primary">{{'List' | i18n}}</h3>
+      <br/>
+
+      <div class="alert alert-danger" role="alert" *ngIf="errorMessage">
+        <strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+        <br/>
+      </div>
+
+      <a [routerLink]="['/style/style-edit']" class="padding-10 padding-top-0 padding-bottom-0">
+        <i class="fa fa-plus"></i> {{ 'Add' | i18n }}
+      </a>
+      <div class="table-responsive">
+        <table class="table table-bordered table-hover">
+          <thead>
+          <tr>
+            <th>{{ 'Name' | i18n }}</th>
+            <th colspan="2">{{ 'Actions' | i18n }}</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let style of styles">
+            <td> {{style.name}}</td>
+            <td>
+              <a [routerLink]="['/style/style-edit/', style.id]" class="padding-10 padding-top-0 padding-bottom-0">
+                <i class="fa fa-edit"></i> {{ 'Edit' | i18n }}
+              </a>
+            </td>
+            <td>
+              <a (click)="onDelete(style.id)" class="padding-10 padding-top-0 padding-bottom-0">
+                <i class="fa fa-trash"></i> {{ 'Delete' | i18n }}
+              </a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

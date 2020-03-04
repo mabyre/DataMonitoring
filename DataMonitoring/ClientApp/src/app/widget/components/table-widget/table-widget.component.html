@@ -1,0 +1,612 @@
+<!--
+  -- Formulaire_List
+  -- Button_Add_Colum_and_Refresh
+  -- Cdk_Drag_And_Drop_List
+  --
+  -->
+<div [formGroup]="tableWidget">
+
+  <alert type="danger" dismissible="true" *ngIf="errorMessage">
+    <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+  </alert>
+
+  <div class="row">
+    <div class="col-sm-4 form-group">
+      <label for="indicatorId">{{'Indicator' | i18n}}</label>
+      <select formControlName="indicatorId" class="form-control" (change)="onIndicatorChange()">
+        <option *ngFor="let c of indicatorList" [value]="c.id">
+          {{c.title}}
+        </option>
+      </select>
+    </div>
+    <!--BRY_HIDDEN
+      <div class="col-sm-4 form-group">
+      <label for="targetValue">{{'targetValue' | i18n}}</label>
+      <input type="text" class="form-control" formControlName="targetValue">
+    </div>-->
+    <div class="col-sm-4 form-group">
+      <div class="checkbox">
+        <label class="checkbox">
+          <input type="checkbox" formControlName="headerDisplayed">
+          {{'Header Displayed' | i18n}}
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-4 form-group">
+      <div class="checkbox">
+        <label class="checkbox">
+          <input type="checkbox" formControlName="titleIndicatorDisplayed">
+          {{'Indicator Title Displayed' | i18n}}
+        </label>
+      </div>
+    </div>
+
+    <!-- Si titleIndicatorDisplayed est coché -->
+    <div *ngIf="tableWidget.get('titleIndicatorDisplayed').value == true">
+      <div class="col-sm-4 form-group">
+        <label for="titleIndicatorColor">{{'Measure Title Color' | i18n}}</label>
+        <select formControlName="titleIndicatorColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Row style ? ou plutot Line il y a un koik -->
+  <!-- BRY_HIDDEN
+  <div class="row">
+    <div class="col-sm-4 form-group">
+      <div class="checkbox">
+        <label class="checkbox">
+          <input type="checkbox" formControlName="rowStyleDisplayed">
+          {{'Row Style Displayed When Condition' | i18n}}
+        </label>
+      </div>
+    </div>
+  </div>
+  -->
+
+  <div class="row">
+    <!-- Si rowStyleDisplayed est coché -->
+    <div *ngIf="tableWidget.get('rowStyleDisplayed').value == true">
+      <div class="col-sm-2 form-group">
+        <label for="rowStyleWhenEqualValue">{{'Row Style' | i18n}}</label>
+        <select formControlName="rowStyleWhenEqualValue" class="form-control">
+          <option *ngFor="let s of styleList" [value]="s.name">
+            {{s.name}}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-3 form-group">
+        <label for="columnCode">{{'Column Code' | i18n}}</label>
+        <select formControlName="columnCode" class="form-control">
+          <option *ngFor="let d of dataColumnList" [value]="d">
+            {{d}}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-3 form-group">
+        <label for="equalsValue">{{'Equals Value' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="equalsValue">
+      </div>
+    </div>
+  </div>
+
+  <div class="well">
+    <fieldset>
+      <legend>{{'TableWidgetColumnSettings' | i18n}}</legend>
+
+      <!-- Button_Add_Colum_and_Refresh -->
+      <div class="row">
+        <div class="col-md-12" title="{{ 'DragAndDropToManageColumsOder' | i18n }}">
+          <a (click)="onAddTableWidgetColumn()" class="btn btn-primary btn-sm">
+            <i class="fa fa-plus"></i> {{ 'Add' | i18n }} {{ 'Column' | i18n }}
+          </a>
+          <a class="pull-right btn btn-warning btn-xs" style="vertical-align:bottom" (click)="onRefreshColumns()">
+            <i class="fa fa-refresh"></i> {{'Refresh Columns' | i18n}}
+          </a>
+        </div>
+      </div>
+
+      <!-- Cdk_Drag_And_Drop_List -->
+      <div title="{{ 'DragAndDropToManageColumsOder' | i18n }}">
+        <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+          <div class="example-box" cdkDragLockAxis="x" *ngFor="let tableWidgetColumn of getTableWidgetColumnList().controls; let i = index"
+               cdkDrag (click)="setSelectedTableWidgetColumnElement(i)">
+            <div *ngIf="selectedIndexColumn == i">
+              <span class="badge bg-color-blue txt-color-white">{{i+1}}</span>
+              <span class="txt-color-darken">
+                <strong>{{ tableWidgetColumn.get('name').value }}</strong>
+              </span>
+            </div>
+            <div *ngIf="selectedIndexColumn != i">
+              <span class="badge bg-color-blueLight txt-color-white">{{i+1}}</span>
+              <span class="txt-color-darken">
+                {{ tableWidgetColumn.get('name').value }}
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <br />
+
+      <!-- Formulaire_List -->
+      <div formArrayName="tableWidgetColumnList">
+        <div class="form-group" *ngFor="let tableWidgetColumn of getTableWidgetColumnList().controls; let i = index">
+          <div [formGroupName]="i" *ngIf="selectedIndexColumn == i">
+
+            <button *ngIf="tableWidgetColumn.get('type').value != 0" (click)="onRemoveTableWidgetColumn(i)" class="btn btn-danger btn-labeled">
+              {{'Delete' | i18n}} {{'Column' | i18n}} <i class="fa fa-trash"></i>
+            </button>
+
+            <div class="row">
+
+              <div class="col-sm-3 form-group">
+                <div *ngIf="tableWidgetColumn.get('type').value != 3">
+                  <h4 for="type">{{'Code' | i18n}} : {{ tableWidgetColumn.get('code').value }}</h4>
+                </div>
+
+                <div *ngIf="tableWidgetColumn.get('type').value == 3">
+                  <label for="code">{{'Code' | i18n}}</label>
+                  <input type="text" class="form-control" formControlName="code" (change)="onTranspositionCodeColumnChange()">
+                </div>
+              </div>
+
+              <div class="col-sm-3 form-group">
+                <div *ngIf="tableWidgetColumn.get('type').value != 0">
+                  <label for="type">{{'Type' | i18n}}</label>
+                  <select formControlName="type" class="form-control" (change)="onChange(i)">
+                    <option *ngFor="let t of columnTypeList" [value]="t.value">
+                      <div *ngIf="t.value != 0">
+                        {{t.name}}
+                      </div>
+                    </option>
+                  </select>
+                </div>
+
+                <div *ngIf="tableWidgetColumn.get('type').value == 0">
+                  <label for="type">{{'Type' | i18n}} : {{ 'IndicatorData' | i18n }}</label>
+                </div>
+              </div>
+
+              <div class="col-sm-3 form-group">
+                <div class="checkbox">
+                  <label class="checkbox">
+                    <input type="checkbox" formControlName="displayed">
+                    {{'Displayed Column' | i18n}}
+                  </label>
+                </div>
+              </div>
+
+              <div class="col-sm-3 form-group">
+                <div class="checkbox">
+                  <label class="checkbox">
+                    <input type="checkbox" formControlName="nameDisplayed">
+                    {{'nameDisplayed' | i18n}}
+                  </label>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-10 form-group">
+                <label for="name">{{'Name' | i18n}}</label>
+                <input type="text" class="form-control" formControlName="name">
+
+                <!-- Pour ajouter des traductions au titre -->
+                <!--BRY_HIDDEN
+                  <div formArrayName="columnNameLocalizations">
+                  <app-title-localization-list [titleLocalizations]="getColumnNameLocalizationsArray(i)"
+                                               [count]="getColumnLocalizationCount(i)">
+                  </app-title-localization-list>
+                </div>-->
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3 form-group">
+                <label for="columnStyle">{{'Column Style' | i18n}}</label>
+                <select formControlName="columnStyle" class="form-control">
+                  <option *ngFor="let s of columnStyleList" [value]="s.value">
+                    {{s.name}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-sm-3 form-group">
+                <label for="textBodyColor">{{'Text Body Color' | i18n}}</label>
+                <select formControlName="textBodyColor" class="form-control">
+                  <option *ngFor="let c of colorList" [value]="c.name">
+                    {{c.name}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-sm-3 form-group">
+                <label for="textHeaderColor">{{'Text Header Color' | i18n}}</label>
+                <select formControlName="textHeaderColor" class="form-control">
+                  <option *ngFor="let c of colorList" [value]="c.name">
+                    {{c.name}}
+                  </option>
+                </select>
+              </div>
+
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3 form-group">
+                <label for="decimalMask">{{'decimalMask' | i18n}}</label>
+                <input type="text" class="form-control" formControlName="decimalMask" placeholder="Use Decimal.ToString() mask">
+              </div>
+
+              <div class="col-sm-3 form-group">
+                <label for="alignStyle">{{'alignStyle' | i18n}}</label>
+                <select formControlName="alignStyle" class="form-control">
+                  <option *ngFor="let t of aligneStyleList" [value]="t.value">
+                    {{t.name}}
+                  </option>
+                </select>
+              </div>
+
+              <div class="col-sm-3 form-group">
+                <div class="checkbox">
+                  <label class="checkbox">
+                    <input type="checkbox" formControlName="boldHeader">
+                    {{'boldHeader' | i18n}}
+                  </label>
+                </div>
+              </div>
+              <div class="col-sm-3 form-group">
+                <div class="checkbox">
+                  <label class="checkbox">
+                    <input type="checkbox" formControlName="boldBody">
+                    {{'boldBody' | i18n}}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <br />
+            <!-- Style conditionnel -->
+            <div>
+              <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                <accordion-group [isOpen]="false" #group1>
+                  <h2 class="panel-title" accordion-heading>
+                    <a>
+                      <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group1?.isOpen,'fa-plus-circle txt-color-green': !group1?.isOpen}"></i>
+                      <span>
+                        {{ 'ConditionalStyleColumn' | i18n }}
+                      </span>
+                    </a>
+                  </h2>
+
+                  <!-- Style LowerValue -->
+                  <div>
+                    <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                      <accordion-group [isOpen]="false" #group2>
+                        <h2 class="panel-title" accordion-heading>
+                          <a>
+                            <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group2?.isOpen,'fa-plus-circle txt-color-green': !group2?.isOpen}"></i>
+                            <span>
+                              {{ 'Style LowerValue' | i18n }}
+                            </span>
+                          </a>
+                        </h2>
+
+                        <div class="row">
+                          <div class="col-sm-3 form-group">
+                            <label for="cellStyleWhenLowerValue">{{'Style' | i18n}}</label>
+                            <select formControlName="cellStyleWhenLowerValue" class="form-control">
+                              <option *ngFor="let s of styleList" [value]="s.name">
+                                {{s.name}}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="lowerValue">{{'Value' | i18n}}</label>
+                            <input type="text" class="form-control" formControlName="lowerValue">
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="lowerColumnCode">{{'Column Code' | i18n}}</label>
+                            <select formControlName="lowerColumnCode" class="form-control">
+                              <option *ngFor="let d of dataColumnList" [value]="d">
+                                {{d}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+
+
+                      </accordion-group>
+                    </accordion>
+                  </div>
+
+                  <!-- Style HigherValue -->
+                  <div>
+                    <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                      <accordion-group [isOpen]="false" #group3>
+                        <h2 class="panel-title" accordion-heading>
+                          <a>
+                            <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group3?.isOpen,'fa-plus-circle txt-color-green': !group3?.isOpen}"></i>
+                            <span>
+                              {{ 'Style HigherValue' | i18n }}
+                            </span>
+                          </a>
+                        </h2>
+
+                        <div class="row">
+                          <div class="col-sm-3 form-group">
+                            <label for="cellStyleWhenHigherValue">{{'Style' | i18n}}</label>
+                            <select formControlName="cellStyleWhenHigherValue" class="form-control">
+                              <option *ngFor="let s of styleList" [value]="s.name">
+                                {{s.name}}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="higherValue">{{'Value' | i18n}}</label>
+                            <input type="text" class="form-control" formControlName="higherValue">
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="higherColumnCode">{{'Column Code' | i18n}}</label>
+                            <select formControlName="higherColumnCode" class="form-control">
+                              <option *ngFor="let d of dataColumnList" [value]="d">
+                                {{d}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+
+
+                      </accordion-group>
+                    </accordion>
+                  </div>
+
+
+                  <!-- Style EqualValue 1 -->
+                  <div>
+                    <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                      <accordion-group [isOpen]="false" #group4>
+                        <h2 class="panel-title" accordion-heading>
+                          <a>
+                            <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group4?.isOpen,'fa-plus-circle txt-color-green': !group4?.isOpen}"></i>
+                            <span>
+                              {{ 'Style EqualValue 1' | i18n }}
+                            </span>
+                          </a>
+                        </h2>
+
+                        <div class="row">
+                          <div class="col-sm-3 form-group">
+                            <label for="cellStyleWhenEqualValue1">{{'Style' | i18n}}</label>
+                            <select formControlName="cellStyleWhenEqualValue1" class="form-control">
+                              <option *ngFor="let s of styleList" [value]="s.name">
+                                {{s.name}}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="equalsValue1">{{'Value' | i18n}}</label>
+                            <input type="text" class="form-control" formControlName="equalsValue1">
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="equalsColumnCode1">{{'Column Code' | i18n}}</label>
+                            <select formControlName="equalsColumnCode1" class="form-control">
+                              <option *ngFor="let d of dataColumnList" [value]="d">
+                                {{d}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+
+
+                      </accordion-group>
+                    </accordion>
+                  </div>
+
+                  <!-- Style EqualValue 2 -->
+                  <div>
+                    <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                      <accordion-group [isOpen]="false" #group5>
+                        <h2 class="panel-title" accordion-heading>
+                          <a>
+                            <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group5?.isOpen,'fa-plus-circle txt-color-green': !group5?.isOpen}"></i>
+                            <span>
+                              {{ 'Style EqualValue 2' | i18n }}
+                            </span>
+                          </a>
+                        </h2>
+
+                        <div class="row">
+                          <div class="col-sm-3 form-group">
+                            <label for="cellStyleWhenEqualValue2">{{'Style' | i18n}}</label>
+                            <select formControlName="cellStyleWhenEqualValue2" class="form-control">
+                              <option *ngFor="let s of styleList" [value]="s.name">
+                                {{s.name}}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="equalsValue2">{{'Value' | i18n}}</label>
+                            <input type="text" class="form-control" formControlName="equalsValue2">
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="equalsColumnCode2">{{'Column Code' | i18n}}</label>
+                            <select formControlName="equalsColumnCode2" class="form-control">
+                              <option *ngFor="let d of dataColumnList" [value]="d">
+                                {{d}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+
+
+                      </accordion-group>
+                    </accordion>
+                  </div>
+
+                  <!-- Style EqualValue 3 -->
+                  <div>
+                    <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                      <accordion-group [isOpen]="false" #group6>
+                        <h2 class="panel-title" accordion-heading>
+                          <a>
+                            <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group6?.isOpen,'fa-plus-circle txt-color-green': !group6?.isOpen}"></i>
+                            <span>
+                              {{ 'Style EqualValue 3' | i18n }}
+                            </span>
+                          </a>
+                        </h2>
+
+                        <div class="row">
+                          <div class="col-sm-3 form-group">
+                            <label for="cellStyleWhenEqualValue3">{{'Style' | i18n}}</label>
+                            <select formControlName="cellStyleWhenEqualValue3" class="form-control">
+                              <option *ngFor="let s of styleList" [value]="s.name">
+                                {{s.name}}
+                              </option>
+                            </select>
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="equalsValue3">{{'Value' | i18n}}</label>
+                            <input type="text" class="form-control" formControlName="equalsValue3">
+                          </div>
+                          <div class="col-sm-3 form-group">
+                            <label for="equalsColumnCode3">{{'Column Code' | i18n}}</label>
+                            <select formControlName="equalsColumnCode3" class="form-control">
+                              <option *ngFor="let d of dataColumnList" [value]="d">
+                                {{d}}
+                              </option>
+                            </select>
+                          </div>
+                        </div>
+
+
+                      </accordion-group>
+                    </accordion>
+                  </div>
+
+                </accordion-group>
+              </accordion>
+            </div>
+
+            <!-- Si IndicatorData -->
+            <div *ngIf="tableWidgetColumn.get('type').value == 0">
+              <br />
+              <div>
+                <label>{{'SpecificIndicatorData' | i18n}}</label>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3 form-group">
+                  <div class="checkbox">
+                    <label class="checkbox">
+                      <input type="checkbox" formControlName="filtered">
+                      {{'filtered' | i18n}}
+                    </label>
+                  </div>
+                </div>
+
+                <div class="col-sm-3 form-group" *ngIf="tableWidgetColumn.get('filtered').value == true">
+                  <label for="filteredValue">{{'filteredValue' | i18n}}</label>
+                  <input type="text" class="form-control" formControlName="filteredValue">
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3 form-group">
+                  <div class="checkbox">
+                    <label class="checkbox">
+                      <input type="checkbox" formControlName="isNumericFormat">
+                      {{'isNumericFormat' | i18n}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3 form-group">
+                  <div class="checkbox">
+                    <label class="checkbox">
+                      <input type="checkbox" formControlName="transpositionColumn" (click)="onTranspositionColumnChecked(i)">
+                      {{'transpositionColumn' | i18n}}
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-3 form-group">
+                  <div class="checkbox">
+                    <label class="checkbox">
+                      <input type="checkbox" formControlName="transpositionValue" (click)="onTranspositionValueChecked(i)">
+                      {{'transpositionValue' | i18n}}
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-3 form-group">
+                  <div class="checkbox">
+                    <label class="checkbox">
+                      <input type="checkbox" formControlName="transpositionRow" (click)="onTranspositionRowChecked(i)">
+                      {{'transpositionRow' | i18n}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Si MaskData -->
+            <div *ngIf="tableWidgetColumn.get('type').value == 5">
+              <br />
+              <div>
+                <label>{{'SpecificMaskData' | i18n}}</label>
+              </div>
+
+              <div>
+                <label for="displayModel">{{'displayModel' | i18n}}</label>
+                <input type="text" class="form-control" formControlName="displayModel" placeholder="Use ex : '[CodeColumn]...'">
+              </div>
+
+            </div>
+
+            <!-- Si CalculatedData -->
+            <div *ngIf="tableWidgetColumn.get('type').value == 1">
+              <br />
+              <div>
+                <label>{{'SpecificCalculatedData' | i18n}}</label>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3 form-group">
+                  <label for="partialValueColumn">{{'partialValueColumn' | i18n}}</label>
+                  <select formControlName="partialValueColumn" class="form-control">
+                    <option *ngFor="let d of dataColumnWithTranspositionColumnList" [value]="d">
+                      {{d}}
+                    </option>
+                  </select>
+                </div>
+
+                <div class="col-sm-4 form-group">
+                  <label for="totalValueColumn">{{'totalValueColumn' | i18n}}</label>
+                  <input type="text" class="form-control" formControlName="totalValueColumn" placeholder="Regex">
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+
+        </div>
+
+
+      </div>
+    </fieldset>
+  </div>
+
+</div>
+
+

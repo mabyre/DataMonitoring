@@ -1,0 +1,45 @@
+<div id="content">
+  <!-- row -->
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class="text-center error-box">
+            <h1 class="error-text-2 bounceInDown animated"> {{'Error' | i18n}} 401 <span class="particle particle--c"></span><span class="particle particle--a"></span><span class="particle particle--b"></span></h1>
+            <h2 class="font-xl">
+              <strong>
+                <i class="fa fa-fw fa-key fa-lg text-warning"></i> {{'Access not authorized' | i18n}}
+              </strong>
+            </h2>
+            <br>
+            <p class="lead">
+              You have no rights to access this. Please Login or use your browsers <b>Back</b> button to navigate to the page you have prevously come from
+            </p>
+            <div class="row">
+              <div class="col-sm-12">
+                <ul class="list-inline">
+                  <li>
+                    &#xA0;<a [routerLink]="['/Home']">{{'Home' | i18n}}</a>&#xA0;
+                  </li>
+                  <li>
+                    -
+                  </li>
+                  <li>
+                    &#xA0;<a (click)="login()">{{'Sign in' | i18n}}</a>&#xA0;
+                  </li>
+                  <li>
+                    -
+                  </li>
+                  <li>
+                    &#xA0;<a onclick="window.history.back();">{{'Back' | i18n}}</a>&#xA0;
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end row -->
+  </div>
+</div>

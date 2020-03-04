@@ -1,0 +1,39 @@
+<div [formGroup]="timeRangeControl">
+
+    <div class="form-group" >
+        <label for="name">{{'Range Name' | i18n}}</label>
+        <input type="text" id="name" class="form-control" formControlName="name">
+    </div>
+
+    <div class="form-group" class="col-sm-6 col-xs-offset-7">
+      <label class="checkbox">
+        <input type="checkbox" id="endTimeDisabled" formControlName="endTimeDisabled">
+        {{'Disabled' | i18n}}
+      </label>
+    </div>
+    
+    <div class="row">
+
+      <div class="form-group" class="col-sm-6">
+        <label for="startTimeUtc">{{'Start Time' | i18n}}</label>
+        <div class="input-group">
+          <input class="form-control" id="startTime" formControlName="startTime" clockpicker [model]="timeRangeControl.controls['startTime']"
+            type="text" data-autoclose="true" >
+          <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+        </div>
+      </div>
+      
+      <div class="form-group" class="col-sm-6">
+        <label for="endTimeUtc">{{'End Time' | i18n}}</label>
+        <div class="input-group">
+          <input class="form-control" id="endTime" formControlName="endTime" clockpicker [model]="timeRangeControl.controls['endTime']" 
+            type="text" data-autoclose="true"
+            [disableControl]="timeRangeControl.get('endTimeDisabled').value" >
+          <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+        </div>
+      </div>
+
+    </div>
+  
+  </div>
+  

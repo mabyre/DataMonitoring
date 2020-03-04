@@ -1,0 +1,288 @@
+<div [formGroup]="indicatorChartWidget">
+
+  <alert type="danger" dismissible="true" *ngIf="errorMessage">
+    <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+  </alert>
+
+  <div class="row">
+    <div class="col-sm-5 form-group">
+      <label for="indicatorId">{{'Indicator' | i18n}}</label>
+      <select formControlName="indicatorId" class="form-control">
+        <option *ngFor="let c of indicatorList" [value]="c.id">
+          {{c.title}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-5 form-group">
+      <div class="checkbox">
+        <label class="checkbox">
+          <input type="checkbox" formControlName="titleIndicatorDisplayed">
+          {{'Indicator Title Displayed' | i18n}}
+        </label>
+      </div>
+    </div>
+
+    <!-- Si titleIndicatorDisplayed est coché -->
+    <div *ngIf="indicatorChartWidget.get('titleIndicatorDisplayed').value == true">
+      <div class="col-sm-5 form-group">
+        <label for="titleIndicatorColor">{{'Measure Title Color' | i18n}}</label>
+        <select formControlName="titleIndicatorColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-5 form-group">
+      <label for="axeFontSize">{{'axeFontSize' | i18n}}</label>
+      <input type="number" min="1" class="form-control" formControlName="axeFontSize">
+    </div>
+    <div class="col-sm-5 form-group">
+      <label for="decimalMask">{{'decimalMask' | i18n}}</label>
+      <input type="text" class="form-control" formControlName="decimalMask" placeholder="Use Decimal.ToString() mask">
+    </div>
+  </div>
+
+  <fieldset>
+    <legend>{{'AxeX' | i18n}}</legend>
+
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="axeXDisplayed">
+            {{'displayAxeX' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-5 form-group">
+        <label for="axeXColor">{{'Color' | i18n}}</label>
+        <select formControlName="axeXColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+  </fieldset>
+
+  <fieldset>
+    <legend>{{'AxeY' | i18n}}</legend>
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="axeYDisplayed">
+            {{'displayAxeY' | i18n}}
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="indicatorChartWidget.get('axeYDisplayed').value == true">
+      <div class="col-sm-5 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="axeYDataDisplayed">
+            {{'displayDataAxeY' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-5 form-group" *ngIf="indicatorChartWidget.get('axeYDataDisplayed').value == true">
+        <label for="axeYColor">{{'Color' | i18n}}</label>
+        <select formControlName="axeYColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-4 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="axeYIsAutoAdjustableAccordingMinValue">
+            {{'axeYIsAutoAdjustableAccordingMinValue' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-4 form-group" *ngIf="indicatorChartWidget.get('axeYIsAutoAdjustableAccordingMinValue').value == true">
+        <label for="axeYOffsetFromMinValue">{{'axeYOffsetFromMinValue' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="axeYOffsetFromMinValue">
+      </div>
+    </div>
+
+  </fieldset>
+
+  <fieldset>
+    <legend>{{'Target' | i18n}}</legend>
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="chartTargetDisplayed">
+            {{'TragetDisplayed' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-5 form-group" *ngIf="indicatorChartWidget.get('chartTargetDisplayed').value == true">
+        <label for="targetValue">{{'GlobalTargetValue' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="targetValue">
+      </div>
+      <div class="col-sm-5 form-group" *ngIf="indicatorChartWidget.get('chartTargetDisplayed').value == true">
+        <label for="chartTargetColor">{{'Color' | i18n}}</label>
+        <select formControlName="chartTargetColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div *ngIf="widgetIsOnSlipperyTime == false">
+      <div *ngIf="indicatorChartWidget.get('chartTargetDisplayed').value == true">
+        <a (click)="onAddTargetIndicatorChartWidget()" class="btn btn-primary btn-sm">
+          <i class="fa fa-plus"></i> {{ 'Add' | i18n }} {{ 'TargetOnTime' | i18n }}
+        </a>
+        <!-- TargetIndicatorChartWidget :  -->
+        <div formArrayName="targetIndicatorChartWidgetFormList">
+          <div class="form-group" *ngFor="let control of getTargetIndicatorChartWidgetFormArray().controls; let i = index">
+            <div [formGroupName]="i">
+
+              <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                <accordion-group [isOpen]="false" #group2>
+                  <h2 class="panel-title" accordion-heading>
+                    <a>
+                      <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group2?.isOpen,'fa-plus-circle txt-color-green': !group2?.isOpen}"></i>
+                      <span>{{ getTargetIndicatorDisplay(i) }}</span>
+                      <button (click)="onRemoveTargetIndicatorChartWidget(i)" class="pull-right btn btn-danger btn-labeled">
+                        <i class="fa fa-trash"></i>
+                      </button>
+                    </a>
+                  </h2>
+
+                  <div class="row">
+                    <div class="col-sm-5 form-group">
+                      <label for="startDate">{{'Start Time' | i18n}}</label>
+                      <div class="input-group">
+                        <input class="form-control" formControlName="startDate" clockpicker [model]="getTargetIndicatorChartWidgetFormArray().controls[i].controls['startDate']"
+                               type="text" data-autoclose="true">
+                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-5 form-group">
+                      <label for="startTargetValue">{{'targetValue' | i18n}}</label>
+                      <input type="text" class="form-control" formControlName="startTargetValue">
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-sm-5 form-group">
+                      <label for="endDate">{{'End Time' | i18n}}</label>
+                      <div class="input-group">
+                        <input class="form-control" formControlName="endDate" clockpicker [model]="getTargetIndicatorChartWidgetFormArray().controls[i].controls['endDate']"
+                               type="text" data-autoclose="true">
+                        <span class="input-group-addon"><i class="fa fa-clock-o"></i></span>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-5 form-group">
+                      <label for="endTargetValue">{{'targetValue' | i18n}}</label>
+                      <input type="text" class="form-control" formControlName="endTargetValue">
+                    </div>
+                  </div>
+
+                </accordion-group>
+              </accordion>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </fieldset>
+
+
+  <fieldset>
+    <legend>{{'Average' | i18n}}</legend>
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="chartAverageDisplayed">
+            {{'AverageDisplayed' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-5 form-group" *ngIf="indicatorChartWidget.get('chartAverageDisplayed').value == true">
+        <label for="chartAverageColor">{{'Color' | i18n}}</label>
+        <select formControlName="chartAverageColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+
+
+  <fieldset>
+    <legend>{{'Chart' | i18n}}</legend>
+    <div class="row">
+      <div class="col-sm-5 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+            <input type="checkbox" formControlName="chartDataFill">
+            {{'chartDataFill' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-5 form-group">
+        <label for="chartDataColor">{{'Color' | i18n}}</label>
+        <select formControlName="chartDataColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{'Groups' | i18n}}</legend>
+    <div class="row">
+      <div class="col-sm-4 form-group">
+        <label for="group1">{{'group1' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="group1">
+      </div>
+      <div class="col-sm-4 form-group">
+        <label for="group2">{{'group2' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="group2">
+      </div>
+      <div class="col-sm-4 form-group">
+        <label for="group3">{{'group3' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="group3">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-4 form-group">
+        <label for="group4">{{'group4' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="group4">
+      </div>
+      <div class="col-sm-4 form-group">
+        <label for="group5">{{'group5' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="group5">
+      </div>
+    </div>
+  </fieldset>
+
+</div>

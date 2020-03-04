@@ -1,0 +1,367 @@
+<div [formGroup]="indicatorBarWidget">
+  
+  <alert type="danger" dismissible="true" *ngIf="errorMessage">
+    <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+  </alert>
+
+  <div class="row">
+    <div class="col-sm-3 form-group" >
+      <label for="indicatorId">{{'Indicator' | i18n}}</label>
+      <select formControlName="indicatorId" class="form-control" (change)="onIndicatorChange()">
+        <option *ngFor="let c of indicatorList" [value]="c.id">
+          {{c.title}}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="row">
+      <div class="col-sm-3 form-group">
+        <div class="checkbox">
+            <label class="checkbox">
+                <input type="checkbox" formControlName="titleIndicatorDisplayed">
+                {{'Indicator Title Displayed' | i18n}}
+            </label>
+        </div>
+      </div>
+    
+      <!-- Si titleIndicatorDisplayed est coché -->
+      <div *ngIf="indicatorBarWidget.get('titleIndicatorDisplayed').value == true">
+        <div class="col-sm-3 form-group" >
+          <label for="titleIndicatorColor">{{'Measure Title Color' | i18n}}</label>
+          <select formControlName="titleIndicatorColor" class="form-control">
+            <option *ngFor="let c of colorList" [value]="c.name">
+              {{c.name}}
+            </option>
+          </select>
+        </div>
+      </div>
+  </div>
+
+  <fieldset>
+    <legend>{{'IndicatorBarWidgetColumns' | i18n}}</legend>
+    <!-- IndicatorBarWidgetColumns :  -->
+    <a class="btn btn-warning btn-sm" (click)="onRefreshIndicatorBarWidgetColumns()">
+      <i class="fa fa-refresh"></i> {{'Refresh Columns' | i18n}}
+    </a>
+    <div formArrayName="indicatorBarWidgetColumnList">
+        <div class="form-group" *ngFor="let control of getIndicatorBarWidgetColumnFormArray().controls; let i = index">
+          <div [formGroupName]="i">
+
+            <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+              <accordion-group [isOpen]="false" #group2>
+                <h2 class="panel-title" accordion-heading> 
+                  <a>
+                    <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group2?.isOpen,'fa-plus-circle txt-color-green': !group2?.isOpen}"></i>
+                    <span>{{ control.get('code').value }}</span>
+                  </a>
+                </h2>
+
+                <div class="row">
+                  <div class="col-sm-5 form-group">
+                    <h4>{{'Code' | i18n}} : {{ control.get('code').value }}</h4>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-sm-3 form-group">
+                    <div class="checkbox">
+                        <label class="checkbox">
+                            <input type="checkbox" formControlName="isNumericFormat">
+                            {{'isNumericFormat' | i18n}}
+                        </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 form-group">
+                    <div class="checkbox">
+                        <label class="checkbox">
+                            <input type="checkbox" formControlName="filtered">
+                            {{'filtered' | i18n}}
+                        </label>
+                    </div>
+                  </div>
+                  <div class="col-sm-3 form-group" *ngIf="control.get('filtered').value == true">
+                    <label for="filteredValue">{{'filteredValue' | i18n}}</label>
+                    <input type="text" class="form-control" formControlName="filteredValue" >
+                  </div>
+                </div>
+                
+
+              </accordion-group>
+            </accordion>
+          </div>
+        </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{'AxeX' | i18n}}</legend>
+
+    <div class="row">
+      <div class="col-sm-3 form-group">
+        <div class="checkbox">
+            <label class="checkbox">
+                <input type="checkbox" formControlName="displayAxeX">
+                {{'displayAxeX' | i18n}}
+            </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3 form-group" >
+        <label for="labelColumnCode">{{'labelColumnCode' | i18n}}</label>
+        <select *ngIf="dataColumnList" formControlName="labelColumnCode" class="form-control">
+          <option *ngFor="let d of dataColumnList" [value]="d">
+            {{d}}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-3 form-group">
+        <label for="labelFontSize">{{'labelFontSize' | i18n}}</label>
+        <input type="number" min="1" class="form-control" formControlName="labelFontSize">
+      </div>
+      <div class="col-sm-3 form-group">
+        <label for="labelColorText">{{'labelColorText' | i18n}}</label>
+        <select formControlName="labelColorText" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+  </fieldset>
+
+  <fieldset>
+    <legend>{{'AxeY' | i18n}}</legend>
+    <div class="row">
+      <div class="col-sm-3 form-group">
+        <div class="checkbox">
+            <label class="checkbox">
+                <input type="checkbox" formControlName="displayAxeY">
+                {{'displayAxeY' | i18n}}
+            </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="indicatorBarWidget.get('displayAxeY').value == true">
+      <div class="col-sm-3 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+              <input type="checkbox" formControlName="displayGridLinesAxeY">
+              {{'displayGridLinesAxeY' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-3 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+              <input type="checkbox" formControlName="displayDataAxeY">
+              {{'displayDataAxeY' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-3 form-group" *ngIf="indicatorBarWidget.get('displayDataAxeY').value == true">
+        <label for="textDataAxeYColor">{{'textDataAxeYColor' | i18n}}</label>
+        <select formControlName="textDataAxeYColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-sm-3 form-group" >
+        <label for="dataColumnCode">{{'dataColumnCode' | i18n}}</label>
+        <select *ngIf="dataColumnList" formControlName="dataColumnCode" class="form-control">
+          <option *ngFor="let d of dataColumnList" [value]="d">
+            {{d}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{'BarGraph' | i18n}}</legend>
+    <div class="row">
+      <div class="col-sm-3 form-group">
+        <label for="barColor">{{'barColor' | i18n}}</label>
+        <select formControlName="barColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+              <input type="checkbox" formControlName="displayDataLabelInBar">
+              {{'displayDataLabelInBar' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-3 form-group" *ngIf="indicatorBarWidget.get('displayDataLabelInBar').value == true">
+        <label for="dataLabelInBarColor">{{'dataLabelInBarColor' | i18n}}</label>
+        <select formControlName="dataLabelInBarColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3 form-group" *ngIf="indicatorBarWidget.get('displayDataLabelInBar').value == true">
+        <label for="fontSizeDataLabel">{{'fontSizeDataLabel' | i18n}}</label>
+        <input type="number" min="1" class="form-control" formControlName="fontSizeDataLabel">
+      </div>
+      <div class="col-sm-3 form-group" *ngIf="indicatorBarWidget.get('displayDataLabelInBar').value == true">
+        <label for="decimalMask">{{'decimalMask' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="decimalMask" placeholder="Use Decimal.ToString() mask">
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{'BarStacked' | i18n}}</legend>
+    <div class="row">
+      <div class="col-sm-4 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+              <input type="checkbox" formControlName="addBarStackedToTarget">
+              {{'addBarStackedToTarget' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-3 form-group" *ngIf="indicatorBarWidget.get('addBarStackedToTarget').value == true">
+        <label for="barColorStackedToTarget">{{'barColorStackedToTarget' | i18n}}</label>
+        <select formControlName="barColorStackedToTarget" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset>
+    <legend>{{'TargetBar' | i18n}}</legend>
+    <div class="row">
+      <div class="col-sm-3 form-group">
+        <div class="checkbox">
+          <label class="checkbox">
+              <input type="checkbox" formControlName="addTargetBar">
+              {{'addTargetBar' | i18n}}
+          </label>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm-3 form-group" *ngIf="indicatorBarWidget.get('addTargetBar').value == true">
+        <label for="targetBarColor">{{'targetBarColor' | i18n}}</label>
+        <select formControlName="targetBarColor" class="form-control">
+          <option *ngFor="let c of colorList" [value]="c.name">
+            {{c.name}}
+          </option>
+        </select>
+      </div>
+      <div class="col-sm-4 form-group" *ngIf="indicatorBarWidget.get('addTargetBar').value == true">
+        <div class="checkbox">
+          <label class="checkbox">
+              <input type="checkbox" formControlName="setSumDataToTarget">
+              {{'setSumDataToTarget' | i18n}}
+          </label>
+        </div>
+      </div>
+      <div class="col-sm-3 form-group" *ngIf="indicatorBarWidget.get('addTargetBar').value == true">
+        <label for="targetValue">{{'targetValue' | i18n}}</label>
+        <input type="text" class="form-control" formControlName="targetValue"
+        [disableControl]="indicatorBarWidget.get('setSumDataToTarget').value">
+      </div>
+    </div>
+  </fieldset>
+
+  <fieldset >
+    <legend>{{'BarLabelWidget' | i18n}}</legend>
+    <div class="well">
+      <!-- BarLabelWidget :  -->
+      <a (click)="onAddBarLabelWidget()" class="btn btn-primary btn-sm">
+        <i class="fa fa-plus"></i> {{ 'AddBarLabelGraphManagement' | i18n }}
+      </a>
+      {{ 'DragAndDropToManageColumsOder' | i18n }}
+      <!-- Drag list -->
+      <div class="row form-group example-list" cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="drop($event)">
+        <div class="example-box" *ngFor="let control of getBarLabelWidgetFormArray().controls; let i = index"
+             cdkDrag (click)="setSelectedBarLabelWidgetElement(i)">
+          <h2 class="panel-title">
+            <div *ngIf="selectedIndexColumn == i">
+              <span class="badge bg-color-orange txt-color-white">{{i+1}}</span>
+              <span class="txt-color-darken">
+                <strong>{{ control.get('name').value }}</strong>
+              </span>
+            </div>
+            <div *ngIf="selectedIndexColumn != i">
+              <span class="badge txt-color-white">{{i+1}}</span>
+              <span class="txt-color-darken">
+                {{ control.get('name').value }}
+              </span>
+            </div>
+          </h2>
+        </div>
+      </div>
+
+      <!-- Formulaire List -->
+      <div class="row" formArrayName="barLabelWidgetList">
+        <div class="form-group" *ngFor="let control of getBarLabelWidgetFormArray().controls; let i = index">
+          <div [formGroupName]="i" *ngIf="selectedIndexColumn == i">
+
+            <button (click)="onRemoveBarLabelWidget(i)" class="btn btn-danger btn-labeled">
+              {{'Delete' | i18n}} {{'Bar' | i18n}} <i class="fa fa-trash"></i>
+            </button>
+
+            <div class="row">
+              <div class="col-sm-11 form-group">
+                <label for="name">{{'Name' | i18n}}</label>
+                <input type="text" class="form-control" formControlName="name">
+
+                <!-- Possibilité d'ajouter des traductions au titre -->
+                <div formArrayName="barLabelWidgetLocalizationList">
+                  <app-title-localization-list [titleLocalizations]="getBarLabelWidgetLocalizationArray(i)"
+                                               [count]="getBarLabelWidgetLocalizationCount(i)">
+                  </app-title-localization-list>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-sm-3 form-group">
+                <label for="labelTextColor">{{'labelTextColor' | i18n}}</label>
+                <select formControlName="labelTextColor" class="form-control">
+                  <option *ngFor="let c of colorList" [value]="c.name">
+                    {{c.name}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-sm-4 form-group">
+                <div class="checkbox">
+                  <label class="checkbox">
+                    <input type="checkbox" formControlName="useLabelColorForBar">
+                    {{'useLabelColorForBar' | i18n}}
+                  </label>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </fieldset>
+
+
+</div>

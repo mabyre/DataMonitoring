@@ -1,0 +1,240 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* #GOOGLE FONT */
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400italic,700italic,300,400,700");
+
+@import '@swimlane/ngx-datatable/release/index.css';
+@import '@swimlane/ngx-datatable/release/themes/material.css';
+@import '@swimlane/ngx-datatable/release/themes/bootstrap.css';
+@import '@swimlane/ngx-datatable/release/themes/dark.css';
+@import '@swimlane/ngx-datatable/release/assets/icons.css';
+
+mark{
+  background-color: transparent !important;
+  color: #ffffff;
+  font-size: 20px
+}
+
+.jarviswidget > div {
+   height: 365px;
+}
+
+.widget-canvas {
+  position: relative;
+  margin-bottom: 0;
+  width: 100%;
+  max-height: 300px;
+  height: 100%;
+}
+
+.widget-canvas-gauge {
+  position: relative;
+  margin-bottom: 0;
+  width: 600px;
+  max-height: 320px;
+  height: 320px;
+}
+
+.widget-body > div > table {
+  margin-bottom: 0;
+  width: 100%;
+  max-height: 363px;
+  min-height: 363px;
+  height: 100%;
+} 
+
+.widget-body > div>table>tbody>tr>td
+{
+  padding: 4px 8px;
+}
+
+.ng-valid[required], .ng-valid.required {
+  border-left: 5px solid #42A948; /* green */
+}
+
+.ng-invalid:not(form) {
+  border-left: 5px solid #a94442; /* red */
+}
+
+.txtwidget-color-green {
+  color: #00F0AB !important;
+}
+
+.bgwidget-color-green {
+  background-color: #00F0AB !important;
+}
+
+.txtwidget-color-blue {
+  color: #33B2D6 !important;
+}
+
+.bgwidget-color-blue {
+  background-color: #33B2D6 !important;
+}
+
+.txtwidget-color-orange {
+  color: #FAC885 !important;
+}
+
+.txtwidget-color-orangeLight {
+  color: #F6D9B6 !important;
+}
+
+.bgwidget-color-orange {
+  background-color: #FAC885 !important;
+}
+
+.bgwidget-color-orangeLight {
+  background-color: #F6D9B6 !important;
+}
+
+.txtwidget-color-red {
+  color: #CC1E5B !important;
+}
+
+.bgwidget-color-red {
+  background-color: #CC1E5B !important;
+}
+
+.txtwidget-color-gray {
+  color: #656567 !important;
+}
+
+.bgwidget-color-gray {
+  background-color: #656567 !important;
+}
+
+.txtwidget-color-redlight{
+  color: #F96E8F !important;
+}
+
+.bgwidget-color-redlight{
+  background-color: #F96E8F !important;
+}
+
+.txtwidget-color-white {
+  color: #fff !important;
+}
+
+.bgwidget-color-white {
+  color: #fff !important;
+}
+
+
+
+
+
+
+
+.txtwidget-color-blueLight {
+  color: #92a2a8 !important;
+}
+
+.txtwidget-color-blueDark {
+  color: #4c4f53 !important;
+}
+
+.txtwidget-color-greenLight {
+  color: #71843f !important;
+}
+
+.txtwidget-color-greenDark {
+  color: #496949 !important;
+}
+
+.txtwidget-color-yellow {
+  color: #b09b5b !important;
+}
+
+.txtwidget-color-orangeDark {
+  color: #a57225 !important;
+}
+
+.txtwidget-color-pink {
+  color: #ac5287 !important;
+}
+
+.txtwidget-color-pinkDark {
+  color: #a8829f !important;
+}
+
+.txtwidget-color-purple {
+  color: #6e587a !important;
+}
+
+.txtwidget-color-darken {
+  color: #404040 !important;
+}
+
+.txtwidget-color-lighten {
+  color: #d5e7ec !important;
+}
+
+.txtwidget-color-grayDark {
+  color: #525252 !important;
+}
+
+.txtwidget-color-magenta {
+  color: #6e3671 !important;
+}
+
+.txtwidget-color-teal {
+  color: #568a89 !important;
+}
+
+.bgwidget-color-blueLight {
+  background-color: #92a2a8 !important;
+}
+
+.bgwidget-color-blueDark {
+  background-color: #4c4f53 !important;
+}
+
+.bgwidget-color-greenLight {
+  background-color: #71843f !important;
+}
+
+.bgwidget-color-greenDark {
+  background-color: #496949 !important;
+}
+
+.bgwidget-color-yellow {
+  background-color: #b09b5b !important;
+}
+
+.bgwidget-color-orangeDark {
+  background-color: #a57225 !important;
+}
+
+.bgwidget-color-pink {
+  background-color: #ac5287 !important;
+}
+
+.bgwidget-color-pinkDark {
+  background-color: #a8829f !important;
+}
+
+.bgwidget-color-purple {
+  background-color: #6e587a !important;
+}
+
+.bgwidget-color-darken {
+  background-color: #404040 !important;
+}
+
+.bgwidget-color-lighten {
+  background-color: #d5e7ec !important;
+}
+
+.bgwidget-color-grayDark {
+  background-color: #525252 !important;
+}
+
+.bgwidget-color-magenta {
+  background-color: #6e3671 !important;
+}
+
+.bgwidget-color-teal {
+  background-color: #568a89 !important;
+}
+

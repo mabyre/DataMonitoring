@@ -1,0 +1,306 @@
+<div id="content">
+  <div class="row" *ngIf="widgetForm">
+    <div class="col-sm-8 col-xs-offset-1">
+      <h3 *ngIf="widget.id === 0" class="text-primary">{{'Add' | i18n}}</h3>
+      <h3 *ngIf="widget.id != 0" class="text-primary">{{'Edit Team Leader' | i18n}}</h3>
+      <alert type="danger" dismissible="true" *ngIf="errorMessage">
+        <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+      </alert>
+      <alert type="info" dismissible="true" *ngIf="infoMessage">
+        <i class="fa-fw fa fa-info"></i><strong>{{'Info' | i18n}}!</strong>{{ infoMessage }}
+      </alert>
+      <alert type="success" dismissible="true" *ngIf="successMessage">
+        <i class="fa-fw fa fa-check"></i> <strong>{{'Success' | i18n}}</strong> {{ successMessage }}
+      </alert>
+    </div>
+  </div>
+
+  <form *ngIf="widgetForm" [formGroup]="widgetForm" (ngSubmit)="onSubmit()">
+
+      <div class="row">
+        <div class="col-sm-3 col-xs-offset-1">
+          <button type="button" class="btn btn-default" [routerLink]="['/widget/widgets']">
+            <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+          </button>
+        </div>
+      </div>
+
+      <br/>
+
+      <div class="row">
+        <div class="col-sm-8 col-xs-offset-1">
+
+          <ul id="myTab1" class="nav nav-tabs bordered">
+            <li [class.active]="tabnumber == 0">
+              <a (click)="tabnumber = 0">{{'General' | i18n}}</a>
+            </li>
+            <li [class.active]="tabnumber == 1">
+              <a (click)="tabnumber = 1">
+                <i class="fa fa-fw fa-lg fa-balance-scale"></i>
+                {{'Indicator' | i18n}}
+                <span *ngIf="isTableWidget" class="badge bg-color-blue txt-color-white">{{indicatorWidgetCount}}</span>
+              </a>
+            </li>
+            <li [class.active]="tabnumber == 2">
+              <a (click)="tabnumber = 2">
+                <i class="fa fa-fw fa-lg fa-eye"></i>
+                {{'Preview' | i18n}}
+              </a>
+            </li>
+          </ul>
+
+          <tabset class="padding-10">
+
+            <!-- TAB :  Général -->
+            <tab [active]="tabnumber == 0">
+              <div class="row">
+                <div class="col-sm-5 form-group">
+                  <label for="type" class="font-sm" *ngIf="widget.id === 0">
+                    {{'Type' | i18n}} :&nbsp;
+                  </label>
+                  <select id="type" formControlName="type" (change)="onChangeType()" class="form-control" *ngIf="widget.id === 0">
+                    <option [ngValue]="type.value" *ngFor="let type of widgetTypes">{{type.name}}</option>
+                  </select>
+                  <h4 *ngIf="widget.id != 0">{{'Type' | i18n}} : {{widgetTypes[widgetTypeSelected.value].name}}</h4>
+                </div>
+              </div>
+
+              <div class="row">
+
+                <div class="col-sm-12 form-group">
+                  <label for="title">
+                    <span *ngIf="widget.id === 0">{{'TitleAdd' | i18n}} :</span>
+                    <span *ngIf="widget.id != 0">{{'TitleEdit' | i18n}} :</span>
+                  </label>
+                  <input type="text" id="title" formControlName="title" class="form-control" />
+                  <div *ngIf="!widgetForm.controls.title.valid" class="text-danger">
+                    <div *ngIf="widgetForm.controls.title.errors.required">{{'data required' | i18n}}</div>
+                    <div *ngIf="widgetForm.controls.title.errors.maxLength">{{'data maxlength' | i18n}}</div>
+                  </div>
+
+                  <!-- Possibilité d'ajouter des traductions au titre -->
+                  <div formArrayName="titleTranslate">
+                    <app-title-localization-list [titleLocalizations]="getLocalizationsArray()"
+                                                 [count]="traductionAvailable">
+                    </app-title-localization-list>
+                  </div>
+                </div>
+
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3 form-group" [style.visibility]="'hidden'">
+                  <label for="titleColorName">{{'Title Color' | i18n}} :</label>
+                  <select id="titleColorName" formControlName="titleColorName" class="form-control" (change)="onChangeTitleColor($event.target.value)" [ngClass]="selectedColor">
+                    <option [value]="color.name" *ngFor="let color of colorList" [ngClass]="color.txtClassName">{{color.name}}</option>
+                  </select>
+                  <div *ngIf="!widgetForm.controls.titleColorName.valid" class="text-danger">
+                      {{'data required' | i18n}}
+                  </div>
+                </div>
+
+                <div class="col-sm-3 form-group" [style.visibility]="'hidden'">
+                  <label for="titleFontSize">{{'TitleFontSize' | i18n}} :</label>
+                  <input type="number" id="titleFontSize" formControlName="titleFontSize" class="form-control"/>
+                  <div *ngIf="!widgetForm.controls.titleFontSize.valid" class="text-danger">
+                    <div *ngIf="widgetForm.controls.titleFontSize.errors.required">{{'data required' | i18n}}</div>
+                    <div *ngIf="widgetForm.controls.titleFontSize.errors.min">{{'data minvalue' | i18n}}</div>
+                    <div *ngIf="widgetForm.controls.titleFontSize.errors.max">{{'data maxvalue' | i18n}}</div>
+                  </div>
+                </div>
+
+                <div class="col-sm-3 form-group">
+                  <label for="refreshTime">{{'Refresh time' | i18n}} :</label>
+                  <input type="number" id="refreshTime" formControlName="refreshTime" class="form-control"/>
+                  <div *ngIf="!widgetForm.controls.refreshTime.valid" class="text-danger">
+                    <div *ngIf="widgetForm.controls.refreshTime.errors.required">{{'data required' | i18n}}</div>
+                    <div *ngIf="widgetForm.controls.refreshTime.errors.min">{{'data minvalue' | i18n}}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-3 form-group">
+                  <label for="timeManagementId">{{'Time Management' | i18n}} :</label>
+                  <select id="timeManagementId" formControlName="timeManagementId" class="form-control"  (change)="onTimeManagementChange()">
+                    <option [value]="timeManagement.id" *ngFor="let timeManagement of timeManagements">{{timeManagement.name}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-sm-3 form-group">
+                  <div class="checkbox">
+                    <label class="checkbox">
+                      <input type="checkbox" id="currentTimeManagementDisplayed" formControlName="currentTimeManagementDisplayed">
+                      {{'TimeManagementDisplayed' | i18n}}
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-3 form-group">
+                  <div class="checkbox">
+                    <label class="checkbox">
+                      <input type="checkbox" id="titleDisplayed" formControlName="titleDisplayed">
+                      {{'titleDisplayed' | i18n}}
+                    </label>
+                  </div>
+                </div>
+                <div class="col-sm-3 form-group">
+                  <div class="checkbox">
+                    <label class="checkbox">
+                      <input type="checkbox" id="lastRefreshTimeIndicatorDisplayed" formControlName="lastRefreshTimeIndicatorDisplayed">
+                      {{'lastRefreshTimeDisplayed' | i18n}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </tab>
+
+            <!-- TAB :  Indicator - Widget -->
+            <tab [active]="tabnumber == 1">
+              <div class="row" *ngIf="widget.id != 0">
+
+                <!-- IndicatorTable - Widget -->
+                <div *ngIf="isTableWidget">
+                  <a (click)="onAddIndicatorTableWidget()" class="btn btn-primary btn-sm">
+                    <i class="fa fa-plus"></i> {{ 'Add' | i18n }} {{ 'Indicator' | i18n }}
+                  </a>
+                  {{ 'DragAndDropToManageColumsOder' | i18n }}
+                  <a (click)="onCollapseAll()" class="pull-right btn btn-sm">
+                    <div *ngIf="collapseAllGroup">
+                      <i class="fa fa-plus-square-o"></i> {{ 'Expand all' | i18n }}
+                    </div>
+                    <div *ngIf="!collapseAllGroup">
+                      <i class="fa fa-minus-square-o"></i> {{ 'Collapse all' | i18n }}
+                    </div>
+                  </a>
+                  <div formArrayName="indicatorTableWidgetList"
+                       class="drag-list" cdkDropList (cdkDropListDropped)="drop($event)">
+
+                    <div class="form-group" *ngFor="let indicatorTableWidget of getIndicatorTableWidgetArray().controls; let i = index"
+                         class="drag-box" cdkDrag>
+                      <div [formGroupName]="i">
+
+                        <accordion class="smart-accordion-default panel-group" [closeOthers]="true">
+                          <accordion-group [isOpen]="!collapseAllGroup" #group2>
+                            <h2 class="panel-title" accordion-heading cdkDragHandle>
+                              <a>
+                                <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group2?.isOpen,'fa-plus-circle txt-color-green': !group2?.isOpen}"></i>
+                                <span class="badge txt-color-white">{{i+1}}</span>
+                                <span *ngIf="indicatorTableWidget.get('indicatorId').value != 0">
+                                  {{ getIndicatorTitle(indicatorTableWidget.get('indicatorId').value) }}
+                                </span>
+                                <button (click)="onDuplicateIndicatorTableWidget(i)" class="pull-right btn btn-warning btn-labeled" title="{{'Duplicate' | i18n}}">
+                                  <i class="fa fa-copy"></i>
+                                </button>
+                                <button (click)="onRemoveIndicatorTableWidget(i)" class="pull-right btn btn-danger btn-labeled" title="{{'Delete' | i18n}}">
+                                  <i class="fa fa-trash"></i>
+                                </button>
+                              </a>
+                            </h2>
+
+                            <app-table-widget [tableWidget]="indicatorTableWidget"
+                                              [colorList]="colorList"
+                                              [styleList]="styleList"
+                                              [columnStyleList]="columnStyleList"
+                                              [columnTypeList]="columnTypeList"
+                                              [aligneStyleList]="alignStyleList"
+                                              [index]="i + 1">
+                            </app-table-widget>
+
+                          </accordion-group>
+                        </accordion>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+
+                <!-- IndicatorBar - Widget -->
+                <div *ngIf="isBarWidget">
+
+                  <app-indicator-bar-widget
+                    [indicatorBarWidget]="getIndicatorBarWidgetFormArray().controls[0]"
+                    [colorList]="colorList">
+                  </app-indicator-bar-widget>
+
+                </div>
+
+                <!-- IndicatorChart - Widget -->
+                <div *ngIf="isChartWidget">
+
+                  <app-indicator-chart-widget
+                    [indicatorChartWidget]="getIndicatorChartWidgetFormArray().controls[0]"
+                    [colorList]="colorList"
+                    [timeManagementId]="widgetForm.get('timeManagementId').value">
+                  </app-indicator-chart-widget>
+
+                </div>
+
+                <!-- IndicatorGauge - Widget -->
+                <div *ngIf="isGaugeWidget">
+                  <app-indicator-gauge-widget
+                    [indicatorGaugeWidget]="getIndicatorGaugeWidgetFormArray().controls[0]"
+                    [colorList]="colorList">
+                  </app-indicator-gauge-widget>
+                </div>
+
+              </div>
+            </tab>
+
+            <!-- TAB :  Preview -->
+            <tab [active]="tabnumber == 2">
+              <br/>
+              <div class="row">
+
+                  <div class="col-sm-4 form-group">
+                    <div class="checkbox">
+                      <label class="checkbox">
+                        <input type="checkbox" formControlName="isTestModePreview">
+                        {{'isTestModePreview' | i18n}}
+                      </label>
+                    </div>
+                  </div>
+
+                  <div class="col-sm-5 form-group" *ngIf="isChartWidget">
+                    <label for="timeZone">{{'TimeZone' | i18n}}</label>
+                    <select *ngIf="timeZones" formControlName="timeZone" class="form-control">
+                        <option *ngFor="let tz of timeZones" [value]="tz.id">
+                            {{tz.displayName}}
+                        </option>
+                    </select>
+                  </div>
+
+                  <div class="col-sm-12 ">
+                    <app-monitorWidget *ngIf="widget.id!=0" [refreshButton]=true
+                    [testMode]="widgetForm.get('isTestModePreview').value" [id]="widget.id"
+                    [timeZone]="widgetForm.get('timeZone').value" [key]="KeyPreviewToProd" position="11"></app-monitorWidget>
+                  </div>
+              </div>
+            </tab>
+
+          </tabset>
+
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-sm-3 col-xs-offset-1">
+          <button type="button" class="btn btn-default" [routerLink]="['/widget/widgets']">
+            <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+          </button>
+        </div>
+        <div class="col-sm-3 col-xs-offset-1">
+          <button class="btn btn-default" type="submit" [disabled]="widgetForm.invalid">
+            <i class="fa fa-save"></i> {{'Save' | i18n}}
+          </button>
+        </div>
+      </div>
+
+  </form>
+
+  <!-- <div class="row" *ngIf="widgetForm">
+    {{ widgetForm.value | json }}
+  </div> -->
+
+</div>

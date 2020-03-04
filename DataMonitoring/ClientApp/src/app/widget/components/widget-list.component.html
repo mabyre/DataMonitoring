@@ -1,0 +1,116 @@
+<div id="content">
+  <div class="row">
+    <app-big-breadcrumbs [items]="['Graph' | i18n]" icon="area-chart" class="col-xs-12 col-sm-7 col-md-7 col-lg-4"></app-big-breadcrumbs>
+  </div>
+  <div class="row">
+    <div class="col-sm-10 col-xs-offset-1">
+      <h3 class="text-primary">{{'Widget List' | i18n}}</h3>
+      <alert type="success" dismissible="true" *ngIf="successMessage">
+        <i class="fa-fw fa fa-check"></i> <strong>{{'Success' | i18n}}</strong> {{ successMessage }}
+      </alert>
+      <alert type="danger" dismissible="true" *ngIf="errorMessage">
+        <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+      </alert>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-10 col-xs-offset-1">
+      <a [routerLink]="['/widget/widgetCreate']" class="padding-10 padding-top-0 padding-bottom-0">
+        <i class="fa fa-plus"></i> {{ 'Add' | i18n }}
+      </a>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-10 col-xs-offset-1">
+      <ngx-datatable class="table"
+                     [rows]="rows"
+                     [loadingIndicator]="loadingIndicator"
+                     [columnMode]="'force'"
+                     [headerHeight]="40"
+                     [footerHeight]="45"
+                     [rowHeight]="'auto'"
+                     [limit]="controls.pageSize"
+                     [offset]="controls.tableOffset"
+                     (page)="onPageChange($event)"
+                     [messages]="{
+                          emptyMessage: 'No data to display',
+                          totalMessage: 'Total'}"
+                     [cssClasses]="{
+                          sortAscending: 'fa fa-caret-up',
+                          sortDescending: 'fa fa-caret-down',
+                          pagerLeftArrow: 'fa  fa-angle-left',
+                          pagerRightArrow: 'fa fa-angle-right',
+                          pagerPrevious: 'fa fa-angle-double-left',
+                          pagerNext: 'fa fa-angle-double-right'}"
+                     [reorderable]="true">
+
+        <ngx-datatable-column name="title" [width]="180">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span class="datatable-header-cell-wrapper">
+              <span class="datatable-header-cell-label draggable" (click)="sort()">{{ 'Title' | i18n }}</span>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="typeDisplay" [width]="40">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span class="datatable-header-cell-wrapper">
+              <span class="datatable-header-cell-label draggable" (click)="sort()">{{ 'Type' | i18n }}</span>
+            </span>
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <span class="badge bg-color-darken">{{value}}</span>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <!-- BRY_HIDDEN ne sert a rien !!!!!!
+        <ngx-datatable-column name="refreshTime" [width]="30">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span class="datatable-header-cell-wrapper">
+              <span class="datatable-header-cell-label draggable" (click)="sort()">{{'Refresh time' | i18n}}</span>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>-->
+
+        <ngx-datatable-column name="indicatorTitleListToDisplayed" [width]="60">
+          <ng-template let-column="column" let-sort="sortFn" ngx-datatable-header-template>
+            <span class="datatable-header-cell-wrapper">
+              <span class="datatable-header-cell-label draggable" (click)="sort()">{{'indicatorTitleListToDisplayed' | i18n}}</span>
+            </span>
+          </ng-template>
+        </ngx-datatable-column>
+
+        <ngx-datatable-column name="action" [width]="70">
+          <ng-template let-column="column" ngx-datatable-header-template>
+            {{'Actions' | i18n}}
+          </ng-template>
+          <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
+            <a [routerLink]="['/widget/widgetEdit/' , row['id']]" class="padding-10 padding-top-0 padding-bottom-0" title="Edit Widget">
+              <i class="fa fa-edit"></i> {{ 'Edit' | i18n }}
+            </a>
+            &nbsp;
+            <!--
+            <a [routerLink]="['/widget/widgetEditTl/' , row['id']]" class="padding-10 padding-top-0 padding-bottom-0" title="Edit Widget for Team Leader">
+              <i class="fa fa-edit"></i> {{ 'Edit TL' | i18n }}
+            </a>
+            &nbsp;
+            -->
+            <a (click)="onDelete(row['id'])" class="padding-10 padding-top-0 padding-bottom-0">
+              <i class="fa fa-trash"></i> {{ 'Delete' | i18n }}
+            </a>
+            <br />
+            <!--
+            <a (click)="onDuplicate(row['id'])" class="padding-10 padding-top-0 padding-bottom-0">
+              <i class="fa fa-copy"></i> {{ 'Duplicate' | i18n }}
+            </a>
+            -->
+          </ng-template>
+        </ngx-datatable-column>
+
+      </ngx-datatable>
+
+    </div>
+  </div>
+</div>

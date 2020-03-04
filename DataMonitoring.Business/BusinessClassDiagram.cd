@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="DataMonitoring.Business.UnitOfWork" Collapsed="true">
+    <Position X="2.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAEAIIBAiAACAACCgABAIIIAIBAAAAQAAQAAAAAIBA=</HashCode>
+      <FileName>UnitOfWork.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataMonitoring.Business.DashboardBusiness" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.75" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIEAAAAAAAACAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>DashboardBusiness.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataMonitoring.Business.EntityDatabaseTransaction" Collapsed="true">
+    <Position X="5.75" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAACAAAAAAAAAAAAABAAAAAAACgAAAAgAAAAA=</HashCode>
+      <FileName>EntityDatabaseTransaction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataMonitoring.Business.WidgetBusiness">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAIAAAAAAACAAAAAEAACAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>WidgetBusiness.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="DataMonitoring.Business.ConfigurationBusiness" Collapsed="true">
+    <Position X="0.5" Y="5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAIAIAIAAQAAABAAAAAAAAEAAAAECABEAAAAAAA=</HashCode>
+      <FileName>ConfigurationBusiness.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Interface Name="DataMonitoring.Business.IWidgetBusiness" Collapsed="true">
+    <Position X="3.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAAAAAAAAAAAAAAAACAAAAAEAACAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>IWidgetBusiness.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataMonitoring.Business.IConfigurationBusiness" Collapsed="true">
+    <Position X="3.75" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAIAAAAQAAABAAAAAAAAEAAAAECABAAAAAAAA=</HashCode>
+      <FileName>IConfigurationBusiness.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="DataMonitoring.Business.IDatabaseTransaction" Collapsed="true">
+    <Position X="8" Y="1.5" Width="2" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>IDatabaseTransaction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

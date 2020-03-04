@@ -1,0 +1,86 @@
+<div id="content">
+  <div class="row">
+    <div class="col-sm-7 col-sm-offset-1">
+
+      <h3 class="text-primary">{{'Edit Team Leader' | i18n}}</h3>
+
+      <alert type="danger" dismissible="true" *ngIf="errorMessage">
+        <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+      </alert>
+
+      <form *ngIf="dashboarLightdForm" [formGroup]="dashboarLightdForm" (ngSubmit)="onSubmitForm()">
+
+        <div class="form-group">
+          <label for="title">{{'Title' | i18n}}</label>
+          <input type="text" class="form-control" formControlName="title">
+          <small *ngIf="!dashboarLightdForm.controls.title.valid" class="text-danger">
+            {{'Required' | i18n}}.
+          </small>
+
+          <!-- Possibilité d'ajouter des traductions au titre -->
+          <div formArrayName="dashboardLocalizations">
+            <app-title-localization-list
+               [titleLocalizations]="getDashboardLocalizationsArray()"
+              [count]="dashboardLocalizationCount">
+            </app-title-localization-list>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 form-group">
+            <div class="checkbox">
+              <label class="checkbox">
+                <input type="checkbox" formControlName="titleDisplayed">
+                {{'Title Displayed' | i18n}}
+              </label>
+            </div>
+          </div>
+
+          <!-- Si titleDisplayed est coché -->
+          <div *ngIf="dashboarLightdForm.get('titleDisplayed').value == true">
+            <div class="col-sm-4 form-group">
+              <label for="titleColorName">{{'Title Color' | i18n}}</label>
+              <select *ngIf="colorList" formControlName="titleColorName" class="form-control">
+                <option *ngFor="let c of colorList" [value]="c.name">
+                  {{c.name}}
+                </option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-4 form-group">
+            <div class="checkbox">
+              <label class="checkbox">
+                <input type="checkbox" formControlName="currentTimeManagementDisplayed">
+                {{'TimeManagementDisplayed' | i18n}}
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-2 col-xs-offset-1">
+            <button type="button" class="btn btn-primary" [routerLink]="['/dashboard/dashboards']">
+              <i class="fa fa-chevron-circle-left"></i> {{'Back' | i18n}}
+            </button>
+          </div>
+          <div class="col-sm-2 col-xs-offset-3">
+            <button class="btn btn-success" type="submit" [disabled]="dashboarLightdForm.invalid">
+              <i class="fa fa-save"></i> {{'Save' | i18n}}
+            </button>
+          </div>
+        </div>
+
+      </form>
+
+    <!-- <div class="row" *ngIf="dashboarLightdForm">
+    {{ dashboarLightdForm.value | json }}
+    </div> -->
+
+    </div>
+  </div>
+</div>
+
+

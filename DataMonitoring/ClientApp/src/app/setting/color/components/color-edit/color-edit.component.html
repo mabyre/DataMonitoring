@@ -1,0 +1,21 @@
+<div id="content">
+  <div class="row">
+      <div class="col-sm-4 col-sm-offset-1">
+
+          <h3 class="text-primary">{{titleView}}</h3>
+
+          <alert type="danger" dismissible="true" *ngIf="errorMessage">
+              <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
+          </alert>
+
+          <dynamic-form *ngIf="regConfig" [fields]="regConfig" (submit)="submit($event)">
+          </dynamic-form>
+          
+          <!-- <div class="margin-top">
+            {{ form.value | json }}
+          </div> -->
+          
+      </div>
+  </div>
+</div>
+

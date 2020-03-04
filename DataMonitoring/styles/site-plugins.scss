@@ -1,0 +1,45 @@
+/*!
+ * SmartAdmin - Responsive WebApp
+ *
+ * Copyright 2014 bootstraphunter.com
+ * Designed and built with all the love in the world by @bootstraphunt.
+ */
+
+// Core variables and mixins
+@import "variables";
+@import "bootstrap/mixins";
+
+
+// Plugins imported alphabatically and by order (remove if not needed)
+
+@import "library/plugin/plugin-bootstrap-tree"; // new with v1.5
+@import "library/plugin/plugin-bootstrap-duallistbox"; // new with v1.5
+@import "library/plugin/plugin-bootstrap-markdown";
+@import "library/plugin/plugin-bootstrap-slider";
+@import "library/plugin/plugin-bootstrap-tagsinput";
+@import "library/plugin/plugin-bootstrap-timepicker";
+@import "library/plugin/plugin-bootstrap-validator"; // new with v1.5
+@import "library/plugin/plugin-cssemotions"; // new with v1.5
+@import "library/plugin/plugin-clockpicker";
+@import "library/plugin/plugin-colorpicker";
+@import "library/plugin/plugin-dataTables.bootstrap";
+@import "library/plugin/plugin-dataTables.colReorder";
+@import "library/plugin/plugin-dataTables.colVis";
+@import "library/plugin/plugin-dataTables.tableTools";
+@import "library/plugin/plugin-dataTables.responsive";
+@import "library/plugin/plugin-dataTables-cust";
+@import "library/plugin/plugin-dropzone";
+@import "library/plugin/plugin-easypiechart";
+@import "library/plugin/plugin-fd-slider";
+@import "library/plugin/plugin-fullcalendar";
+@import "library/plugin/plugin-ion";
+@import "library/plugin/plugin-jarviswidget";
+@import "library/plugin/plugin-jcrop";
+@import "library/plugin/plugin-jqgrid";
+@import "library/plugin/_plugin-jvectormap";
+@import "library/plugin/plugin-select2";
+@import "library/plugin/plugin-xeditable";
+@import "library/plugin/plugin-smart-notifications";
+@import "library/plugin/plugin-sparklines";
+@import "library/plugin/plugin-summernote";
+@import "library/plugin/plugin-superbox";

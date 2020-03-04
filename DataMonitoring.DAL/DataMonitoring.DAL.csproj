@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup Label="Globals">
+    <SccProjectName>SAK</SccProjectName>
+    <SccProvider>SAK</SccProvider>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccLocalPath>SAK</SccLocalPath>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Migrations\20181130073253_initial-create.cs" />
+    <Compile Remove="Migrations\20181203133033_initial-create.cs" />
+    <Compile Remove="Migrations\20181203133508_initial-create.cs" />
+    <Compile Remove="Migrations\20190220093609_28_AddColumns.cs" />
+    <Compile Remove="Migrations\20200117132708_SqLite_Connector.cs" />
+    <Compile Remove="Migrations\20200117132708_SqLite_Connector.Designer.cs" />
+    <Compile Remove="Migrations\20200120111935_SqLite-Connector.cs" />
+    <Compile Remove="Migrations\20200120111935_SqLite-Connector.Designer.cs" />
+    <Compile Remove="Migrations\20200124165612_ColorHtml.cs" />
+    <Compile Remove="Migrations\20200124165612_ColorHtml.Designer.cs" />
+    <Compile Remove="Migrations\20200124170259_ColorHtml.cs" />
+    <Compile Remove="Migrations\20200124170259_ColorHtml.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="2.2.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="2.2.2">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Extensions.Configuration" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.2.0" />
+    <PackageReference Include="NuGet.Protocol.Core.Types" Version="4.2.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="4.5.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DataMonitoring.Model\DataMonitoring.Model.csproj" />
+    <ProjectReference Include="..\Sodevlog\Sodevlog.csproj" />
+  </ItemGroup>
+
+
+</Project>

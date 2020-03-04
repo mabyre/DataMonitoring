@@ -1,0 +1,28 @@
+<div [formGroup]="indicatorCalculated">
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <label>
+        {{'Indicator Dividend' | i18n}} / {{'Indicator Divisor' | i18n}}
+      </label>
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-3">
+      <label for="indicatorOneId">{{'Indicator Dividend' | i18n}}</label>
+      <select formControlName="indicatorOneId" class="form-control">
+        <option *ngFor="let i of indicators" [value]="i.id">
+          {{i.title}}
+        </option>
+      </select>
+    </div>
+    <div class="form-group col-sm-3">
+      <label for="indicatorTwoId">{{'Indicator Divisor' | i18n}}</label>
+      <select formControlName="indicatorTwoId" class="form-control">
+        <option *ngFor="let i of indicators" [value]="i.id">
+          {{i.title}}
+        </option>
+      </select>
+    </div>
+  </div>
+</div>
+
