@@ -106,7 +106,7 @@ namespace DataMonitoring.Test
         [Test]
         public void GetDataToTestWidgetTest()
         {
-            var data = MonitorBusiness.CreateDataToTestWidget(DataMonitoringModel.NewIndicatorTableWidget());
+            var data = MonitorBusiness.SimulateDataToTestTableWidget(DataMonitoringModel.NewIndicatorTableWidget());
         }
     }
 }

@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, OnDestroy } from '@angular/core';
-import {FormGroup, FormArray, FormControl, Validators} from "@angular/forms";
-import {Indicator} from "@app/setting/indicator/indicator";
-import {Color} from "@app/shared/models/color";
-import {TargetIndicatorChartWidget} from "@app/widget/models/indicator-chart-widget";
-import {WidgetsService} from "@app/widget/widget.service";
-import {IndicatorService} from "@app/setting/indicator/indicator.service";
-import {TimeManagementService} from "@app/setting/time-management/time-management-service";
-import {Subscription} from "rxjs";
+import { FormGroup, FormArray, FormControl, Validators } from "@angular/forms";
+import { Indicator } from "@app/setting/indicator/indicator";
+import { Color } from "@app/shared/models/color";
+import { TargetIndicatorChartWidget } from "@app/widget/models/indicator-chart-widget";
+import { WidgetsService } from "@app/widget/widget.service";
+import { IndicatorService } from "@app/setting/indicator/indicator.service";
+import { TimeManagementService } from "@app/setting/time-management/time-management-service";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: 'app-indicator-chart-widget',
@@ -37,11 +37,13 @@ export class IndicatorChartWidgetComponent implements OnInit, OnDestroy {
     if (this.timeManagementId != null) {
       this.refreshTimeManagementState(this.timeManagementId);
     }
-    
+
     this.indicatorsService.get()
       .subscribe(result => {
+        // BRY_20200305 je peux choisir type : snapshot
+        this.indicatorList = result;
         // Uniquement des Indicateurs de type IndicatorType.Flow OU IndicatorType.Ratio
-        this.indicatorList = result.filter(x => x.type == 1 || x.type == 2);
+        //this.indicatorList = result.filter(x => x.type == 1 || x.type == 2);
       }, error => {
         this.errorMessage = error;
       });
@@ -61,7 +63,7 @@ export class IndicatorChartWidgetComponent implements OnInit, OnDestroy {
         });
     }
   }
-  
+
   resetTargetList(): any {
     const targetList = this.indicatorChartWidget.get('targetIndicatorChartWidgetFormList') as FormArray;
     while (targetList.length) {

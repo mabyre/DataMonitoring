@@ -2,9 +2,12 @@
   -- Button_Reset_Form
   --
   -- TAB_General
-  --    Pour_le_FlowIndicator_uniquement
-  --    Si_c_est_pas_un_indicateur_Ratio
-  --    Si_c_est_un_indicateur_Ratio
+  --   Indicator_Title
+  --   Type_Indicator
+  --   Pour_le_FlowIndicator_uniquement
+  --   Si_c_est_pas_un_indicateur_Ratio
+  --     Select_Gestion_du_temps
+  --   Si_c_est_un_indicateur_Ratio
   -- TAB_Connector
   -- Button_Back_Save
   -->
@@ -53,6 +56,7 @@
           <!-- TAB_General -->
           <tab [active]="tabnumber == 0">
 
+            <!-- Indicator_Title -->
             <div class="form-group">
               <label for="title">{{'Title' | i18n}}</label>
               <input type="text" id="title" class="form-control" formControlName="title">
@@ -70,7 +74,7 @@
 
             <div class="row ">
               <div class="col-md-6 col-xs-6 form-group">
-                <!-- Type Indicator : Snapshot = 0, Flow = 1 Ratio = 2 -->
+                <!-- Type_Indicator : Snapshot = 0, Flow = 1 Ratio = 2 -->
                 <label for="type">{{'Type' | i18n}}</label>
                 <select formControlName="type" id="type" class="form-control">
                   <option *ngFor="let type of indicatorTypes" [value]="type.value">
@@ -100,7 +104,7 @@
               </div>
             </div>
 
-            <!-- Si_c_est_pas_un_indicateur_Ratio : Gestion du temps -->
+            <!-- Si_c_est_pas_un_indicateur_Ratio : Select_Gestion_du_temps -->
             <div class="row ">
               <div class="col-md-6 col-xs-6 form-group">
                 <div *ngIf="indicatorForm.get('type').value != 2">
@@ -110,19 +114,22 @@
                       {{tm.name}}
                     </option>
                   </select>
+                  <small *ngIf="indicatorForm.get('timeManagementId').value == ''" class="text-danger">
+                    {{'Required' | i18n}}.
+                  </small>
                 </div>
               </div>
             </div>
 
             <!-- Si_c_est_un_indicateur_Ratio -->
             <div class="row ">
-                <div *ngIf="indicatorForm.get('type').value == 2">
-                  <div formArrayName="indicatorCalculated" class="col-md-12 col-xs-12 form-group">
-                      <app-indicator-calculated [indicatorCalculated]="getIndicatorCalculatedArray().controls[0]"
-                                                [errorMessage]="errorMessage">
-                      </app-indicator-calculated>
-                  </div>
+              <div *ngIf="indicatorForm.get('type').value == 2">
+                <div formArrayName="indicatorCalculated" class="col-md-12 col-xs-12 form-group">
+                  <app-indicator-calculated [indicatorCalculated]="getIndicatorCalculatedArray().controls[0]"
+                                            [errorMessage]="errorMessage">
+                  </app-indicator-calculated>
                 </div>
+              </div>
             </div>
 
           </tab>

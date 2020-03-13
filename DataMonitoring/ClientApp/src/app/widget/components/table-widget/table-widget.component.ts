@@ -1,12 +1,12 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import {Indicator} from "@app/setting/indicator/indicator";
-import {FormGroup, FormArray, FormControl, Validators} from "@angular/forms";
-import {Color} from "@app/shared/models/color";
-import {Style} from "@app/shared/models/style";
-import {CdkDragDrop, moveItemInArray} from "@angular/cdk/drag-drop";
-import {IndicatorService} from "@app/setting/indicator/indicator.service";
-import {TableWidgetColumn} from "@app/widget/models/indicator-table-widget";
-import {WidgetsService} from "@app/widget/widget.service";
+import { Indicator } from "@app/setting/indicator/indicator";
+import { FormGroup, FormArray, FormControl, Validators } from "@angular/forms";
+import { Color } from "@app/shared/models/color";
+import { Style } from "@app/shared/models/style";
+import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
+import { IndicatorService } from "@app/setting/indicator/indicator.service";
+import { TableWidgetColumn } from "@app/widget/models/indicator-table-widget";
+import { WidgetsService } from "@app/widget/widget.service";
 
 @Component({
     selector: 'app-table-widget',
@@ -29,8 +29,7 @@ export class TableWidgetComponent implements OnInit, OnChanges {
   public columns: string[] = [];
   public dataColumnList: string[] = [];
   public dataColumnWithTranspositionColumnList: string[] = [];
-
-
+  
   constructor(private indicatorsService: IndicatorService, private widgetService: WidgetsService) { }
 
   ngOnInit() {

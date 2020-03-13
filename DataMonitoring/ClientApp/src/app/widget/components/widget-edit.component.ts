@@ -399,7 +399,7 @@ export class WidgetEditComponent implements OnInit {
     }
 
     return false;
-}
+  }
 
   onTimeManagementChange() {
     const selectedTimeManagementId = this.widgetForm.get('timeManagementId').value;

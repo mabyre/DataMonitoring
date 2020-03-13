@@ -1,7 +1,7 @@
 ﻿// 
 //  Créé les chaînes Html pour le contenu des Widgets
 //  Très spécifique de SmartAdmin, par exemple text-align-left
-// se trouve dans \wwwroot\css\smartadmin.css
+//  se trouve dans \wwwroot\css\smartadmin.css
 //
 using DataMonitoring.Model;
 using Newtonsoft.Json.Linq;
@@ -113,7 +113,7 @@ namespace DataMonitoring.Business
             var classDef = color != null && !string.IsNullOrEmpty(color.TxtClassName) ? color.TxtClassName : string.Empty;
             classDef += $" {GetTextAlignClass(alignStyle)}";
 
-            // _BRY_ Progess bar un peu plus "sympa"
+            // BRY_ ProgessBar un peu plus "sympa" avec 58% de place
             string style = string.Empty;
             if ( columnStyle == ColumnStyle.ProgressBar )
             {
@@ -485,7 +485,7 @@ namespace DataMonitoring.Business
             return value ? "true" : "false";
         }
 
-        public static string CreateVariableData(IEnumerable<JToken> data, string decimalMask, TimeZoneInfo timeZoneInfo, bool localDate)
+        public static string CreateChartFlowData(IEnumerable<JToken> data, string decimalMask, TimeZoneInfo timeZoneInfo, bool localDate)
         {
             var content = "var result = [";
             var index = 0;
@@ -512,7 +512,45 @@ namespace DataMonitoring.Business
             }
 
             content += "];";
+            content += "var labels = result.map(function(el) { return el.x; });";
+            content += "var data = result.map(function(el) { return el.y; });";
 
+            return content;
+        }
+
+        public static string CreateChartSnapShotData( IEnumerable<JToken> data, string decimalMask, TimeZoneInfo timeZoneInfo, bool localDate )
+        {
+            var content = "var result = [";
+            var index = 0;
+
+            foreach ( JToken token in data )
+            {
+                string nameX = string.Empty;
+                string nameY = string.Empty;
+
+                foreach ( JProperty jProp in token.Children() )
+                {
+                    if ( nameX == string.Empty )
+                    { 
+                        nameX = jProp.Name;
+                    }
+                    else
+                    {
+                        nameY = jProp.Name;
+                    }
+                }
+
+                var varX = token.SelectToken( nameX ).Value<System.Int16>();
+                var varY = token.SelectToken( nameY ).Value<decimal>().ToString( decimalMask );
+                varY = varY.Replace( ",", "." );
+
+                if ( index != 0 ) { content += ","; }
+
+                content += $"{{ x: {varX}, y: {varY}}}";
+                index++;
+            }
+
+            content += "];";
             content += "var labels = result.map(function(el) { return el.x; });";
             content += "var data = result.map(function(el) { return el.y; });";
 
@@ -535,7 +573,7 @@ namespace DataMonitoring.Business
             return content;
         }
 
-        public static string ScriptChartOptions(bool displayLegend, bool displayAxeX, bool displayAxeY, int fontSize,
+        public static string ScriptChartFlowOptions(bool displayLegend, bool displayAxeX, bool displayAxeY, int fontSize,
             string colorAxeX, string colorAxeY, bool displayDataAxeY, DateTime? dateMin, DateTime? dateMax,
             int yMinValue)
         {
@@ -560,14 +598,32 @@ namespace DataMonitoring.Business
             return content;
         }
 
+        public static string ScriptChartSnapShotOptions( bool displayLegend, bool displayAxeX, bool displayAxeY, int fontSize,
+            string colorAxeX, string colorAxeY, bool displayDataAxeY, int yMinValue )
+        {
+            var content = $"title: {{display:false}},legend:{{display:{BoolValue( displayLegend )}}},";
+
+            content += "scales:{";
+            content += $"xAxes: [{{display:{BoolValue( displayAxeX )},type:'line',";
+            content += "},";
+            content += $"ticks:{{fontColor: '{colorAxeX}',fontSize: {fontSize},}},";
+            content += "gridLines:{display:false} }],";
+
+            content += $"yAxes: [{{display:{BoolValue( displayAxeY )},gridLines:{{display:false}},";
+            content += $"ticks:{{display: {BoolValue( displayDataAxeY )},beginAtZero: true, min:{yMinValue}, fontColor: '{colorAxeY}',fontSize: {fontSize}}},}}]";
+            content += "}";
+
+            return content;
+        }
+
         public static string ScriptChartData(string label, string data, bool fill, string color,int borderSize, bool isDashed)
         {
-            var content = $"{{label: '{label}',data: {data},borderWidth: {borderSize},fill: {BoolValue(fill)},backgroundColor: '{color}',";
-            //if (isDashed) content += "borderDash:[10,10],";
-            //content += "borderDash:[10,10],";
-            //content += $"pointBackgroundColor: 'rgba(220,220,220,1)',";
+            var content = $"{{";
+            content += $"label: '{label}',data: {data},borderWidth: {borderSize},fill: {BoolValue(fill)},backgroundColor: '{color}',";
+            if (isDashed) content += "borderDash:[10,10],";
             content += $"pointStyle: 'circle',";
-            content += $"pointBackgroundColor: '#ff0000',";
+            content += $"pointBackgroundColor: 'rgba(220,220,220,1)',";
+            //content += $"pointBackgroundColor: '#ff0000',";
             content += $"pointBorderColor: '#fff',";
 
             content += $"borderColor: '{color}',"; //,radius: 0,}},";

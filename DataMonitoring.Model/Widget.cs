@@ -13,7 +13,8 @@ namespace DataMonitoring.Model
         MultiVerticalTable,
         Chart,
         Bar,
-        Gauge
+        Gauge,
+        Line
     }
 
     public static class HelperWidgetType

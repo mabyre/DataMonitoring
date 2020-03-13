@@ -60,7 +60,7 @@ export class QueryConnectorComponent implements OnInit {
     this.rows = data;
     this.loadingIndicator = false;
 
-    if (this.indicatorType == 1) { // si de type Flow
+    if (this.indicatorType == 1) { // si indicator de type Flow
       this.errorMessage = this.indicatorsService.IsFlowValidColumns(this.columns);
     }
   }

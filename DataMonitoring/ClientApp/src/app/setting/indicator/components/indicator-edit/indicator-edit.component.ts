@@ -51,7 +51,7 @@ export class IndicatorEditComponent implements OnInit {
         this.timeManagements = result;
       }, error => {
         this.errorMessage = error;
-    });
+      });
 
     this.indicatorsService.getIndicatorTypes()
       .subscribe(result => {

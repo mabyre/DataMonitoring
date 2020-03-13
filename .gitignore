@@ -3,3 +3,16 @@
 ################################################################################
 
 /.vs/DataMonitoringApp/v16/Server/sqlite3
+/.vs/DataMonitoringApp-git
+/DataMonitoring/ClientApp/node_modules
+/DataMonitoring.Business/bin/Debug/netstandard2.0
+/DataMonitoring.Business/obj
+/DataMonitoring.DAL/bin/Debug/netstandard2.0
+/DataMonitoring.DAL/obj/Debug/netstandard2.0
+/DataMonitoring.Model/bin/Debug/netstandard2.0
+/DataMonitoring.Model/obj
+/DataMonitoring.Test/bin/Debug/netcoreapp2.2
+/DataMonitoring.Test/obj
+/Sodevlog/bin/Debug/netstandard2.0
+/Sodevlog/obj/Debug/netstandard2.0
+/Sodevlog/obj

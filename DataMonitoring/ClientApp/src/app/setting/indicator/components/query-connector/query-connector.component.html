@@ -16,14 +16,18 @@
     <br/>
     <label for="query"> 
       <alert type="warning">
-        <i class="fa-fw fa fa-warning"></i> 
+        <i class="fa-fw fa fa-warning"></i>
+        Vous pouvez faire une requête de type : SELECT TOP n<br />
+        ou requête temporelle afin de limiter le nombre de lignes.
+        <br /><br />
+        Dans cas d'une requête temporelle, elle :<br />
         {{'MustContainDate' | i18n}}
-        <br/>
+        <br />
         {{'localDate' | i18n}}
-        <br/>
+        <br />
         {{'utcDate' | i18n}}
-        <br/>
-        {{'MustContainDateExemple' | i18n}}  
+        <br />
+        {{'MustContainDateExemple' | i18n}}
       </alert>
       <alert *ngIf="indicatorType == 1" type="warning">
         <i class="fa-fw fa fa-warning"></i> 

@@ -6,7 +6,6 @@ import {Indicator, QueryConnector} from "./indicator";
 import {I18nService} from "@app/shared/i18n/i18n.service";
 import {Observable} from "rxjs";
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -33,6 +32,8 @@ export class IndicatorService extends BaseService<Indicator> {
       return this.i18nService.getTranslation('DeleteQueryNotAllowed');
     } else if (value.toUpperCase().includes("UPDATE")) {
       return this.i18nService.getTranslation('UpdateQueryNotAllowed');
+    } else if (value.toUpperCase().includes("SELECT TOP")) {
+      return null;
     } else if (!(value.includes("%%localDate%%") || value.includes("%%utcDate%%"))) {
       return this.i18nService.getTranslation('DateQueryMissing');
     } else {

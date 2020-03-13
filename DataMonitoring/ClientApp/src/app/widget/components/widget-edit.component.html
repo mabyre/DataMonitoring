@@ -6,7 +6,7 @@
   -- Form_Header_Title
   -- Tabulation_Navigation
   -- TAB_General
-  --   Drop_Down_Box_Type_de_Gaphe
+  --   Drop_Down_Box_Type_de_Graphe
   -- TAB_Measure
   --   IndicatorTable_Widget
   --   Button_Add_Colum_and_Collapse
@@ -15,6 +15,7 @@
   --   IndicatorChart_Widget
   --   IndicatorGauge_Widget
   -- TAB_Preview
+  --   Monitor_Widget
   -->
 <div id="content">
 
@@ -96,7 +97,7 @@
           <!-- TAB_General -->
           <tab [active]="tabnumber == 0">
 
-            <!-- Drop_Down_Box_Type_de_Gaphe uniquement en mode ajout -->
+            <!-- Drop_Down_Box_Type_de_Graphe Uniquement en mode ajout -->
             <div class="row" *ngIf="widget.id === 0">
               <div class="col-md-5 form-group">
                 <label for="type" class="font-sm">
@@ -310,15 +311,17 @@
           <tab [active]="tabnumber == 2">
             <div class="row">
 
-              <div class="col-md-8 form-group" *ngIf="isChartWidget">
+              <!-- BRY_HIDDEN -->
+              <!--<div class="col-md-8 form-group" *ngIf="isChartWidget">
                 <label for="timeZone">{{'TimeZone' | i18n}}</label>
                 <select *ngIf="timeZones" formControlName="timeZone" class="form-control">
                   <option *ngFor="let tz of timeZones" [value]="tz.id">
                     {{tz.displayName}}
                   </option>
                 </select>
-              </div>
+              </div>-->
 
+              <!-- Monitor_Widget -->
               <div class="col-md-12 ">
                 <app-monitorWidget *ngIf="widget.id!=0"
                                    [refreshButton]=true

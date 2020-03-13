@@ -728,7 +728,7 @@
   <Enum Name="DataMonitoring.Model.WidgetType">
     <Position X="20" Y="8" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAgAgAAAAAAAQABAAAAAAEAAAAQAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAgAgAAAAAAAQABAAAAAAEAAAAQAAAABAAA=</HashCode>
       <FileName>Widget.cs</FileName>
     </TypeIdentifier>
   </Enum>

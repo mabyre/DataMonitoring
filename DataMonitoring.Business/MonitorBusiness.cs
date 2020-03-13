@@ -188,6 +188,11 @@ namespace DataMonitoring.Business
                 return await CreateHtmlGaugeWidgetAsync( widget, timeZoneInfo, forTest, position );
             }
 
+            if ( widget.Type == WidgetType.Line )
+            {
+                return await CreateScriptLineChartAsync( widget, timeZoneInfo, forTest, position );
+            }
+
             Logger.LogError( $"Widget's type : {widget.Type.ToString()} unknown!" );
 
             return "<p>Error: Widget's type unknown!</p>";
@@ -218,7 +223,7 @@ namespace DataMonitoring.Business
 
                     if (indicatorWidget.TitleIndicatorDisplayed)
                     {
-                        htmlContent += await TableIndicatorTitleAsync(indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type);
+                        htmlContent += await HtmlIndicatorTitleAsync(indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type);
                     }
                 }
 
@@ -259,7 +264,7 @@ namespace DataMonitoring.Business
 
                 htmlContent += HtmlWidgetComponent.TableLineBegin();
                 htmlContent += HtmlWidgetComponent.TableColumnBegin( nbColumn );
-                htmlContent += await TableIndicatorTitleAsync( indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type );
+                htmlContent += await HtmlIndicatorTitleAsync( indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type );
                 htmlContent += HtmlWidgetComponent.TableColumnEnd();
                 htmlContent += HtmlWidgetComponent.TableLineEnd();
             }
@@ -441,7 +446,7 @@ namespace DataMonitoring.Business
             {
                 if ( forTest )
                 {
-                    data = GetDataForTest( CreateDataToTestWidget( indicatorWidget ), listIndicatorColumns, listColumnsNotDisplayed, listColumnsAggregate );
+                    data = GetDataForTest( SimulateDataToTestTableWidget( indicatorWidget ), listIndicatorColumns, listColumnsNotDisplayed, listColumnsAggregate );
                 }
                 else
                 {
@@ -464,7 +469,7 @@ namespace DataMonitoring.Business
             return data;
         }
 
-        public IEnumerable<JToken> CreateDataToTestWidget(IndicatorTableWidget indicatorWidget)
+        public IEnumerable<JToken> SimulateDataToTestTableWidget(IndicatorTableWidget indicatorWidget)
         {
             JTokenWriter writer = new JTokenWriter();
             writer.WriteStartArray();
@@ -573,7 +578,7 @@ namespace DataMonitoring.Business
                 if (indicatorWidget.TitleIndicatorDisplayed)
                 {
                     htmlContent += HtmlWidgetComponent.DivBegin();
-                    htmlContent += await TableIndicatorTitleAsync(indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type);
+                    htmlContent += await HtmlIndicatorTitleAsync(indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type);
                     htmlContent += HtmlWidgetComponent.DivEnd();
                 }
 
@@ -583,7 +588,12 @@ namespace DataMonitoring.Business
 
                 htmlContent += HtmlWidgetComponent.ScriptBegin();
 
-                htmlContent += await CreateScriptBarChartAsync(chartName, indicatorWidget, forTest, position);
+                //htmlContent += await CreateScriptBarChartAsync( chartName, indicatorWidget, forTest, position );
+
+                // TEST_GRAPH_JS
+                string path = @"C:\Users\mabyre\Temp\BarChart-001.txt";
+                htmlContent += System.IO.File.ReadAllText( path );
+                htmlContent = htmlContent.Replace( "myChart", chartName );
 
                 htmlContent += HtmlWidgetComponent.ScriptEnd();
             }
@@ -897,7 +907,7 @@ namespace DataMonitoring.Business
             {
                 if ( forTest )
                 {
-                    data = GetDataForTest( CreateDataToTestWidget( indicatorWidget ), listIndicatorColumns, listColumnsNotDisplayed, listColumnsAggregate );
+                    data = GetDataForTest( SimulateDataToTestBarWidget( indicatorWidget ), listIndicatorColumns, listColumnsNotDisplayed, listColumnsAggregate );
                 }
                 else
                 {
@@ -912,7 +922,7 @@ namespace DataMonitoring.Business
             return data;
         }
 
-        public IEnumerable<JToken> CreateDataToTestWidget(IndicatorBarWidget indicatorWidget)
+        public IEnumerable<JToken> SimulateDataToTestBarWidget(IndicatorBarWidget indicatorWidget)
         {
             JTokenWriter writer = new JTokenWriter();
             writer.WriteStartArray();
@@ -967,7 +977,7 @@ namespace DataMonitoring.Business
                 if (indicatorWidget.TitleIndicatorDisplayed)
                 {
                     htmlContent += HtmlWidgetComponent.DivBegin();
-                    htmlContent += await TableIndicatorTitleAsync(indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type);
+                    htmlContent += await HtmlIndicatorTitleAsync(indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type);
                     htmlContent += HtmlWidgetComponent.DivEnd();
                 }
 
@@ -977,7 +987,12 @@ namespace DataMonitoring.Business
 
                 htmlContent += HtmlWidgetComponent.ScriptBegin();
 
-                htmlContent += await CreateScriptChartAsync(chartName, indicatorWidget, timeZoneInfo, forTest, position);
+                //htmlContent += await CreateScriptChartAsync(chartName, indicatorWidget, timeZoneInfo, forTest, position);
+                
+                // TEST_GRAPH_JS
+                string path = @"C:\Users\mabyre\Temp\Chart-Graph-001.txt";
+                htmlContent += System.IO.File.ReadAllText( path );
+                htmlContent = htmlContent.Replace( "myChart", chartName );
 
                 htmlContent += HtmlWidgetComponent.ScriptEnd();
             }
@@ -986,7 +1001,10 @@ namespace DataMonitoring.Business
 
         private async Task<string> CreateScriptChartAsync(string chartName, IndicatorChartWidget indicatorWidget, TimeZoneInfo timeZoneInfo, bool forTest, string position)
         {
-            var htmlContent = string.Empty;
+            string htmlContent = string.Empty;
+            string dataSets = string.Empty;
+            string options = string.Empty;
+            string plugin = string.Empty;
 
             var timeRange = indicatorWidget.Widget.TimeManagementId != null
                 ? await TimeManagementBusiness.GetTimeRangeAsync(indicatorWidget.Widget.TimeManagementId.Value)
@@ -994,68 +1012,123 @@ namespace DataMonitoring.Business
 
             if (timeRange == null)
             {
+                Logger.LogError( $"CreateScriptChartAsync: timeRange == null" );
                 return htmlContent;
             }
 
-            var data = GetChartWidgetData(indicatorWidget, timeRange, forTest).ToList();
-            htmlContent += HtmlWidgetComponent.CreateVariableData(data, indicatorWidget.DecimalMask, timeZoneInfo, true);
-
-            var yMinValue = GetYMinValue(
-                indicatorWidget.AxeYIsAutoAdjustableAccordingMinValue, 
-                indicatorWidget.AxeYOffsetFromMinValue, 
-                data);
-
-            var dateMinUtc = timeRange.StartTimeUtc;
-            var dateMaxUtc = DateTime.UtcNow;
-
-            if (timeRange.EndTimeUtc.HasValue)
+            var indicatorDefinition = Repository<IndicatorDefinition>().SingleOrDefault( x => x.Id == indicatorWidget.IndicatorDefinitionId );
+            if ( indicatorDefinition.Type == IndicatorType.Snapshot )
             {
-                dateMaxUtc = timeRange.EndTimeUtc.Value;
+                var data = GetSnapshotValueIndicator( indicatorDefinition.Id, timeRange.StartTimeUtc );
+                htmlContent += HtmlWidgetComponent.CreateChartSnapShotData( data, indicatorWidget.DecimalMask, timeZoneInfo, true );
+
+                var yMinValue = GetYMinValue(
+                    indicatorWidget.AxeYIsAutoAdjustableAccordingMinValue,
+                    indicatorWidget.AxeYOffsetFromMinValue,
+                    data );
+
+                var classColor = Repository<ColorHtml>().SingleOrDefault( x => x.Name == indicatorWidget.ChartDataColor );
+                var chartDataColor = classColor != null ? classColor.HexColorCode : "Black";
+
+                if ( data.Any() )
+                {
+                    dataSets += HtmlWidgetComponent.ScriptChartData( string.Empty, "data", indicatorWidget.ChartDataFill, chartDataColor, 1, false );
+                }
+
+                classColor = Repository<ColorHtml>().SingleOrDefault( x => x.Name == indicatorWidget.AxeXColor );
+                var axeXColor = classColor != null ? classColor.HexColorCode : "Black";
+
+                classColor = Repository<ColorHtml>().SingleOrDefault( x => x.Name == indicatorWidget.AxeYColor );
+                var axeYColor = classColor != null ? classColor.HexColorCode : "Black";
+
+                options = HtmlWidgetComponent.ScriptChartSnapShotOptions( false, indicatorWidget.AxeXDisplayed,
+                    indicatorWidget.AxeYDisplayed, indicatorWidget.AxeFontSize, axeXColor,
+                    axeYColor, indicatorWidget.AxeYDataDisplayed, yMinValue );
+            }
+            else // IndicatorType.Flow
+            {
+                var data = GetChartWidgetFlowData( indicatorWidget, timeRange, forTest ).ToList();
+                htmlContent += HtmlWidgetComponent.CreateChartFlowData( data, indicatorWidget.DecimalMask, timeZoneInfo, true );
+
+                var yMinValue = GetYMinValue(
+                    indicatorWidget.AxeYIsAutoAdjustableAccordingMinValue,
+                    indicatorWidget.AxeYOffsetFromMinValue,
+                    data );
+
+                var dateMinUtc = timeRange.StartTimeUtc;
+                var dateMaxUtc = DateTime.UtcNow;
+
+                if ( timeRange.EndTimeUtc.HasValue )
+                {
+                    dateMaxUtc = timeRange.EndTimeUtc.Value;
+                }
+
+                if ( indicatorWidget.ChartTargetDisplayed )
+                {
+                    dataSets += AddChartDataSetTarget( indicatorWidget, timeZoneInfo, dateMinUtc, dateMaxUtc );
+                }
+
+                if ( indicatorWidget.ChartAverageDisplayed && data.Any() )
+                {
+                    dataSets += AddChartDataSetAverage( indicatorWidget, data, timeZoneInfo, dateMinUtc, dateMaxUtc );
+                }
+
+                var classColor = Repository<ColorHtml>().SingleOrDefault( x => x.Name == indicatorWidget.ChartDataColor );
+                var chartDataColor = classColor != null ? classColor.HexColorCode : "Black";
+
+                if ( data.Any() )
+                {
+                    dataSets += HtmlWidgetComponent.ScriptChartData( string.Empty, "data", indicatorWidget.ChartDataFill, chartDataColor, 1, false );
+                }
+
+                var dateMinLocal = timeZoneInfo != null
+                    ? TimeZoneInfo.ConvertTimeFromUtc( dateMinUtc, timeZoneInfo )
+                    : dateMinUtc.ToLocalTime();
+
+                var dateMaxLocal = timeZoneInfo != null
+                    ? TimeZoneInfo.ConvertTimeFromUtc( dateMaxUtc, timeZoneInfo )
+                    : dateMaxUtc.ToLocalTime();
+
+                classColor = Repository<ColorHtml>().SingleOrDefault( x => x.Name == indicatorWidget.AxeXColor );
+                var axeXColor = classColor != null ? classColor.HexColorCode : "Black";
+
+                classColor = Repository<ColorHtml>().SingleOrDefault( x => x.Name == indicatorWidget.AxeYColor );
+                var axeYColor = classColor != null ? classColor.HexColorCode : "Black";
+
+                options = HtmlWidgetComponent.ScriptChartFlowOptions( false, indicatorWidget.AxeXDisplayed,
+                    indicatorWidget.AxeYDisplayed, indicatorWidget.AxeFontSize, axeXColor,
+                    axeYColor, indicatorWidget.AxeYDataDisplayed, dateMinLocal, dateMaxLocal, yMinValue );
             }
 
-            var dataSets = string.Empty;
-
-            if (indicatorWidget.ChartTargetDisplayed)
-            {
-                dataSets += AddChartDataSetTarget(indicatorWidget, timeZoneInfo, dateMinUtc, dateMaxUtc);
-            }
-
-            if (indicatorWidget.ChartAverageDisplayed && data.Any())
-            {
-                dataSets += AddChartDataSetAverage(indicatorWidget, data, timeZoneInfo, dateMinUtc, dateMaxUtc);
-            }
-
-            var classColor = Repository<ColorHtml>().SingleOrDefault(x => x.Name == indicatorWidget.ChartDataColor);
-            var chartDataColor = classColor != null ? classColor.HexColorCode : "Black";
-
-            if (data.Any())
-            {
-                dataSets += HtmlWidgetComponent.ScriptChartData(string.Empty, "data", indicatorWidget.ChartDataFill, chartDataColor, 1, false);
-            }
-
-            var dateMinLocal = timeZoneInfo != null
-                ? TimeZoneInfo.ConvertTimeFromUtc(dateMinUtc, timeZoneInfo)
-                : dateMinUtc.ToLocalTime();
-
-            var dateMaxLocal = timeZoneInfo != null
-                ? TimeZoneInfo.ConvertTimeFromUtc(dateMaxUtc, timeZoneInfo)
-                : dateMaxUtc.ToLocalTime();
-
-            classColor = Repository<ColorHtml>().SingleOrDefault(x => x.Name == indicatorWidget.AxeXColor);
-            var axeXColor = classColor != null ? classColor.HexColorCode : "Black";
-
-            classColor = Repository<ColorHtml>().SingleOrDefault(x => x.Name == indicatorWidget.AxeYColor);
-            var axeYColor = classColor != null ? classColor.HexColorCode : "Black";
-
-            var options = HtmlWidgetComponent.ScriptChartOptions(false, indicatorWidget.AxeXDisplayed,
-                indicatorWidget.AxeYDisplayed, indicatorWidget.AxeFontSize, axeXColor,
-                axeYColor, indicatorWidget.AxeYDataDisplayed, dateMinLocal, dateMaxLocal, yMinValue);
-
-            var plugin = HtmlWidgetComponent.ScriptPluginChart(indicatorWidget.AxeFontSize);
+            plugin = HtmlWidgetComponent.ScriptPluginChart( indicatorWidget.AxeFontSize );
 
             htmlContent += HtmlWidgetComponent.getChartConfig("labels", dataSets, options, plugin);
 
             htmlContent += HtmlWidgetComponent.ScriptChart(chartName, position);
+
+            // TEST_GRAPH verifier qu'un graphique s'affiche attention a Chart9 "en dur"
+            //htmlContent = "var result = [{ x: '2020-03-06 08:00', y: 80},{ x: '2020-03-06 08:15', y: 97},{ x: '2020-03-06 08:30', y: 82},{ x: '2020-03-06 08:45', y: 93},{ x: '2020-03-06 09:00', y: 88},{ x: '2020-03-06 09:15', y: 99},{ x: '2020-03-06 09:30', y: 87},{ x: '2020-03-06 09:45', y: 97},{ x: '2020-03-06 10:00', y: 87},{ x: '2020-03-06 10:15', y: 94},{ x: '2020-03-06 10:30', y: 81},{ x: '2020-03-06 10:45', y: 82},{ x: '2020-03-06 11:00', y: 95},{ x: '2020-03-06 11:15', y: 89},{ x: '2020-03-06 11:30', y: 85},{ x: '2020-03-06 11:45', y: 99},{ x: '2020-03-06 12:00', y: 98},{ x: '2020-03-06 12:15', y: 91},{ x: '2020-03-06 12:30', y: 97},{ x: '2020-03-06 12:45', y: 87}]; var labels = result.map( function( el ) { return el.x; }); var data = result.map( function( el ) { return el.y; }); var config = { type:'line',data: { labels: labels,datasets:[{ label: '',data: data,borderWidth: 1,fill: true,backgroundColor: '#71A06A',pointStyle: 'circle',pointBackgroundColor: 'rgba(220,220,220,1)',pointBorderColor: '#fff',borderColor: '#71A06A',},]},options: { title: { display: false},legend: { display: false},scales: { xAxes: [{ display: true,type: 'time',time: { unit: 'hour',displayFormats: { hour: 'HH:mm'},min: '2020-03-06 08:00',max: '2020-03-06 20:05'},ticks: { fontColor: '#71A06A',fontSize: 20,},gridLines: { display: false} }],yAxes: [{ display: true,gridLines: { display: false},ticks: { display: true,beginAtZero: true, min: 0, fontColor: '#71A06A',fontSize: 20},}]} },plugins:[{ afterDraw: function( chartInstance ) { var ctx = chartInstance.chart.ctx; ctx.font = '20px Arial'; ctx.textBaseline = 'top'; var meta = chartInstance.chart.getDatasetMeta( 0 ); var xScale = chartInstance.chart.scales[meta.xAxisID]; chartInstance.data.datasets.forEach( function( dataset ) { if ( dataset.label == 'TARGET' ) { ctx.textAlign = 'left'; ctx.fillStyle = dataset.borderColor; ctx.fillText( dataset.label, xScale.getPixelForValue( xScale.max ) - 70, 0 ); } if ( dataset.label == 'AVERAGE' )";
+            //htmlContent += "{ ctx.textAlign = 'left'; ctx.fillStyle = dataset.borderColor; ctx.fillText( dataset.label, xScale.getPixelForValue( xScale.max ) - 160, 0 ); } })} }]};if (myChart11) { myChart11.destroy(); }";
+            //htmlContent += "var ctx = document.getElementById( 'Chart9' ).getContext( '2d' ); var myChart11 = new Chart( ctx, config )";
+
+            return htmlContent;
+        }
+
+        private async Task<string> CreateScriptLineChartAsync( Widget widget, TimeZoneInfo timeZoneInfo, bool forTest, string position )
+        {
+            string htmlContent = string.Empty;
+            var chartName = $"Chart{widget.Id}";
+
+            htmlContent += HtmlWidgetComponent.ChartName( chartName );
+
+            htmlContent += HtmlWidgetComponent.ScriptBegin();
+
+            // TEST_GRAPH_JS 
+            string path = @"C:\Users\mabyre\Temp\LineChart-002.txt";
+            htmlContent += System.IO.File.ReadAllText( path );
+            htmlContent = htmlContent.Replace( "myChart", chartName );
+
+            htmlContent += HtmlWidgetComponent.ScriptEnd();
 
             return htmlContent;
         }
@@ -1205,39 +1278,39 @@ namespace DataMonitoring.Business
             return dataSet;
         }
 
-        public IEnumerable<JToken> GetChartWidgetData(IndicatorChartWidget indicatorWidget, TimeRange timeRange, bool forTest = false)
+        public IEnumerable<JToken> GetChartWidgetFlowData( IndicatorChartWidget indicatorWidget, TimeRange timeRange, bool forTest = false )
         {
             var listIndicatorColumns = indicatorWidget.IndicatorChartWidgetColumns.OfType<IIndicatorColumn>().ToList();
-            var listColumnsNotDisplayed = MonitorComponent.GetColumnsNotDisplayed(indicatorWidget);
-            var listColumnsAggregate = MonitorComponent.GetColumnsToAggregate(indicatorWidget);
+            var listColumnsNotDisplayed = MonitorComponent.GetColumnsNotDisplayed( indicatorWidget );
+            var listColumnsAggregate = MonitorComponent.GetColumnsToAggregate( indicatorWidget );
 
-            if (forTest)
+            if ( forTest )
             {
-                return GetDataForTest(CreateDataToTestWidget(indicatorWidget, timeRange), listIndicatorColumns,
-                    listColumnsNotDisplayed, listColumnsAggregate);
+                return GetDataForTest( SimulateDataToTestChartWidget( indicatorWidget, timeRange ), listIndicatorColumns,
+                    listColumnsNotDisplayed, listColumnsAggregate );
             }
 
-            var indicatorDefinition = Repository<IndicatorDefinition>().SingleOrDefault(x => x.Id == indicatorWidget.IndicatorDefinitionId);
+            var indicatorDefinition = Repository<IndicatorDefinition>().SingleOrDefault( x => x.Id == indicatorWidget.IndicatorDefinitionId );
 
-            switch (indicatorDefinition.Type)
+            switch ( indicatorDefinition.Type )
             {
                 case IndicatorType.Snapshot:
                     throw new InvalidOperationException();
 
                 case IndicatorType.Flow:
-                    return GetDataIndicatorValue(indicatorWidget.IndicatorDefinitionId, listIndicatorColumns, listColumnsNotDisplayed,
-                        listColumnsAggregate, timeRange);
+                    return GetDataIndicatorValue( indicatorWidget.IndicatorDefinitionId, listIndicatorColumns, listColumnsNotDisplayed,
+                        listColumnsAggregate, timeRange );
 
                 case IndicatorType.Ratio:
                     var indicator = (IndicatorCalculated)indicatorDefinition;
 
-                    var data1 = GetDataIndicatorValue(indicator.IndicatorDefinitionId1, listIndicatorColumns, listColumnsNotDisplayed,
-                        listColumnsAggregate, timeRange);
+                    var data1 = GetDataIndicatorValue( indicator.IndicatorDefinitionId1, listIndicatorColumns, listColumnsNotDisplayed,
+                        listColumnsAggregate, timeRange );
 
-                    var data2 = GetDataIndicatorValue(indicator.IndicatorDefinitionId2, listIndicatorColumns, listColumnsNotDisplayed,
-                        listColumnsAggregate, timeRange);
+                    var data2 = GetDataIndicatorValue( indicator.IndicatorDefinitionId2, listIndicatorColumns, listColumnsNotDisplayed,
+                        listColumnsAggregate, timeRange );
 
-                    return GetDataCalculated(data1, data2);
+                    return GetDataCalculated( data1, data2 );
 
                 default:
                     throw new ArgumentOutOfRangeException();
@@ -1270,12 +1343,12 @@ namespace DataMonitoring.Business
             return result;
         }
 
-        public IEnumerable<JToken> CreateDataToTestWidget(IndicatorChartWidget indicatorWidget, TimeRange timeRange)
+        public IEnumerable<JToken> SimulateDataToTestChartWidget(IndicatorChartWidget indicatorWidget, TimeRange timeRange)
         {
             var writer = new JTokenWriter();
             writer.WriteStartArray();
 
-            var valueInit = indicatorWidget.TargetValue ?? 100;
+            var valueInit = indicatorWidget.TargetValue ?? 90; // valeurs du graphique autour de 90
             var decrement = 0m;
 
             if (indicatorWidget.TargetIndicatorChartWidgets.Any())
@@ -1376,7 +1449,7 @@ namespace DataMonitoring.Business
                 if (indicatorWidget.TitleIndicatorDisplayed)
                 {
                     htmlContent += HtmlWidgetComponent.DivBegin();
-                    htmlContent += await TableIndicatorTitleAsync(indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type);
+                    htmlContent += await HtmlIndicatorTitleAsync(indicatorWidget.IndicatorDefinitionId, indicatorWidget.TitleIndicatorColor, widget.Type);
                     htmlContent += HtmlWidgetComponent.DivEnd();
                 }
 
@@ -1565,7 +1638,7 @@ namespace DataMonitoring.Business
 
         #region Table Widget Type
 
-        private async Task<string> TableIndicatorTitleAsync(long id, string color, WidgetType type)
+        private async Task<string> HtmlIndicatorTitleAsync(long id, string color, WidgetType type)
         {
             var title = await IndicatorTitleAsync( id );
             var htmlContent = string.Empty;

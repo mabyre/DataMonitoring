@@ -235,8 +235,8 @@ namespace DataMonitoring
 
                 if (env.IsDevelopment())
                 {
-                    spa.UseAngularCliServer(npmScript: "start");
-                    //spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); // Execute "ng serve" in VSCode
+                    //spa.UseAngularCliServer(npmScript: "start");
+                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); // Execute "ng serve" in VSCode
                 }
             });
         }
