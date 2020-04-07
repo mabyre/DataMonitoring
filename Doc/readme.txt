@@ -1,5 +1,5 @@
 ﻿
-*** 13/03/2020
+*** 04/03/2020
 - j'ajoute les graphique de type "line" issus de Chart.js (c'est facile à faire)
 - j'ajoute la possibilité d'écrire des reuqêtes de type "SELECT TOP"
 - pour un graphique de type Chart j'accepte la mesure de Type Snapshot
@@ -30,7 +30,7 @@ je n'arrive pas à mettre à jour ColorClass j'ai renomé dans le modèle par Co
 je pourrais tenter de renommer la table à la main ...
 
 *** 16/01/2020
-j'ajoute de possibilité de connexion
+j'ajoute la possibilité de connexion
 je supprime l'authentification requise sur le create d'un connector
 BRY_20200116
 

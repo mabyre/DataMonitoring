@@ -143,7 +143,7 @@ export class DashboardEditComponent implements OnInit {
             });
       } else {
         this.dashboardService.put(this.dashboard.id, this.dashboard)
-          // BRY retour a la lite
+          // BRY retour a la liste
           //.subscribe(result => {
           //  this.router.navigate(['/dashboard/dashboards']);
           //},

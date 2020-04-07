@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj": {}
+    "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj": {}
   },
   "projects": {
-    "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj": {
+    "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj",
+        "projectUniqueName": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj",
         "projectName": "DataMonitoring.DAL",
-        "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj",
+        "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj",
         "packagesPath": "C:\\Users\\mabyre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.DAL\\obj\\",
+        "outputPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -30,11 +30,11 @@
         "frameworks": {
           "netstandard2.0": {
             "projectReferences": {
-              "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj": {
-                "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj"
+              "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj": {
+                "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj"
               },
-              "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj": {
-                "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj"
+              "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj": {
+                "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj"
               }
             }
           }
@@ -111,14 +111,14 @@
         }
       }
     },
-    "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj": {
+    "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj",
+        "projectUniqueName": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj",
         "projectName": "DataMonitoring.Model",
-        "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj",
+        "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj",
         "packagesPath": "C:\\Users\\mabyre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\DataMonitoring.Model\\obj\\",
+        "outputPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.Model\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -173,14 +173,14 @@
         }
       }
     },
-    "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj": {
+    "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj",
+        "projectUniqueName": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj",
         "projectName": "Sodevlog",
-        "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj",
+        "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj",
         "packagesPath": "C:\\Users\\mabyre\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp-git\\Sodevlog\\obj\\",
+        "outputPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\Sodevlog\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -210,6 +210,14 @@
       "frameworks": {
         "netstandard2.0": {
           "dependencies": {
+            "Microsoft.AspNetCore.Http.Abstractions": {
+              "target": "Package",
+              "version": "[2.2.0, )"
+            },
+            "Microsoft.AspNetCore.Mvc.Core": {
+              "target": "Package",
+              "version": "[2.2.5, )"
+            },
             "Microsoft.CSharp": {
               "target": "Package",
               "version": "[4.6.0, )"
@@ -227,6 +235,10 @@
               "target": "Package",
               "version": "[2.0.3, )",
               "autoReferenced": true
+            },
+            "Newtonsoft.Json": {
+              "target": "Package",
+              "version": "[12.0.3, )"
             },
             "Serilog": {
               "target": "Package",
