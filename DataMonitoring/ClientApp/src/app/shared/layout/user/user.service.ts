@@ -47,7 +47,8 @@ export class UserService {
         result => {
           return this.getUser(result);
         }
-      ));
+      )
+    );
   }
 
   private getUser(userData): User {

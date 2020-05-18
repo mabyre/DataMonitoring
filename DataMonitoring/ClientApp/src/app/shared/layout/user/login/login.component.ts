@@ -6,11 +6,11 @@ import { UserService } from '@app/shared/layout/user/user.service';
 import { Configuration } from '@app/core/configuration';
 
 @Component({
-  selector: 'app-logout',
-  templateUrl: './logout.component.html',
+  selector: 'sa-login',
+  templateUrl: './login.component.html',
   styles: []
 })
-export class LogoutComponent implements OnInit {
+export class LoginComponent implements OnInit {
 
   isAuthorizedSubscription: Subscription | undefined;
   isAuthorized = false;

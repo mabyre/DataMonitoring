@@ -29,12 +29,12 @@ namespace DataMonitoring
     {
         public IConfiguration Configuration { get; }
 
-        public Startup(IHostingEnvironment env)
+        public Startup( IHostingEnvironment env )
         {
             var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true)
+                .SetBasePath( env.ContentRootPath )
+                .AddJsonFile( "appsettings.json", optional: false, reloadOnChange: true )
+                .AddJsonFile( $"appsettings.{env.EnvironmentName}.json", optional: true )
                 .AddEnvironmentVariables();
 
             Configuration = builder.Build();
@@ -54,16 +54,16 @@ namespace DataMonitoring
         }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public void ConfigureServices( IServiceCollection services )
         {
-            var settingsSection = Configuration.GetSection("ApplicationSettings");
+            var settingsSection = Configuration.GetSection( "ApplicationSettings" );
 
             var settings = settingsSection.Get<MonitorSettings>();
 
-            services.Configure<MonitorSettings>(settingsSection);
+            services.Configure<MonitorSettings>( settingsSection );
 
-            services.AddDbContext<DataMonitoringDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.UseRowNumberForPaging()));
+            services.AddDbContext<DataMonitoringDbContext>( options =>
+                 options.UseSqlServer( Configuration.GetConnectionString( "DefaultConnection" ), b => b.UseRowNumberForPaging() ) );
 
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IConfigurationBusiness, ConfigurationBusiness>();
@@ -74,62 +74,64 @@ namespace DataMonitoring
             services.AddTransient<IDashboardBusiness, DashboardBusiness>();
             services.AddTransient<ITimeManagementBusiness, TimeManagementBusiness>();
 
-            services.AddSingleton(Configuration);
+            services.AddSingleton( Configuration );
 
+            //
             // Personally Identifiable Information (PII)
+            //
             IdentityModelEventSource.ShowPII = true;
 
-            /* 
-             * Defines the policy for Cross - Origin requests based on the CORS specifications.
-             */
+            // 
+            // Defines the policy for Cross - Origin requests based on the CORS specifications.
+            //
             services.AddCors();
 
             CorsPolicy policy = new Microsoft.AspNetCore.Cors.Infrastructure.CorsPolicy();
 
-            policy.Headers.Add("*");
-            policy.Methods.Add("*");
-            policy.Origins.Add("*");
+            policy.Headers.Add( "*" );
+            policy.Methods.Add( "*" );
+            policy.Origins.Add( "*" );
             //policy.SupportsCredentials = true;
 
-            services.AddCors(x => x.AddPolicy("corsGlobalPolicy", policy));
+            services.AddCors( x => x.AddPolicy( "corsGlobalPolicy", policy ) );
 
-            services.ConfigureQueryLocalizationService(settings, typeof(SharedResource));
+            //
+            services.ConfigureQueryLocalizationService( settings, typeof( SharedResource ) );
 
             services.AddSingleton<IAuthorizationPolicyProvider, AuthorizationSodevlogPolicyProvider>();
             services.AddSingleton<IAuthorizationHandler, HasPermissionHandler>();
 
             services.AddSingleton<ILocalizationService, LocalizationService>();
 
-            if (settings.AuthoritySettings.AuthorityServerActif)
+            if ( settings.AuthoritySettings.AuthorityServerActif )
             {
                 IdentityModelEventSource.ShowPII = true;
-                
-                services.AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                    .AddIdentityServerAuthentication(options =>
+
+                services.AddAuthentication( IdentityServerAuthenticationDefaults.AuthenticationScheme )
+                    .AddIdentityServerAuthentication( options =>
                     {
                         options.Authority = settings.AuthoritySettings.AuthorityServerUrl;
                         options.ApiName = settings.AuthoritySettings.ApiName;
                         options.ApiSecret = settings.AuthoritySettings.ApiSecret;
-                    });
+                    } );
 
 
                 var guestPolicy = new AuthorizationPolicyBuilder()
                     .RequireAuthenticatedUser()
-                    .RequireClaim("ApplicationAccess", settings.ApplicationScope)
+                    .RequireClaim( "ApplicationAccess", settings.ApplicationScope )
                     .Build();
 
-                services.AddLocalization(options => options.ResourcesPath = "Resources");
+                services.AddLocalization( options => options.ResourcesPath = "Resources" );
 
-                // TODO : AddLocalization
                 services.AddMvc()
                     .AddViewLocalization()
                     .AddDataAnnotationsLocalization();
 
-                services.AddMvc().AddJsonOptions(options =>
-                    {
-                        options.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
-                        options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                    });
+                services.AddMvc().AddJsonOptions( options =>
+                {
+                    options.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
+                    options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
+                } );
 
                 //services.AddLocalization(options => options.ResourcesPath = "SharedResource");
 
@@ -147,18 +149,18 @@ namespace DataMonitoring
             }
             else
             {
-                services.AddLocalization(options => options.ResourcesPath = "Resources");
+                services.AddLocalization( options => options.ResourcesPath = "Resources" );
 
                 // TODO : AddLocalization
                 services.AddMvc()
                     .AddViewLocalization()
                     .AddDataAnnotationsLocalization();
 
-                services.AddMvc().AddJsonOptions(options =>
+                services.AddMvc().AddJsonOptions( options =>
                 {
                     options.SerializerSettings.DateFormatHandling = DateFormatHandling.IsoDateFormat;
                     options.SerializerSettings.DateTimeZoneHandling = DateTimeZoneHandling.Utc;
-                });
+                } );
 
                 //services.AddMvc(opts => { opts.Filters.Add(new AllowAnonymousFilter()); })
                 //    .AddLocalization(typeof(SharedResource)).SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
@@ -171,10 +173,10 @@ namespace DataMonitoring
 
 
             // In production, the Angular files will be served from this directory
-            services.AddSpaStaticFiles(configuration =>
+            services.AddSpaStaticFiles( configuration =>
             {
                 configuration.RootPath = "ClientApp/dist";
-            });
+            } );
 
             services.AddSingleton<IHostedService, SnapShotQueryIndicatorTask>();
             services.AddSingleton<IHostedService, FlowQueryIndicatorTask>();
@@ -183,74 +185,98 @@ namespace DataMonitoring
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, ILoggerFactory loggerFactory)
+        public void Configure( IApplicationBuilder app, IHostingEnvironment env, IServiceProvider serviceProvider, ILoggerFactory loggerFactory )
         {
             // SeriLog
-            loggerFactory.AddSerilog(dispose: true);
+            loggerFactory.AddSerilog( dispose: true );
 
             // Microsoft.Extensions.Logging
             ApplicationLogging.LoggerFactory = loggerFactory;
 
             TestProviderLogging.TestLogs( false );
 
-            InitializeDatabase(app);
+            InitializeDatabase( app );
 
-            if (env.IsDevelopment())
+            if ( env.IsDevelopment() )
             {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
             else
             {
-                app.UseExceptionHandler("/Error");
+                app.UseExceptionHandler( "/Error" );
                 app.UseHsts();
             }
 
             var locOptions = app.ApplicationServices.GetService<IOptions<RequestLocalizationOptions>>();
-            app.UseRequestLocalization(locOptions.Value);
+            app.UseRequestLocalization( locOptions.Value );
 
-            app.UseCors("corsGlobalPolicy");
+            app.UseCors( "corsGlobalPolicy" );
 
             var settings = app.ApplicationServices.GetService<IOptions<ApplicationSettings>>().Value;
 
-            if (settings.UseHttpRedirection)
+            if ( settings.UseHttpRedirection )
             {
                 app.UseHttpsRedirection();
             }
 
-            app.UseStaticFiles();
+            // BRY_Refuse_To_Frame
+            //app.UseStaticFiles();
+            app.UseStaticFiles( new StaticFileOptions()
+            {
+                OnPrepareResponse = context =>
+                {
+                    if ( context.Context.Response.Headers["X-Content-Security-Policy"].Count == 0 )
+                    {
+                        string csp = "script-src 'self';style-src 'self';img-src 'self' data:;font-src 'self';";
+                        csp += "form - action 'self'; frame-ancestors 'https://localhost:44318/'; block-all-mixed-content";
+
+                        // IE
+                        context.Context.Response.Headers["X-Content-Security-Policy"] = csp;
+                    }
+
+                    if ( context.Context.Response.Headers["Content-Security-Policy"].Count == 0 )
+                    {
+                        string csp = "script-src 'self';style-src 'self';img-src 'self' data:;font-src 'self';";
+                        csp += "form - action 'self'; frame-ancestors 'https://localhost:44318/'; block-all-mixed-content";
+
+                        // IE
+                        context.Context.Response.Headers["Content-Security-Policy"] = csp;
+                    }
+                }
+            } );
+
             app.UseSpaStaticFiles();
 
             app.UseAuthentication();
-            app.UseMvc(routes =>
+            app.UseMvc( routes =>
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller}/{action=Index}/{id?}");
-            });
+                    template: "{controller}/{action=Index}/{id?}" );
+            } );
 
-            app.UseSpa(spa =>
+            app.UseSpa( spa =>
             {
                 spa.Options.SourcePath = "ClientApp";
 
-                if (env.IsDevelopment())
+                if ( env.IsDevelopment() )
                 {
-                    //spa.UseAngularCliServer(npmScript: "start");
-                    spa.UseProxyToSpaDevelopmentServer("http://localhost:4200"); // Execute "ng serve" in VSCode
+                    //spa.UseAngularCliServer( npmScript: "start" );
+                    //spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" ); // Execute "ng serve" in VSCode
+                    spa.UseProxyToSpaDevelopmentServer( "https://localhost:4200" ); // Execute "npm start" in VSCode
                 }
-            });
+            } );
         }
 
-        
-
-        private void InitializeDatabase(IApplicationBuilder app)
+        private void InitializeDatabase( IApplicationBuilder app )
         {
-            using (var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope())
+            using ( var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope() )
             {
                 var context = scope.ServiceProvider.GetRequiredService<DataMonitoringDbContext>();
                 context.Database.Migrate();
 
-                DbInitializer.Initialize(context);
+                DbInitializer.Initialize( context );
             }
         }
     }

@@ -7,6 +7,13 @@
         {
             "type": "chrome",
             "request": "launch",
+            "name": "Chrome:HTTPS",
+            "url": "https://localhost:28001/",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "chrome",
+            "request": "launch",
             "name": "Chrome:localhost",
             "url": "http://localhost:28000",
             "webRoot": "${workspaceFolder}"

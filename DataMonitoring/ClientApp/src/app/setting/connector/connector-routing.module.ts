@@ -8,19 +8,19 @@ import { ConnectorEditComponent } from './components/connector-edit/connector-ed
 const routes: Routes = [
   { path: 'connectors', component: ConnectorsListComponent, data: { pageTitle: 'List' } },
   { path: 'connector-edit/:id', component: ConnectorEditComponent, data: { pageTitle: 'Edit' } },
-  { path: 'connector-edit', component: ConnectorEditComponent, data: { pageTitle: 'Create' } },
   // BRY_20200116
-  //{
-  //  path: 'connector-edit',
-  //  component: ConnectorEditComponent,
-  //  data: {
-  //    pageTitle: 'Create',
-  //    role: "user",
-  //    permission: "Connector.Edit"
-  //  },
-  //  canActivate: [AuthorizationGuard],
-  //  canLoad: [AuthorizationCanGuard]
-  //},
+  //{ path: 'connector-edit', component: ConnectorEditComponent, data: { pageTitle: 'Create' } },
+  {
+    path: 'connector-edit',
+    component: ConnectorEditComponent,
+    data: {
+      pageTitle: 'Create',
+      role: "user",
+      permission: "Connector.Edit"
+    },
+    canActivate: [AuthorizationGuard],
+    canLoad: [AuthorizationCanGuard]
+  },
 ];
 
 @NgModule({

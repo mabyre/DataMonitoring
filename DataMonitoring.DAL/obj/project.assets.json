@@ -6919,11 +6919,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj",
+      "projectUniqueName": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj",
       "projectName": "DataMonitoring.DAL",
-      "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj",
+      "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\DataMonitoring.DAL.csproj",
       "packagesPath": "C:\\Users\\mabyre\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\obj\\",
+      "outputPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp\\DataMonitoringApp-git\\DataMonitoring.DAL\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
@@ -6942,11 +6942,11 @@
       "frameworks": {
         "netstandard2.0": {
           "projectReferences": {
-            "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj": {
-              "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj"
+            "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj": {
+              "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp\\DataMonitoringApp-git\\DataMonitoring.Model\\DataMonitoring.Model.csproj"
             },
-            "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj": {
-              "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringWebApp\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj"
+            "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj": {
+              "projectPath": "C:\\Users\\mabyre\\Documents\\Visual Studio 2019\\Samples\\DataMonitoringApp\\DataMonitoringApp-git\\Sodevlog\\Sodevlog.csproj"
             }
           }
         }
@@ -7019,7 +7019,7 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.201\\RuntimeIdentifierGraph.json"
       }
     }
   }

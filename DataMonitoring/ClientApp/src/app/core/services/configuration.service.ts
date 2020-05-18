@@ -14,7 +14,7 @@ export class AppConfigurationService {
   initializeApp(): Promise<any> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
-        console.log(`initializeApp:: inside setTimeout`);
+        console.log(`initializeApp: inside setTimeout`);
 
         resolve();
       }, 2000);
@@ -23,7 +23,7 @@ export class AppConfigurationService {
 
   async getSettings(configUrl: string): Promise<any> {
 
-    console.log(`getSettings`);
+    console.log(`getSettings - Begin`);
 
     try {
       const response = await fetch(configUrl);
@@ -32,7 +32,7 @@ export class AppConfigurationService {
       }
 
       const clientConfiguration = await response.json();
-      console.log(`Settings from API: `, clientConfiguration);
+      console.log(`getSettings - Settings from API: `, clientConfiguration);
 
       this.configuration.defaultLocale = clientConfiguration.defaultLocale;
       this.configuration.apiServerUrl = clientConfiguration.apiServerUrl;

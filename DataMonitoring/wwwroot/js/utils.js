@@ -39,7 +39,7 @@ window.chartColors = {
 	];
 
 	var Samples = global.Samples || (global.Samples = {});
-	var Color = Chart.helpers.color;
+	//var Color = Chart.helpers.color;
 
 	Samples.utils = {
 		// Adapted from http://indiegamr.com/generate-repeatable-random-numbers-in-js/
@@ -119,7 +119,8 @@ window.chartColors = {
 
 		transparentize: function(color, opacity) {
 			var alpha = opacity === undefined ? 0.5 : 1 - opacity;
-			return Color(color).alpha(alpha).rgbString();
+			//return Color(color).alpha(alpha).rgbString();
+			return Chart.helpers.color(color).alpha(alpha).rgbString();
 		}
 	};
 

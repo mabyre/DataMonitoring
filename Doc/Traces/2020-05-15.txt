@@ -1,0 +1,53 @@
+AppModule starting
+getSettings - Begin
+initializeApp: inside setTimeout
+null: getSettings - Settings from API:
+null: Object {applicationName: "SoDevLog-Monitoring", applicationScope: "DataMonitoringApp", defaultLocale: "us", defaultSkin: "sodevlog-style-0", apiServerUrl: "https://localhost:28001/", …}
+STS server: https://localhost:44318
+Silent Renew is active, check if token in storage is active
+Silent Renew or login not running, try to refresh the session
+BEGIN refresh session Authorize
+RefreshSession created. adding myautostate: 15895574602860.8637543295529442
+null: iframe#myiFrameForSilentRenew {src: "", srcdoc: "", name: "", sandbox: DOMTokenList(0), allowFullscreen: false, …}
+startRenew for URL:https://localhost:44318/connect/authorize?client_id=angular_spa&redirect_uri=https%3A%2F%2Flocalhost%3A28001%2Fsilent-renew.html&response_type=id_token%20token&scope=openid%20profile%20api1%20&nonce=N0.40611978138640681589557460286&state=15895574602860.8637543295529442&prompt=none
+Angular is running in the development mode. Call enableProdMode() to enable the production mode.
+userData getting data
+Home constructor
+given_name getting data
+Refused to frame 'https://localhost:44318/' because an ancestor violates the following Content Security Policy directive: "frame-ancestors 'self'".
+[WDS] Warnings while compiling.
+./node_modules/@swimlane/ngx-dnd/fesm5/swimlane-ngx-dnd.js 359:59-77
+"export 'ɵɵdefineInjectable' was not found in '@angular/core'
+IsAuthorizedRace: Timeout reached. Emitting.
+IsAuthorizedRace: Completed
+getIsAuthorized: false
+Route(url:'connector-edit', path:'connector-edit')Route(url:'', path:'') { Route(url:'', path:'') { Route(url:'connector', path:'connector') { Route(url:'connector-edit', path:'connector-edit') }  }  }
+AuthorizationGuard, canActivate
+AuthorizationGuard, canActivate isAuthorized: false
+start login
+userData getting data
+given_name getting data
+getIsAuthorized: false
+BEGIN Authorize, no auth data
+AuthorizedController created. local state: 15895574602860.8637543295529442
+AppModule starting
+getSettings - Begin
+null: getSettings - Settings from API:
+null: Object {applicationName: "SoDevLog-Monitoring", applicationScope: "DataMonitoringApp", defaultLocale: "us", defaultSkin: "sodevlog-style-0", apiServerUrl: "https://localhost:28001/", …}
+initializeApp: inside setTimeout
+[WDS] Warnings while compiling.
+./node_modules/@swimlane/ngx-dnd/fesm5/swimlane-ngx-dnd.js 359:59-77
+"export 'ɵɵdefineInjectable' was not found in '@angular/core'
+STS server: https://localhost:44318
+Silent Renew is active, check if token in storage is active
+null: iframe#myiFrameForSilentRenew {src: "", srcdoc: "", name: "", sandbox: DOMTokenList(0), allowFullscreen: false, …}
+Angular is running in the development mode. Call enableProdMode() to enable the production mode.
+userData getting data
+Home constructor
+given_name getting data
+IsAuthorizedRace: Timeout reached. Emitting.
+IsAuthorizedRace: Completed
+getIsAuthorized: false
+Route(url:'connector-edit', path:'connector-edit')Route(url:'', path:'') { Route(url:'', path:'') { Route(url:'connector', path:'connector') { Route(url:'connector-edit', path:'connector-edit') }  }  }
+AuthorizationGuard, canActivate
+AuthorizationGuard, canActivate isAuthorized: false
