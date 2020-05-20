@@ -5,6 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --ssl --ssl-key .\\ssl\\server.key  --ssl-cert .\\ssl\\server.crt",
+    "start1": "ng serve",
     "build": "ng build",
     "build:ssr": "npm run build -- --app=ssr --output-hashing=media",
     "test": "ng test",

@@ -14,6 +14,7 @@ export class AppConfigurationService {
   initializeApp(): Promise<any> {
     return new Promise((resolve, reject) => {
       setTimeout(() => {
+
         console.log(`initializeApp: inside setTimeout`);
 
         resolve();
@@ -71,6 +72,7 @@ export class AppConfigurationService {
   }
 
   private getOpenIdConfiguration(settings: any) {
+    const redirUrl = window.location.origin;
     const openIdConfiguration = new OpenIDImplicitFlowConfiguration();
 
     openIdConfiguration.stsServer = settings.autorityServer;

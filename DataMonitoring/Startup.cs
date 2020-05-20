@@ -229,7 +229,7 @@ namespace DataMonitoring
                     if ( context.Context.Response.Headers["X-Content-Security-Policy"].Count == 0 )
                     {
                         string csp = "script-src 'self';style-src 'self';img-src 'self' data:;font-src 'self';";
-                        csp += "form - action 'self'; frame-ancestors 'https://localhost:44318/'; block-all-mixed-content";
+                        csp += "form - action 'self'; frame-ancestors 'self' 'https://localhost:44318/'; block-all-mixed-content";
 
                         // IE
                         context.Context.Response.Headers["X-Content-Security-Policy"] = csp;
@@ -238,7 +238,7 @@ namespace DataMonitoring
                     if ( context.Context.Response.Headers["Content-Security-Policy"].Count == 0 )
                     {
                         string csp = "script-src 'self';style-src 'self';img-src 'self' data:;font-src 'self';";
-                        csp += "form - action 'self'; frame-ancestors 'https://localhost:44318/'; block-all-mixed-content";
+                        csp += "form-action 'self'; frame-ancestors 'self' 'https://localhost:44318/'; block-all-mixed-content";
 
                         // IE
                         context.Context.Response.Headers["Content-Security-Policy"] = csp;
@@ -262,9 +262,10 @@ namespace DataMonitoring
 
                 if ( env.IsDevelopment() )
                 {
-                    //spa.UseAngularCliServer( npmScript: "start" );
-                    //spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" ); // Execute "ng serve" in VSCode
-                    spa.UseProxyToSpaDevelopmentServer( "https://localhost:4200" ); // Execute "npm start" in VSCode
+                    //spa.UseAngularCliServer( npmScript: "start1" ); // https avec IIS 
+                    //spa.UseAngularCliServer( npmScript: "start" ); 
+                    //spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" ); // Execute "ng serve" in VSCode http
+                    spa.UseProxyToSpaDevelopmentServer( "https://localhost:4200" ); // Execute "npm start" in VSCode https
                 }
             } );
         }

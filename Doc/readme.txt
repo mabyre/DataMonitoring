@@ -1,4 +1,28 @@
-﻿rename LogoutComponent en LoginCOmponent
+﻿Pour la première fois je connecte aaa@bbb.com
+
+Request Id: 80000008-0000-a300-b63f-84710c7967bb
+
+Refused to frame 'https://localhost:44318/' because an ancestor violates the following Content Security Policy directive: "frame-ancestors 'self'".
+La solution se trouve dans StsIdentity
+
+dans :
+    DataMonitoring\ClientApp\src\app\app.module.ts
+on se retrouve avec 
+    configuration.OpenIdConfiguration
+vide
+
+AppConfigurationService devient AppSettingsService
+
+configuration.OpenIdConfiguration
+
+renommer configuration en appsettings :
+appsettings.ts
+appsettings.service.ts
+
+DataMonitoring\ClientApp\src\app\core\configuration.ts
+public OpenIdConfiguration: OpenIDImplicitFlowConfiguration;
+
+rename LogoutComponent en LoginCOmponent
 
 Failed to execute 'open' on 'XMLHttpRequest': Invalid URL
 "ApiServerUrl": "https://localhost:28001",

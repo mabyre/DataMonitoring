@@ -11,7 +11,7 @@ import { User } from '../user';
 })
 export class LoginInfoComponent implements OnInit {
 
-  @Input() displayUser : boolean = false;
+  @Input() displayUser : boolean = true; // BRY_20200519
   @Input() dropdownClass : string = 'dropdown-menu';
 
 

@@ -12,46 +12,46 @@ namespace DataMonitoring
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static void Main( string[] args )
         {
-            var isService = !(Debugger.IsAttached || args.Contains("--console"));
+            var isService = !(Debugger.IsAttached || args.Contains( "--console" ));
             isService = false;
 
             var pathToContentRoot = Directory.GetCurrentDirectory();
 
-            if (isService)
+            if ( isService )
             {
                 var pathToExe = Process.GetCurrentProcess().MainModule.FileName;
-                pathToContentRoot = Path.GetDirectoryName(pathToExe);
+                pathToContentRoot = Path.GetDirectoryName( pathToExe );
             }
 
-            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-            if (string.IsNullOrEmpty(environment))
+            var environment = Environment.GetEnvironmentVariable( "ASPNETCORE_ENVIRONMENT" );
+            if ( string.IsNullOrEmpty( environment ) )
             {
                 environment = "Production";
             }
 
             var config = new ConfigurationBuilder()
-                .SetBasePath(pathToContentRoot)
-                .AddJsonFile("appSettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{environment}.json", optional: true)
+                .SetBasePath( pathToContentRoot )
+                .AddJsonFile( "appSettings.json", optional: true, reloadOnChange: true )
+                .AddJsonFile( $"appsettings.{environment}.json", optional: true )
                 .Build();
 
             var host = new WebHostBuilder()
-                .UseConfiguration(config)
-                .UseContentRoot(pathToContentRoot)
+                .UseConfiguration( config )
+                .UseContentRoot( pathToContentRoot )
                 .UseIISIntegration()
                 .UseKestrel()
                 .UseStartup<Startup>()
-                .ConfigureLogging((hostingContext, logging) =>
+                .ConfigureLogging( ( hostingContext, logging ) =>
                 {
-                    logging.AddConfiguration(hostingContext.Configuration.GetSection("Logging"));
+                    logging.AddConfiguration( hostingContext.Configuration.GetSection( "Logging" ) );
                     logging.AddConsole();
                     logging.AddDebug();
-                })
+                } )
                 .Build();
 
-            if (isService)
+            if ( isService )
             {
                 host.RunAsService();
             }
