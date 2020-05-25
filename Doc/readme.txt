@@ -1,4 +1,37 @@
-﻿Pour la première fois je connecte aaa@bbb.com
+﻿NgxDnDModule, // BRY ngx-dnd v5.1.0
+
+npm i @swimlane/ngx-dnd@5.1.0
+
+run `npm audit fix` to fix them, or `npm audit` for details
+npm i @swimlane/ngx-dnd@5.0.6
+
+??defineInjectable
+
+[WDS] Warnings while compiling.
+vendor.js:131528
+./node_modules/@swimlane/ngx-dnd/fesm5/swimlane-ngx-dnd.js 359:59-77
+"export '??defineInjectable' was not found in '@angular/core'
+vendor.js:131534
+ERROR
+core.js:12584
+Error: Uncaught (in promise): TypeError: Object(...) is not a function
+
+StsIdentityServer
+https://localhost:5001
+
+le bouton <a routerLink="/app-views/profile" 
+dirige dans le vide ... app-views est utilisé dans 
+\ClientApp\src\app\shared\layout\shortcut\shortcut.component.html
+
+une fois connecté une dropdownClass
+\DataMonitoring\ClientApp\src\app\shared\layout\user\login-info\login-info.component.html
+apparait avec le menu
+
+silent-renew.html
+
+------------------------
+
+Pour la première fois je connecte aaa@bbb.com
 
 Request Id: 80000008-0000-a300-b63f-84710c7967bb
 

@@ -28,7 +28,7 @@ import { NgxDnDModule } from '@swimlane/ngx-dnd';
     FormsModule,
     ReactiveFormsModule,
     WidgetModule,
-    NgxDnDModule.forRoot(),
+    NgxDnDModule, // BRY ngx-dnd v5.1.0
     AccordionModule.forRoot(),
   ]
 })

@@ -24,7 +24,8 @@ namespace DataMonitoring.Controllers
 
                 // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
                 //var csp = "default-src 'self'; object-src 'none'; frame-ancestors 'none'; sandbox allow-forms allow-same-origin allow-scripts; base-uri 'self';";
-                var csp = "object-src 'none'; frame-ancestors 'https://localhost:44318/'; sandbox allow-forms allow-same-origin allow-scripts; base-uri 'self';";
+                //var csp = "object-src 'none'; frame-ancestors 'https://localhost:44318/'; sandbox allow-forms allow-same-origin allow-scripts; base-uri 'self';";
+                var csp = "object-src 'none'; frame-ancestors 'self'; sandbox allow-forms allow-same-origin allow-scripts; base-uri 'self';";
 
                 // also consider adding upgrade-insecure-requests once you have HTTPS in place for production
                 //csp += "upgrade-insecure-requests;"; // BRY_Refuse_To_Frame

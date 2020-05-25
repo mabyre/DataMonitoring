@@ -221,30 +221,31 @@ namespace DataMonitoring
             }
 
             // BRY_Refuse_To_Frame
-            //app.UseStaticFiles();
-            app.UseStaticFiles( new StaticFileOptions()
-            {
-                OnPrepareResponse = context =>
-                {
-                    if ( context.Context.Response.Headers["X-Content-Security-Policy"].Count == 0 )
-                    {
-                        string csp = "script-src 'self';style-src 'self';img-src 'self' data:;font-src 'self';";
-                        csp += "form - action 'self'; frame-ancestors 'self' 'https://localhost:44318/'; block-all-mixed-content";
+            app.UseStaticFiles();
+            // BRY_Refuse_To_Frame finalement c'est dans UseCsp de l'IdentityServer 
+            //app.UseStaticFiles( new StaticFileOptions()
+            //{
+            //    OnPrepareResponse = context =>
+            //    {
+            //        if ( context.Context.Response.Headers["X-Content-Security-Policy"].Count == 0 )
+            //        {
+            //            string csp = "script-src 'self';style-src 'self';img-src 'self' data:;font-src 'self';";
+            //            csp += "form - action 'self'; frame-ancestors 'self' 'https://localhost:44318/'; block-all-mixed-content";
 
-                        // IE
-                        context.Context.Response.Headers["X-Content-Security-Policy"] = csp;
-                    }
+            //            // IE
+            //            context.Context.Response.Headers["X-Content-Security-Policy"] = csp;
+            //        }
 
-                    if ( context.Context.Response.Headers["Content-Security-Policy"].Count == 0 )
-                    {
-                        string csp = "script-src 'self';style-src 'self';img-src 'self' data:;font-src 'self';";
-                        csp += "form-action 'self'; frame-ancestors 'self' 'https://localhost:44318/'; block-all-mixed-content";
+            //        if ( context.Context.Response.Headers["Content-Security-Policy"].Count == 0 )
+            //        {
+            //            string csp = "script-src 'self';style-src 'self';img-src 'self' data:;font-src 'self';";
+            //            csp += "form-action 'self'; frame-ancestors 'self' 'https://localhost:44318/'; block-all-mixed-content";
 
-                        // IE
-                        context.Context.Response.Headers["Content-Security-Policy"] = csp;
-                    }
-                }
-            } );
+            //            // IE
+            //            context.Context.Response.Headers["Content-Security-Policy"] = csp;
+            //        }
+            //    }
+            //} );
 
             app.UseSpaStaticFiles();
 
