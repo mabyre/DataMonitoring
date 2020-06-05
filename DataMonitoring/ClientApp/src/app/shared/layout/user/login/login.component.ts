@@ -6,77 +6,78 @@ import { UserService } from '@app/shared/layout/user/user.service';
 import { Configuration } from '@app/core/configuration';
 
 @Component({
-  selector: 'sa-login',
-  templateUrl: './login.component.html',
-  styles: []
+    selector: 'sa-login',
+    templateUrl: './login.component.html',
+    styles: []
 })
 export class LoginComponent implements OnInit {
 
-  isAuthorizedSubscription: Subscription | undefined;
-  isAuthorized = false;
+    isAuthorizedSubscription: Subscription | undefined;
+    isAuthorized = false;
 
-  constructor(private userService: UserService,
-    private oidcSecurityService: OidcSecurityService,
-    private configuration: Configuration) {
+    constructor(
+        private userService: UserService,
+        private oidcSecurityService: OidcSecurityService,
+        private configuration: Configuration )
+    {
+        if (this.oidcSecurityService.moduleSetup) {
+            this.doCallbackLogicIfRequired();
+        } else {
+            this.oidcSecurityService.onModuleSetup.subscribe(() => {
+                this.doCallbackLogicIfRequired();
+            });
+        }
 
-    if (this.oidcSecurityService.moduleSetup) {
-      this.doCallbackLogicIfRequired();
-    } else {
-      this.oidcSecurityService.onModuleSetup.subscribe(() => {
-        this.doCallbackLogicIfRequired();
-      });
+        this.oidcSecurityService.onAuthorizationResult.subscribe(
+            (authorizationResult: AuthorizationResult) => {
+                this.onAuthorizationResultComplete(authorizationResult);
+            });
     }
 
-    this.oidcSecurityService.onAuthorizationResult.subscribe(
-      (authorizationResult: AuthorizationResult) => {
-        this.onAuthorizationResultComplete(authorizationResult);
-      });
-  }
+    ngOnInit() {
 
-  ngOnInit() {
-
-    this.isAuthorizedSubscription = this.oidcSecurityService.getIsAuthorized().subscribe(
-      (isAuthorized: boolean) => {
-        this.isAuthorized = isAuthorized;
-       this.userService.emitUserLoggedSubject(isAuthorized);
-      });
-  }
-
-  ngOnDestroy(): void {
-
-    if (this.isAuthorizedSubscription) {
-      this.isAuthorizedSubscription.unsubscribe();
+        this.isAuthorizedSubscription = this.oidcSecurityService.getIsAuthorized().subscribe(
+            (isAuthorized: boolean) => {
+                this.isAuthorized = isAuthorized;
+                this.userService.emitUserLoggedSubject(isAuthorized);
+            });
     }
-  }
 
-  private doCallbackLogicIfRequired() {
+    ngOnDestroy(): void {
 
-    if (window.location.hash) {
-      console.log('authorizedCallback hash:' + window.location.hash);
-      this.oidcSecurityService.authorizedCallback();
+        if (this.isAuthorizedSubscription) {
+            this.isAuthorizedSubscription.unsubscribe();
+        }
     }
-  }
 
-  private onAuthorizationResultComplete(authorizationResult: AuthorizationResult) {
+    private doCallbackLogicIfRequired() {
 
-    console.log('Auth result received:' + authorizationResult);
-
-    if (authorizationResult.authorizationState === AuthorizationState.unauthorized) {
-      if (window.parent) {
-        // sent from the child iframe, for example the silent renew
-        window.parent.location.href = this.configuration.OpenIdConfiguration.unauthorized_route;
-      } else {
-        // sent from the main window
-        window.location.href = this.configuration.OpenIdConfiguration.unauthorized_route;
-      }
+        if (window.location.hash) {
+            console.log('authorizedCallback hash:' + window.location.hash);
+            this.oidcSecurityService.authorizedCallback();
+        }
     }
-  }
 
-  login() {
-    this.userService.login();
-  }
+    private onAuthorizationResultComplete(authorizationResult: AuthorizationResult) {
 
-  logout() {
-    this.userService.showPopupLogout();
-  }
+        console.log('Auth result received:' + authorizationResult);
+
+        if (authorizationResult.authorizationState === AuthorizationState.unauthorized) {
+            if (window.parent) {
+                // sent from the child iframe, for example the silent renew
+                window.parent.location.href = this.configuration.OpenIdConfiguration.unauthorized_route;
+            } else {
+                // sent from the main window
+                window.location.href = this.configuration.OpenIdConfiguration.unauthorized_route;
+            }
+        }
+    }
+
+    login() {
+        this.userService.login();
+    }
+
+    logout() {
+        this.userService.showPopupLogout();
+    }
 }

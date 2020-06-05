@@ -1,4 +1,9 @@
-﻿NgxDnDModule, // BRY ngx-dnd v5.1.0
+﻿Gestion de l'authentification et des roles
+Customer
+Admin
+SuperAdmin
+
+NgxDnDModule, // BRY ngx-dnd v5.1.0
 
 npm i @swimlane/ngx-dnd@5.1.0
 

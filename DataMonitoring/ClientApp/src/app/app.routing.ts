@@ -3,50 +3,56 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './home/home.component';
 import { MainLayoutComponent } from "./shared/layout/app-layouts/main-layout.component";
 import { EmptyLayoutComponent } from "./shared/layout/app-layouts/empty-layout.component";
+import { AuthorizationGuard } from './core/auth';
 
-const routes: Routes = [
+const appRoutes: Routes = [
     {
-        path: "",
+        path: '',
         component: MainLayoutComponent,
         data: { pageTitle: "Home" },
         children: [
             {
-                path: "",
+                path: '',
                 redirectTo: "Home",
                 pathMatch: "full"
             },
             {
-                path: "Home",
+                path: 'Home',
                 component: HomeComponent,
                 pathMatch: "full"
             },
             {
-                path: "indicator",
+                path: 'indicator',
                 loadChildren: './setting/indicator/indicator.module#IndicatorModule',
                 data: { pageTitle: 'Indicator' }
             },
             {
                 path: "connector",
+                canLoad: [AuthorizationGuard],
                 loadChildren: './setting/connector/connector.module#ConnectorModule',
                 data: { pageTitle: 'Connector' }
             },
             {
                 path: "time",
+                canLoad: [AuthorizationGuard],
                 loadChildren: './setting/time-management/time-management.module#TimeManagementModule',
                 data: { pageTitle: 'TimeManagement' }
             },
             {
                 path: "style",
+                canLoad: [AuthorizationGuard],                
                 loadChildren: './setting/style/style.module#StyleModule',
                 data: { pageTitle: 'Style' }
             },
             {
                 path: "color",
+                canLoad: [AuthorizationGuard],
                 loadChildren: './setting/color/color.module#ColorModule',
                 data: { pageTitle: 'Color' }
             },
             {
                 path: "widget",
+                canLoad: [AuthorizationGuard],
                 loadChildren: './widget/widget.module#WidgetModule',
                 data: { pageTitle: 'Widget' }
             },
@@ -61,10 +67,15 @@ const routes: Routes = [
                 data: { pageTitle: 'Dashboard Light' }
             },
             {
+                path: 'app-views',
+                loadChildren: './app-views/app-views.module#AppViewsModule',
+                data: { pageTitle: 'App Views' }
+            },
+            {
                 path: "errors",
                 loadChildren: "./shared/errors/errors.module#ErrorsModule",
                 data: { pageTitle: "Error" }
-            }
+            },
         ]
     },
     {
@@ -73,10 +84,11 @@ const routes: Routes = [
         loadChildren: './monitor/monitor.module#MonitorModule',
         data: { pageTitle: 'Monitor' }
     },
-    { path: '**', redirectTo: 'errors/error404' }];
+    { path: '**', redirectTo: 'errors/error404' }
+];
 
 @NgModule({
-    imports: [RouterModule.forRoot(routes)],
+    imports: [RouterModule.forRoot(appRoutes)],
     exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRouting { }

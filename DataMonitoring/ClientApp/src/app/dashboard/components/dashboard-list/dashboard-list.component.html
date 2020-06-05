@@ -14,7 +14,7 @@
     </div>
   </div>
 
-  <div class="row">
+  <div class="row" *ngIf="isLoggedIn" >
     <div class="col-sm-10 col-xs-offset-1">
       <a [routerLink]="['/dashboard/dashboard-edit']" class="padding-10 padding-top-0 padding-bottom-0">
         <i class="fa fa-plus"></i> {{ 'Add' | i18n }}
@@ -67,7 +67,7 @@
             {{'Actions' | i18n}}
           </ng-template>
           <ng-template let-row="row" let-value="value" ngx-datatable-cell-template>
-            <a [routerLink]="['/dashboard/dashboard-edit/' , row['id']]" class="padding-10 padding-top-0 padding-bottom-0">
+            <a *ngIf="isLoggedIn" [routerLink]="['/dashboard/dashboard-edit/' , row['id']]" class="padding-10 padding-top-0 padding-bottom-0">
               <i class="fa fa-edit"></i> {{ 'Edit' | i18n }}
             </a>
             &nbsp;
@@ -81,7 +81,7 @@
               <i class="fa fa-bullhorn"></i> {{ 'Publish' | i18n }}
             </a>
             &nbsp;
-            <a (click)="onDelete(row['id'])" class="padding-10 padding-top-0 padding-bottom-0">
+            <a *ngIf="isLoggedIn" (click)="onDelete(row['id'])" class="padding-10 padding-top-0 padding-bottom-0">
               <i class="fa fa-trash"></i> {{ 'Delete' | i18n }}
             </a>
           </ng-template>

@@ -21,7 +21,7 @@
 
     <div class="row">
       <div class="col-sm-8 col-sm-offset-1">
-        <a (click)="onAddSharedDashboard()" class="btn btn-primary btn-sm">
+        <a *ngIf="isLoggedIn" (click)="onAddSharedDashboard()" class="btn btn-primary btn-sm">
           <i class="fa fa-plus"></i> {{ 'Add' | i18n }} {{ 'Publication' | i18n }}
         </a>
         <div formArrayName="sharedDashboards">
@@ -34,7 +34,7 @@
                       <i class="fa fa-fw" [ngClass]="{'fa-minus-circle txt-color-red': group1?.isOpen,'fa-plus-circle txt-color-green': !group1?.isOpen}"></i>
                       <span>{{'Publish' | i18n}} {{control.get('key').value}}</span>
 
-                      <button (click)="onRemoveSharedDashboard(i)" class="pull-right btn btn-danger btn-labeled">
+                      <button *ngIf="isLoggedIn" (click)="onRemoveSharedDashboard(i)" class="pull-right btn btn-danger btn-labeled">
                         <i class="fa fa-trash"></i>
                       </button>
                       <button type="button" style="margin-right:5px;" (click)="$event.stopPropagation();onOpenDashboard(i)"
@@ -43,7 +43,7 @@
                       </button>
                     </a>
                   </h2>
-                  <div class="row">
+                  <div class="row" *ngIf="isLoggedIn" >
                     <div class="col-sm-4 form-group">
                       <label for="key">{{'Key' | i18n}}</label>
                       <input type="text" class="form-control" formControlName="key" disabled="true">
@@ -65,7 +65,7 @@
                       </select>
                     </div>
                   </div>
-                  <div class="row">
+                  <div class="row" *ngIf="isLoggedIn">
                     <div class="col-sm-4 form-group">
                       <label for="skin">{{'Theme' | i18n}}</label>
                       <select *ngIf="skinList" formControlName="skin" class="form-control">
@@ -102,7 +102,7 @@
         </button>
       </div>
 
-      <div class="col-sm-2 col-xs-offset-3">
+      <div *ngIf="isLoggedIn" class="col-sm-2 col-xs-offset-3">
         <button class="btn btn-success" type="submit" [disabled]="dashboardForm.invalid">
           <i class="fa fa-save"></i> {{'Save' | i18n}}
         </button>

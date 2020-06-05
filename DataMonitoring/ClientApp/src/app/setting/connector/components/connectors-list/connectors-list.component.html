@@ -26,7 +26,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let connector of connectors">
-              <td> {{connector.name}}</td>
+              <td> {{ connector.name }}</td>
               <td>
                 <span class="badge bg-color-darken">{{ connector.connectorType }}</span>
               </td>
@@ -37,7 +37,7 @@
                 </a>
               </td>
               <td>
-                <a (click)="onDelete(connector.id)" class="padding-10 padding-top-0 padding-bottom-0">
+                <a (click)="onDelete(connector.id)" class="padding-10 padding-top-0 padding-bottom-0" >
                   <i class="fa fa-trash"></i> {{ 'Delete' | i18n }}
                 </a>
               </td>

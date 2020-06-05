@@ -1,8 +1,9 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Subscription } from "rxjs";
-import { UserService } from '@app/shared/layout/user/user.service';
-import { LayoutService } from '@app/shared/layout/layout.service';
-import { User } from '../user';
+import { Component, OnInit, Input, Inject } from '@angular/core';
+import { User } from '@app/shared/models/user';
+import { UserService } from '../user.service';
+import { LayoutService } from '../../layout.service';
+import { Configuration } from '@app/core/configuration';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
 
@@ -14,43 +15,32 @@ export class LoginInfoComponent implements OnInit {
   @Input() displayUser : boolean = true; // BRY_20200519
   @Input() dropdownClass : string = 'dropdown-menu';
 
-
-  userDataSubscription: Subscription | undefined;
-
+  public currentUser: User;
   public givenName: string;
   public gravatarId: string;
   public googleId: string;
   public avatarSource: string;
 
-  constructor(private userService: UserService, private layoutService: LayoutService) {
+  constructor(private userService: UserService,
+      private layoutService: LayoutService,
+      private configuration: Configuration,
+      @Inject(DOCUMENT) private document: Document) {
   }
 
   ngOnInit() {
-    this.userDataSubscription = this.userService.getUserData().subscribe(
-      (userData: User) => {
+      this.userService.getUserData().subscribe(user => {
+          if ( user !== undefined )
+          {
+              this.currentUser = user;
 
-        if (userData !== null) {
-    
-          this.givenName = userData.givenName;
-          this.gravatarId = userData.gravatarId;
-          this.googleId = userData.googleId;
-       
-          if (userData.gender === "male") {
-            this.avatarSource = "img/avatars/male.png";
+              this.givenName = this.currentUser.givenName;
+              this.gravatarId = this.currentUser.gravatarId;
+              this.googleId = this.currentUser.googleId;
+              this.avatarSource = "img/avatars/male.png"
           }
-          if (userData.gender === "female") {
-            this.avatarSource = "img/avatars/female.png";
-          }
-        }
-
-        console.log('given_name getting data');
       });
-  }
 
-  ngOnDestroy(): void {
-    if (this.userDataSubscription) {
-      this.userDataSubscription.unsubscribe();
-    }
+      console.log( 'LoginInfoComponent:ngOnInit:currentUser:' + this.currentUser.givenName );
   }
 
   toggleShortcut() {
@@ -65,4 +55,8 @@ export class LoginInfoComponent implements OnInit {
     this.userService.showPopupLogout();
   }
 
+  onClickGoToManageUserUrl(): void {
+      const url = this.configuration.OpenIdConfiguration.stsServer + '/Manage/Index'
+      this.document.location.href = url;
+  }
 }

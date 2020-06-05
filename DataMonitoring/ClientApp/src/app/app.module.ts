@@ -7,14 +7,14 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AuthModule, OidcSecurityService } from 'angular-auth-oidc-client';
 
-import { AuthorizationCanGuard, AuthorizationGuard } from "@app/core/auth";
+import { AuthorizationGuard } from "@app/core/auth";
 import { Configuration } from '@app/core/configuration';
 import { AppConfigurationService } from '@app/core/services';
 import { SharedModule } from "@app/shared/shared.module";
 import { LayoutService } from '@app/shared/layout/layout.service';
 
 import { AppComponent } from './app.component';
-import { AppRoutingModule } from './app-routing.module';
+import { AppRouting } from './app.routing';
 
 import { HomeComponent } from './home/home.component';
 
@@ -44,7 +44,7 @@ export function getSettings(appConfigService: AppConfigurationService) {
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
-    AppRoutingModule,
+    AppRouting,
     HttpClientModule,
     CommonModule,
     FormsModule,
@@ -57,8 +57,7 @@ export function getSettings(appConfigService: AppConfigurationService) {
     { provide: APP_INITIALIZER, useFactory: getSettings, deps: [AppConfigurationService], multi: true },
     OidcSecurityService,
     Configuration,
-    AuthorizationGuard,
-    AuthorizationCanGuard
+    AuthorizationGuard
   ],
   bootstrap: [AppComponent]
 })
@@ -76,7 +75,6 @@ export class AppModule {
       }
     });
 
-    console.log("AppModule starting");
-
+    console.log("AppModule Starting...");
   }
 }

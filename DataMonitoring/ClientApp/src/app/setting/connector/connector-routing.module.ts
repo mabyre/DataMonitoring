@@ -1,32 +1,29 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { AuthorizationCanGuard, AuthorizationGuard } from "@app/core/auth";
+import { AuthorizationGuard } from "@app/core/auth";
 
 import { ConnectorsListComponent } from './components/connectors-list/connectors-list.component';
 import { ConnectorEditComponent } from './components/connector-edit/connector-edit.component';
 
-const routes: Routes = [
+const connectorRoutes: Routes = [
   { path: 'connectors', component: ConnectorsListComponent, data: { pageTitle: 'List' } },
-  { path: 'connector-edit/:id', component: ConnectorEditComponent, data: { pageTitle: 'Edit' } },
-  // BRY_20200116
-  //{ path: 'connector-edit', component: ConnectorEditComponent, data: { pageTitle: 'Create' } },
+  { 
+    path: 'connector-edit/:id', component: ConnectorEditComponent, 
+    data: { pageTitle: 'Edit' }, 
+    canActivate: [AuthorizationGuard] 
+  },
   {
     path: 'connector-edit',
     component: ConnectorEditComponent,
-    data: {
-      pageTitle: 'Create',
-      role: "user",
-      permission: "Connector.Edit"
-    },
-    canActivate: [AuthorizationGuard],
-    canLoad: [AuthorizationCanGuard]
+    data: { pageTitle: 'Create' },
+    canActivate: [AuthorizationGuard]
   },
 ];
 
 @NgModule({
   imports:
     [
-      RouterModule.forChild(routes)
+      RouterModule.forChild(connectorRoutes)
     ],
   exports: [RouterModule]
 })

@@ -1,69 +1,77 @@
 <aside id="left-panel">
 
-  <div class="login-info" *ngIf="isLogged"> 
-    <li class="login-info-dropdown-list">
-      <app-login-info [displayUser]=true></app-login-info>
-    </li>
-  </div>
+    <div class="login-info" *ngIf="isLogged">
+        <li class="login-info-dropdown-list">
+            <app-login-info [displayUser]=true></app-login-info>
+        </li>
+    </div>
 
-  <nav>
+    <nav>
 
-    <ul appSmartMenu>
-      <li routerLinkActive="active">
-        <a routerLink="/Home" title="Home"><i class="fa fa-lg fa-fw fa-home"></i><span
-               class="menu-item-parent">{{'Home' | i18n}}</span></a>
-      </li>
-      
-      <li>
-        <a title="Setting"><i class="fa fa-lg fa-fw fa-gears"></i>
-          <span class="menu-item-parent">{{'Setting' | i18n}}</span>
-        </a>
-        <ul>
-          <li routerLinkActive="active">
-            <a routerLink="/connector/connectors">
-              <i class="fa fa-lg fa-fw fa-database"></i> {{'Connectors' | i18n}}
-            </a>
-          </li>
-          <li routerLinkActive="active">
-            <a routerLink="/time/times">
-              <i class="fa fa-lg fa-fw fa-hourglass-start"></i> {{'Time Management' | i18n}}
-            </a>
-          </li>
-          <li routerLinkActive="active">
-            <a routerLink="/indicator/indicators">
-              <i class="fa fa-lg fa-fw fa-balance-scale"></i> {{'Indicators' | i18n}}
-            </a>
-          </li>
-          <li routerLinkActive="active">
-            <a routerLink="/style/styles">
-              <i class="fa fa-lg fa-fw fa-text-width"></i> {{'Styles' | i18n}}
-            </a>
-          </li>
-          <li routerLinkActive="active">
-            <a routerLink="/color/colors">
-              <i class="fa fa-lg fa-fw fa-paint-brush"></i> {{'Colors' | i18n}}
-            </a>
-          </li>
+        <ul appSmartMenu>
+            <li routerLinkActive="active">
+                <a routerLink="/Home" title="Home">
+                    <i class="fa fa-lg fa-fw fa-home"></i><span class="menu-item-parent">{{'Home' | i18n}}</span>
+                </a>
+            </li>
+
+            <li>
+                <a title="Setting">
+                    <i class="fa fa-lg fa-fw fa-gears"></i>
+                    <span class="menu-item-parent">{{'Setting' | i18n}}</span>
+                </a>
+                <ul>
+                    <li routerLinkActive="active">
+                        <a routerLink="/connector/connectors">
+                            <i class="fa fa-lg fa-fw fa-database"></i> {{'Connectors' | i18n}}
+                        </a>
+                    </li>
+                    <li routerLinkActive="active">
+                        <a routerLink="/time/times">
+                            <i class="fa fa-lg fa-fw fa-hourglass-start"></i> {{'Time Management' | i18n}}
+                        </a>
+                    </li>
+                    <li routerLinkActive="active">
+                        <a routerLink="/indicator/indicators">
+                            <i class="fa fa-lg fa-fw fa-balance-scale"></i> {{'Indicators' | i18n}}
+                        </a>
+                    </li>
+                    <li routerLinkActive="active">
+                        <a routerLink="/style/styles">
+                            <i class="fa fa-lg fa-fw fa-text-width"></i> {{'Styles' | i18n}}
+                        </a>
+                    </li>
+                    <li routerLinkActive="active">
+                        <a routerLink="/color/colors">
+                            <i class="fa fa-lg fa-fw fa-paint-brush"></i> {{'Colors' | i18n}}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li routerLinkActive="active">
+                <a routerLink="/widget/widgets" title="Widget">
+                    <i class="fa fa-lg fa-fw fa-area-chart"></i>
+                    <span class="menu-item-parent">{{'Graph' | i18n}}</span>
+                </a>
+            </li>
+
+            <li routerLinkActive="active">
+                <a routerLink="/dashboard/dashboards" title="Dashboard">
+                    <i class="fa fa-lg fa-fw fa-tachometer"></i>
+                    <span class="menu-item-parent">{{'Dashboard' | i18n}}</span>
+                </a>
+            </li>
+
+            <li routerLinkActive="active">
+                <a routerLink="/app-views/profile">
+                    <i class="fa fa-lg fa-fw fa-user"></i>
+                    <span class="menu-item-parent">{{'Profile' | i18n}}</span>
+                </a>
+            </li>
         </ul>
-      </li>
+    </nav>
 
-      <li routerLinkActive="active">
-        <a routerLink="/widget/widgets" title="Widget">
-          <i class="fa fa-lg fa-fw fa-area-chart"></i>
-          <span class="menu-item-parent">{{'Graph' | i18n}}</span>
-        </a>
-      </li>
-
-      <li routerLinkActive="active">
-        <a routerLink="/dashboard/dashboards" title="Dashboard">
-          <i class="fa fa-lg fa-fw fa-tachometer"></i>
-          <span class="menu-item-parent">{{'Dashboard' | i18n}}</span>
-        </a>
-      </li>
-
-    </ul>
-  </nav>
-
-  <app-min-menu></app-min-menu>
+    <app-min-menu></app-min-menu>
 
 </aside>
