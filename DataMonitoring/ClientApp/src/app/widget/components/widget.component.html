@@ -11,7 +11,7 @@
     </div>
 
     <h2 class={{titleColorClass}}><strong><p [ngStyle]="setTitleStyle()">{{title}}</p></strong></h2>
-    <h2 *ngIf="lastRefresh" class="txt-color-darken pull-right"><strong>{{lastRefreshTime}}</strong></h2>
+    <h2 *ngIf="lastRefreshTime" class="txt-color-darken pull-right"><strong>{{lastRefreshTime}}</strong></h2>
 
     <span class="jarviswidget-loader" [ngStyle]="{'display': isRefreshContent ? 'block' : 'none'}">
       <i class="fa fa-refresh fa-spin"></i>

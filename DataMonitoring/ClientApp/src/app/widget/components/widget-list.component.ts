@@ -1,110 +1,115 @@
 import { Component, OnInit } from '@angular/core';
-
 import { NotificationService } from '@app/shared/layout/notification.service';
+import { UserService } from '@app/shared/layout/user/user.service';
 
 import { I18nService } from '@app/shared/i18n/i18n.service';
 import { WidgetsService } from '../widget.service';
-import {Widget} from "../models/widget";
+import { Widget } from "../models/widget";
 
-
-@Component({
-  selector: 'app-widget-list',
-  templateUrl: './widget-list.component.html'
-})
+@Component( {
+    selector: 'app-widget-list',
+    templateUrl: './widget-list.component.html'
+} )
 export class WidgetListComponent implements OnInit {
 
-  public errorMessage: string;
-  public successMessage:string;
+    isUserHasRole: boolean;
 
-  public widgets: Widget[];
-  public widgetTypes: any[];
+    public errorMessage: string;
+    public successMessage: string;
 
-  rows = [];
-  temp = [];
+    public widgets: Widget[];
+    public widgetTypes: any[];
 
-  loadingIndicator: boolean = true;
-  reorderable: boolean = true;
+    rows = [];
+    temp = [];
 
-  controls: any = {
-    pageSize: 10,
-    tableOffset: 0,
-    filter: '',
-  };
+    loadingIndicator: boolean = true;
+    reorderable: boolean = true;
 
-  constructor(private widgetService: WidgetsService, private i18nservice: I18nService, private notificationService: NotificationService) { }
+    controls: any = {
+        pageSize: 10,
+        tableOffset: 0,
+        filter: '',
+    };
 
-  ngOnInit() {
+    constructor(
+        private widgetService: WidgetsService,
+        private i18nservice: I18nService,
+        private notificationService: NotificationService,
+        private userService: UserService,) { }
 
-    this.showWidget();
-  }
-
-  showWidget() {
-
-    this.widgetService.get()
-      .subscribe(data => {
-        this.widgets = data;
-        this.widgetService.getWidgetTypeList()
-          .subscribe(typesResult => {
-            this.widgetTypes = typesResult;
-            if (this.widgets != null) {
-              this.widgets.forEach(element => {
-                element.typeDisplay = this.widgetTypes.find(x => x.value == element.type).name;
-              });
-            }
-            this.temp = [...this.widgets];
-            this.rows = this.widgets;
-            this.loadingIndicator = false;
-          }, error => {
-            this.errorMessage = error;
-          });
-      }, error => {
-        this.errorMessage = error;
-      });
-  }
-
-  onPageChange(event: any): void {
-    this.controls.tableOffset = event.offset;
-  }
-
-  onDelete(id: number) {
-
-    this.errorMessage = null;
-    const button = '[' + this.i18nservice.getTranslation("No") + '] [' + this.i18nservice.getTranslation("Yes") + ']';
-
-    this.notificationService.smartMessageBox(
-      {
-        title:
-          "<i class='fa fa-sign-out txt-color-orangeDark'></i> " +
-          this.i18nservice.getTranslation("Delete Request"),
-        content: "",
-        buttons: button
-      },
-      ButtonPressed => {
-        if (ButtonPressed == this.i18nservice.getTranslation('Yes')) {
-          this.widgetService.delete(id)
-            .subscribe(result => {
-              this.successMessage = this.i18nservice.getTranslation("Line Deleted");
-              this.showWidget();
-              setTimeout(() => this.successMessage = '', 5000);
-
-            }, error => { this.errorMessage = error; });
-        }
-      }
-    );
-  }
-
-  onDuplicate(id: number) {
-    this.errorMessage = null;
-
-    this.widgetService.duplicateWidget(id)
-      .subscribe(result => {
-        this.successMessage = this.i18nservice.getTranslation("ObjectDuplicated");
+    ngOnInit() {
         this.showWidget();
-        setTimeout(() => this.successMessage = '', 5000);
-      }, error => {
-        this.errorMessage = error;
-      });
-  }
+        this.isUserHasRole = this.userService.isUserInRole();
+    }
+
+    showWidget() {
+
+        this.widgetService.get()
+            .subscribe( data => {
+                this.widgets = data;
+                this.widgetService.getWidgetTypeList()
+                    .subscribe( typesResult => {
+                        this.widgetTypes = typesResult;
+                        if ( this.widgets != null ) {
+                            this.widgets.forEach( element => {
+                                element.typeDisplay = this.widgetTypes.find( x => x.value == element.type ).name;
+                            } );
+                        }
+                        this.temp = [...this.widgets];
+                        this.rows = this.widgets;
+                        this.loadingIndicator = false;
+                    }, error => {
+                        this.errorMessage = error;
+                    } );
+            }, error => {
+                this.errorMessage = error;
+            } );
+    }
+
+    onPageChange( event: any ): void {
+        this.controls.tableOffset = event.offset;
+    }
+
+    onDelete( id: number ) {
+
+        this.errorMessage = null;
+        const button = '[' + this.i18nservice.getTranslation( "No" ) + '] [' + this.i18nservice.getTranslation( "Yes" ) + ']';
+
+        this.notificationService.smartMessageBox(
+            {
+                title:
+                    "<i class='fa fa-sign-out txt-color-orangeDark'></i> " +
+                    this.i18nservice.getTranslation( "Delete Request" ),
+                content: "",
+                buttons: button
+            },
+            ButtonPressed => {
+                if ( ButtonPressed == this.i18nservice.getTranslation( 'Yes' ) ) {
+                    this.widgetService.delete( id )
+                        .subscribe( result => {
+                            this.successMessage = this.i18nservice.getTranslation( "Line Deleted" );
+                            this.showWidget();
+                            setTimeout( () => this.successMessage = '', 5000 );
+
+                        }, error => { this.errorMessage = error; } );
+                }
+            }
+        );
+    }
+
+    onDuplicate( id: number ) {
+        this.errorMessage = null;
+
+        this.widgetService.duplicateWidget( id )
+            .subscribe( result => {
+                this.successMessage = this.i18nservice.getTranslation( "ObjectDuplicated" );
+                this.showWidget();
+                setTimeout( () => this.successMessage = '', 5000 );
+            }, error => {
+                this.errorMessage = error;
+            } );
+    }
 
 }
 

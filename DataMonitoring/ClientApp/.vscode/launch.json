@@ -14,7 +14,7 @@
         {
             "type": "chrome",
             "request": "launch",
-            "name": "Chrome:localhost",
+            "name": "Chrome:HTTP",
             "url": "http://localhost:28000",
             "webRoot": "${workspaceFolder}"
         }

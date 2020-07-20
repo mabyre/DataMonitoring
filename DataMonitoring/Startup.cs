@@ -1,3 +1,7 @@
+//
+// app.UseSpa
+//
+
 using DataMonitoring.Background;
 using DataMonitoring.Business;
 using DataMonitoring.DAL;
@@ -181,7 +185,6 @@ namespace DataMonitoring
             services.AddSingleton<IHostedService, SnapShotQueryIndicatorTask>();
             services.AddSingleton<IHostedService, FlowQueryIndicatorTask>();
             services.AddSingleton<IHostedService, RatioQueryIndicatorTask>();
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -189,11 +192,27 @@ namespace DataMonitoring
         {
             // SeriLog
             loggerFactory.AddSerilog( dispose: true );
+            var myLog = Log.ForContext<Startup>();
 
             // Microsoft.Extensions.Logging
             ApplicationLogging.LoggerFactory = loggerFactory;
 
             TestProviderLogging.TestLogs( false );
+
+            myLog.Fatal( "CONNECTION_STRING: {0}", Configuration.GetConnectionString( "DefaultConnection" ) );
+
+            if ( env.IsDevelopment() )
+            {
+                myLog.Fatal( "ENVIRONNEMENT: IsDevelopment" );
+            }
+            if ( env.IsProduction() )
+            {
+                myLog.Fatal( "ENVIRONNEMENT: IsProduction" );
+            }
+            if ( env.IsStaging() )
+            {
+                myLog.Fatal( "ENVIRONNEMENT: IsStaging" );
+            }
 
             InitializeDatabase( app );
 
@@ -263,11 +282,32 @@ namespace DataMonitoring
 
                 if ( env.IsDevelopment() )
                 {
-                    //spa.UseAngularCliServer( npmScript: "start1" ); // https avec IIS 
-                    //spa.UseAngularCliServer( npmScript: "start" ); 
-                    //spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" ); // Execute "ng serve" in VSCode http
-                    spa.UseProxyToSpaDevelopmentServer( "https://localhost:4200" ); // Execute "npm start" in VSCode https
+                    // It works to change name of the command and call it start1
+                    // run Kestrel
+                    //spa.UseAngularCliServer( npmScript: "start1" );
+
+                    // run IIS don't work
+                    //spa.UseAngularCliServer( npmScript: "startSSL" );
+
+                    // run IIS it works
+                    //spa.UseAngularCliServer( npmScript: "startIIS" );
+
+                    // Run "ng serve" independently
+                    // https://docs.microsoft.com/en-us/aspnet/core/client-side/spa/angular?view=aspnetcore-3.1&tabs=visual-studio
+
+                    // Execute "ng serve" independently in VSCode http
+                    //spa.UseProxyToSpaDevelopmentServer( "http://localhost:4200" ); 
+
+                    // Execute "npm start" independently in VSCode https
+                    // the command must be nammed "start" othewise it won't works
+                    spa.UseProxyToSpaDevelopmentServer( "https://localhost:4200" ); 
                 }
+
+                // BRY ESSAI ...
+                //if ( env.IsProduction() )
+                //{
+                //    spa.UseAngularCliServer( npmScript: "start" ); // https avec IIS
+                //}
             } );
         }
 

@@ -28,7 +28,8 @@ namespace DataMonitoring
             var environment = Environment.GetEnvironmentVariable( "ASPNETCORE_ENVIRONMENT" );
             if ( string.IsNullOrEmpty( environment ) )
             {
-                environment = "Production";
+                // case sensitive the file's name created in prod is appsettings.production.json
+                environment = "production"; 
             }
 
             var config = new ConfigurationBuilder()

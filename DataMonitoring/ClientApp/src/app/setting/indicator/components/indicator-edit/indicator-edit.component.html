@@ -18,7 +18,7 @@
   </div>
 
   <!-- Alert_Messages -->
-  <div class="row" *ngIf="widgetForm">
+  <div class="row" *ngIf="indicatorForm">
     <div class="col-sm-8 col-sm-offset-1">
       <alert type="danger" dismissible="true" *ngIf="errorMessage">
         <i class="fa-fw fa fa-times"></i><strong>{{'Error' | i18n}}!</strong> {{ errorMessage }}
