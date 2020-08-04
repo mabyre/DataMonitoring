@@ -16,6 +16,7 @@ export class ConnectorsListComponent implements OnInit {
     connectors: Connector[];
     errorMessage: string;
     isUserHasRole: boolean;
+    canUserDelete: boolean;
 
     constructor(
         private connectorsService: ConnectorService,
@@ -28,6 +29,7 @@ export class ConnectorsListComponent implements OnInit {
     ngOnInit() {
         this.showConnectors();
         this.isUserHasRole = this.userService.isUserInRole();
+        this.canUserDelete = this.userService.canUserDelete();
     }
 
     showConnectors() {
@@ -60,6 +62,12 @@ export class ConnectorsListComponent implements OnInit {
     onDelete( id: number ) {
 
         if ( this.isUserHasRole == false )
+        {
+            this.router.navigate( ['./errors/unauthorized'] );  
+            return;      
+        }
+
+        if ( this.canUserDelete !== true )
         {
             this.router.navigate( ['./errors/unauthorized'] );  
             return;      

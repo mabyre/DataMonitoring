@@ -86,7 +86,7 @@ namespace Sodevlog.Tools
     {
         private static readonly Microsoft.Extensions.Logging.ILogger Logger = ApplicationLogging.LoggerFactory.CreateLogger<TestProviderLogging>();
 
-        public static void TestLogs( bool doTest )
+        public static void TestLogs( bool doMoreTests )
         {
             // https://github.com/serilog/serilog/wiki/Writing-Log-Events
             // Verbose - tracing information and debugging minutiae; generally only switched on in unusual situations
@@ -134,7 +134,7 @@ namespace Sodevlog.Tools
 
             #endregion
 
-            if ( doTest )
+            if ( doMoreTests )
             {
                 //
                 // Log de Serilog 

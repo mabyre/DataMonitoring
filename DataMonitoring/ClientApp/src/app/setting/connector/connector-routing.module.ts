@@ -7,15 +7,13 @@ import { ConnectorEditComponent } from './components/connector-edit/connector-ed
 
 const connectorRoutes: Routes = [
   { path: 'connectors', component: ConnectorsListComponent, data: { pageTitle: 'List' } },
-  { 
-    path: 'connector-edit/:id', component: ConnectorEditComponent, 
-    data: { pageTitle: 'Edit' }, 
+  { path: 'connector-edit/:id', component: ConnectorEditComponent, 
+    data: { pageTitle: 'Edit', roles: ['SuperAdmin', 'Admin', 'Customer'] }, 
     canActivate: [AuthorizationGuard] 
   },
-  {
-    path: 'connector-edit',
+  { path: 'connector-edit',
     component: ConnectorEditComponent,
-    data: { pageTitle: 'Create' },
+    data: { pageTitle: 'Create', roles: ['SuperAdmin'] },
     canActivate: [AuthorizationGuard]
   },
 ];

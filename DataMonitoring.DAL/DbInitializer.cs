@@ -1,6 +1,11 @@
 ﻿//
 // Vérifier si des données minimum nécessaires à l'exécution de l'application sont dans la base 
-// Et sinon Remplir la base avec des données minimum
+// Et sinon Remplir la base avec des données minimum ...
+//
+// C'est une bonne idée, en plus avec le ClearDatase ça fait un système assez complet
+// mais je n'arriverai jamais à écrire tout ce code C# pour initialiser tous ces objets.
+//
+// Ja vais plutôt essayer de faire un backup de la base à restaurer en cas de besoin ...
 //
 using System;
 using System.Collections.Generic;
@@ -10,6 +15,7 @@ using System.Linq;
 using DataMonitoring.Model;
 using Microsoft.Extensions.Logging;
 using Sodevlog.Tools;
+using Serilog;
 
 namespace DataMonitoring.DAL
 {
@@ -17,17 +23,17 @@ namespace DataMonitoring.DAL
     {
         public static void Initialize( DataMonitoringDbContext context )
         {
-            bool changed = false;
+            bool saveChanges = false;
 
-            initializeSqlConnectors( context, ref changed );
+            initializeConnectors( context, ref saveChanges );
 
-            initializeColors( context, ref changed );
+            initializeColors( context, ref saveChanges );
 
-            initializeTimeManagements( context, ref changed );
+            initializeTimeManagements( context, ref saveChanges );
 
-            initializeIndicators( context, ref changed );
+            initializeIndicators( context, ref saveChanges );
 
-            if ( changed )
+            if ( saveChanges )
             {
                 try
                 {
@@ -39,6 +45,8 @@ namespace DataMonitoring.DAL
                 }
             }
         }
+
+#region INIT_OBJECTS
 
         private static void initializeIndicators( DataMonitoringDbContext context, ref bool changed )
         {
@@ -201,7 +209,7 @@ namespace DataMonitoring.DAL
 
         }
 
-        private static void initializeSqlConnectors( DataMonitoringDbContext context, ref bool contextChanged )
+        private static void initializeConnectors( DataMonitoringDbContext context, ref bool contextChanged )
         {
             if ( context.SqlServerConnectors.Any() )
             {
@@ -214,20 +222,58 @@ namespace DataMonitoring.DAL
                 // Ajouter un connecteur par defaut
                 // sous-entend que la base MyDatabase1 existe
                 //
-                var connectors = new SqlServerConnector[]
+                var sqlConnectorsList = new SqlServerConnector[]
                 {
                     new SqlServerConnector
                     {
+                        Name = "MySqlServerConnector1",
+                        TimeZone = TimeZoneInfo.Local.ToString(),
+                        // Discriminator
+                        // BaseUrl
                         HostName = "localhost",
-                        Name = "MyConnector1",
                         DatabaseName = "MyDatabase1",
                         UseIntegratedSecurity = true,
-                        TimeZone = TimeZoneInfo.Local.ToString()
-                        //IndicatorDefinitions = ConnectorType.SqlServer
-                    }
+                    },
                 };
 
-                foreach ( SqlServerConnector s in connectors )
+                var apiConnectorsList = new ApiConnector[]
+                {
+                        new ApiConnector
+                    {
+                        Name = "MyAPIConnecteur1",
+                        TimeZone = "E. South America Standard Time",
+                        // Discriminator
+                        BaseUrl = "www.test1.com",
+                        //IndicatorDefinitions = ConnectorType.SqlServer
+                    },
+                };
+
+                var sqlLiteConnectorsList =  new SqLiteConnector[]
+                {
+                    new SqLiteConnector
+                    {
+                        Name = "MySQLite1Connecteur1",
+                        TimeZone = TimeZoneInfo.Local.ToString(),
+                        // Discriminator
+                        // BaseUrl
+                        HostName = "localhost",
+                        DatabaseName = "MyDatabase1",
+                        UseIntegratedSecurity = true,
+                        //IndicatorDefinitions = ConnectorType.SqlServer
+                    },
+                };
+
+                foreach ( SqlServerConnector s in sqlConnectorsList )
+                {
+                    context.Connectors.Add( s );
+                }
+
+                foreach ( ApiConnector s in apiConnectorsList )
+                {
+                    context.Connectors.Add( s );
+                }
+                
+                foreach ( SqLiteConnector s in sqlLiteConnectorsList )
                 {
                     context.Connectors.Add( s );
                 }
@@ -235,6 +281,26 @@ namespace DataMonitoring.DAL
                 contextChanged = true;
             }        
 
-        }        
-   }
+        }
+
+#endregion
+
+        public static void ClearDatabase( DataMonitoringDbContext context )
+        {
+            // Clear Database
+            if ( context.SqlServerConnectors.Any() )
+            {
+
+            }
+
+            try
+            {
+                context.SaveChanges();
+            }
+            catch ( Exception e )
+            {
+                SdlLog.Logger.LogError( e.InnerException.Message );
+            }
+        }
+    }
 }

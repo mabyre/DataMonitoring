@@ -1,16 +1,77 @@
-﻿Gestion de l'authentification et des roles
-Customer
-Admin
+﻿
+Script-migration
+
+BRY_20200723 : CanDelete user isAdmin
+
+canActivateChild: [AuthorizationGuard],
+au niveau de 
+\DataMonitoring\ClientApp\src\app\app-routing.module.ts
+ca marche pas !
+
+je dois le mettre là :
+\DataMonitoring\ClientApp\src\app\app-views\app-views.routing.ts
+
+errors/unauthorized
+isUserAuthenticated
+
+regarder si on ne pourrait pas mettre une fonction dans user.service !
+const currentUser = this.userService.userData;
+
+passer un paramètre à 
+this.oidcSecurityService.logoff();
+
+\DataMonitoring\ClientApp\src\app\core\auth\authorization.guard.ts
+
+BRY_20200106 
+j'utilise pas applicationScopes ApplicationAccess pour déterminer les droits !
+je ne sais pas ce qui était prévu ...
+
 SuperAdmin
 
-NgxDnDModule, // BRY ngx-dnd v5.1.0
+<b>Roles</b>
+<ul class="list-unstyled">
+    <li *ngFor="let role of currentUser.roles" [value]="role">
+        {{role}}<br>
+    </li>
+</ul>
 
+s1.jpg -> dashboard.jpg
+
+app\shared\models
+
+const user = this.userService.userData;
+
+__DATE__ 20/05/2020
+
+je suis surpris par le manque d'info sur le User, en gros il n'y a que givenName
+
+regarder dans l'exemple :
+C:\Users\mabyre\Documents\Visual Studio 2019\Samples\Angular CSS JavaScript\Angular\angular-8-registration-login-example-master
+
+            {
+                path: 'app-views', 
+                loadChildren: './app-views/app-views.module#AppViewsModule',
+                data:{ pageTitle: 'App Views' }
+            },
+
+<sa-login></sa-login>
+
+<sa-profile>
+
+\ClientApp\src\app\shared\layout\user\login-info\login-info.component.html
+          <a routerLink="/app-views/profile" class="padding-10 padding-top-0 padding-bottom-0">
+            <i class="fa fa-user"></i> {{'Profile' | i18n}}
+          </a>
+
+NgxDnDModule, // BRY ngx-dnd v5.1.0
 npm i @swimlane/ngx-dnd@5.1.0
 
 run `npm audit fix` to fix them, or `npm audit` for details
 npm i @swimlane/ngx-dnd@5.0.6
 
 ??defineInjectable
+
+Refused to frame 'https://localhost:5001/' because an ancestor violates the following Content Security Policy directive: "frame-ancestors https://localhost:28001 https://localhost:28001 https://localhost:44352 https://localhost:4200".
 
 [WDS] Warnings while compiling.
 vendor.js:131528
@@ -30,7 +91,7 @@ dirige dans le vide ... app-views est utilisé dans
 
 une fois connecté une dropdownClass
 \DataMonitoring\ClientApp\src\app\shared\layout\user\login-info\login-info.component.html
-apparait avec le menu
+apparait avec le menu et les items suivants "settings" "profile"
 
 silent-renew.html
 

@@ -10,7 +10,7 @@ namespace DataMonitoring.Model
 
         public string TimeZone { get; set; }
 
-        public ICollection<IndicatorQuery> IndicatorDefinitions { get; set; }
+        public ICollection<IndicatorQuery> IndicatorQuerys { get; set; }
     }
 
     public enum ConnectorType

@@ -30,10 +30,10 @@ export class UserService {
 
         this.userDataSubscription = this.oidcSecurityService.getUserData().subscribe(
             (data: any) => {
-                if (data !== '') {
+                if ( data !== '' ) {
                     this.userData = data;
                 }
-
+               
                 console.log('UserService: constructor:getUserData');
             });
     }
@@ -51,8 +51,9 @@ export class UserService {
         );
     }
 
-    private getUser(userData): any {
+    private getUser( userData ): any {
         const user = new User();
+        let isAdmin = false; 
 
         if ( userData !== '' ) {
 
@@ -78,7 +79,7 @@ export class UserService {
                 user.gender = "male";
             }
 
-            if (userData.role instanceof Array) {
+            if ( userData.role instanceof Array ) {
                 user.roles = userData.role;
             } else {
                 user.roles = new Array();
@@ -86,10 +87,12 @@ export class UserService {
             }
 
             // SuperAdmin == IsAdmin + Role == "Admin" cf. StsIdentityServer
-            if (user.roles.find((e) => { return e === "SuperAdmin" }))
+            // BRY_20200723
+            if ( user.roles.find(x => x === "SuperAdmin") !== undefined )
+            {
+                userData.isAdmin = true;
                 user.isAdmin = true;
-            else
-                user.isAdmin = false;
+            }
 
             // BRY_20200106 don't use this
             // if (userData.ApplicationAccess instanceof Array) {
@@ -115,13 +118,18 @@ export class UserService {
 
     isUserAuthenticated(): boolean {
         const currentUser = this.userData;
-        const log = (currentUser !== "");
+        const log = ( currentUser !== "" );
         return log;
     }
 
     isUserInRole(): boolean {
         const role = ( this.userData.role !== undefined );
         return role;
+    }
+
+    canUserDelete(): boolean {
+        const canDel = ( this.userData.isAdmin === true );
+        return canDel;
     }
 
     showPopupLogout() {

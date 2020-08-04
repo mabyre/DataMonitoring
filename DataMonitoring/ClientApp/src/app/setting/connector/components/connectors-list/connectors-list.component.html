@@ -26,11 +26,11 @@
           </thead>
           <tbody>
             <tr *ngFor="let connector of connectors">
-              <td> {{ connector.name }}</td>
+              <td>{{ connector.name }}</td>
               <td>
                 <span class="badge bg-color-darken">{{ connector.connectorType }}</span>
               </td>
-              <td> {{ connector.connection }} </td>
+              <td>{{ connector.connection }}</td>
               <td>
                 <a [routerLink]="['/connector/connector-edit/', connector.id]" class="padding-10 padding-top-0 padding-bottom-0">
                   <i class="fa fa-edit"></i> {{ 'Edit' | i18n }}

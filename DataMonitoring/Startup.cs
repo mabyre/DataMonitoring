@@ -1,7 +1,6 @@
 //
 // app.UseSpa
 //
-
 using DataMonitoring.Background;
 using DataMonitoring.Business;
 using DataMonitoring.DAL;
@@ -214,7 +213,9 @@ namespace DataMonitoring
                 myLog.Fatal( "ENVIRONNEMENT: IsStaging" );
             }
 
-            InitializeDatabase( app );
+            bool clearDataBase = Configuration.GetSection( "DoClearAndSeedDataBase" ).Value == "true";
+            //InitializeDatabase( app, clearDataBase );
+            InitializeDatabase( app, false ); // c'est pas fini ...
 
             if ( env.IsDevelopment() )
             {
@@ -238,6 +239,11 @@ namespace DataMonitoring
             {
                 app.UseHttpsRedirection();
             }
+
+            //
+            // Manage LetsEncryptFolder 
+            // for SSL Certificat
+            app.UseLetsEncryptFolder( env );
 
             // BRY_Refuse_To_Frame
             app.UseStaticFiles();
@@ -311,12 +317,17 @@ namespace DataMonitoring
             } );
         }
 
-        private void InitializeDatabase( IApplicationBuilder app )
+        private void InitializeDatabase( IApplicationBuilder app, bool clearDataBase )
         {
             using ( var scope = app.ApplicationServices.GetService<IServiceScopeFactory>().CreateScope() )
             {
                 var context = scope.ServiceProvider.GetRequiredService<DataMonitoringDbContext>();
                 context.Database.Migrate();
+
+                if ( clearDataBase == true )
+                {
+                    DbInitializer.ClearDatabase( context );
+                }
 
                 DbInitializer.Initialize( context );
             }
