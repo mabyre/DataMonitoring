@@ -13,6 +13,9 @@ The user configures his charts and its connectors to the databases in order to d
 * Angular / NodeJS
 * ASP.NET C#
 
+#Blog
+To know more
+
 Follow blog in french :
 [Dashboard blog](https://dashboard-universel-presentation.sodevlog.com/)
 
