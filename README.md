@@ -15,4 +15,5 @@ The user configures his charts and its connectors to the databases in order to d
 
 Follow blog in french :
 [Dashboard blog](https://dashboard-universel-presentation.sodevlog.com/)
+
 but you can easily translate ;-)
