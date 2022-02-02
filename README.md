@@ -19,4 +19,4 @@ To know more
 Follow blog in french :
 [Dashboard blog](https://dashboard-universel-presentation.sodevlog.com/)
 
-but you can easily translate ;-)
+but you can easily translate it by choosing your language in the dropbox of the main page ;-)
