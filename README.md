@@ -14,7 +14,7 @@ The user configures his charts and its connectors to the databases in order to d
 * ASP.NET C#
 
 # Blog
-To know more
+To know more or contact us
 
 Follow blog in french :
 [Dashboard blog](https://dashboard-universel-presentation.sodevlog.com/)
