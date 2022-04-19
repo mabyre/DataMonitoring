@@ -2,7 +2,9 @@
 The Project for Universal Dashboard
 
 Today this is made, this repo become public, have great fun to fork to make this code your's.
-And of course live us a message if you appreciate the code expose here as a great project using ASP.NET C# under Angular technologie. It's a FULL-STACK project with well-separated layers as you cans see.
+And of course live us a message if you appreciate the code expose here as a great project using ASP.NET C# under Angular technologie. 
+
+It's a FULL-STACK project with well-separated layers as you cans see, which follows the MVC pattern, Model View-Model Controllers.
 
 # Goals
 The aim of this project is to allow the user to build a Dashboard of graphics linked to his data through a web configuration interface.
