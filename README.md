@@ -2,7 +2,7 @@
 The Project for Universal Dashboard
 
 Today this is made, this repo become public, have great fun to fork to make this code your's.
-And of course live us a message if you appreciate the code expose here as a great project using ASP.NET C# under Angular technologie.
+And of course live us a message if you appreciate the code expose here as a great project using ASP.NET C# under Angular technologie. It's a FULL-STACK project with well-separated layers as you cans see.
 
 # Goals
 The aim of this project is to allow the user to build a Dashboard of graphics linked to his data through a web configuration interface.
@@ -16,7 +16,7 @@ The user configures his charts and its connectors to the databases in order to d
 # Blog
 To know more or contact us
 
-Follow blog in french :
+Follow blog :
 [Dashboard blog](https://dashboard-universel-presentation.sodevlog.com/)
 
-but you can easily translate it by choosing your language in the dropbox of the main page, thanks to GoogleTranslate ;-)
+In french, but you can easily translate it by choosing your language in the dropbox of the main page, thanks to GoogleTranslate ;-)
