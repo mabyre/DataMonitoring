@@ -21,4 +21,4 @@ To know more or contact us
 Follow blog :
 [Dashboard blog](https://dashboard-universel-presentation.sodevlog.com/)
 
-In french, but you can easily translate it by choosing your language in the dropbox of the main page, thanks to GoogleTranslate ;-)
+In french, but you can **easily translate it by choosing your language** in the dropbox of the main page, thanks to GoogleTranslate ;-)
