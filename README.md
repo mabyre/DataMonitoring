@@ -8,7 +8,7 @@ It's a FULL-STACK project with well-separated layers as you cans see, which foll
 
 # Goals
 The aim of this project is to allow the user to build a Dashboard of graphics linked to his data through a web configuration interface.
-The user configures his charts and its connectors to the databases in order to display them in a published web page for those who thus access to the visualization of the data.
+The user configures his charts and its connectors to the databases in order to display them in a published web page for those who thus access to the data visualization. 
 
 # Requirements
 * Visual Studio 2017/2019 Community
